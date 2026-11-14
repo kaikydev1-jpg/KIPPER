@@ -3,8 +3,9 @@
   "use strict";
 
   // Jeitos de apoiar o projeto. Vazio = a seção "Apoiar" e o link do menu não aparecem.
-  // pix: a chave Pix (de preferência a chave aleatória). paypal: o link https://www.paypal.com/... ou https://paypal.me/...
-  const APOIO = { pix: "", paypal: "" };
+  // pix: a chave Pix (de preferência a chave aleatória). sponsors: https://github.com/sponsors/<usuário>,
+  // só depois que o GitHub aprovar o perfil (antes disso a página não aceita apoio).
+  const APOIO = { pix: "", sponsors: "" };
 
   const EN = {
     "skip": "Skip to content",
@@ -126,8 +127,8 @@
     "sup.title": "Support Kipper",
     "sup.lede": "Kipper is free and will stay free, with no ads and no paid plan. If it helped you, any amount helps keep the project going.",
     "sup.pix": "For people in Brazil: instant and free. Copy the key and paste it in your bank app.",
-    "sup.paypal": "From any country, with a card or PayPal balance.",
-    "sup.give": "Support with PayPal",
+    "sup.sponsors": "From any country, with a credit or debit card, once or every month. Needs a GitHub account; the whole amount goes to the project.",
+    "sup.give": "Support on GitHub",
     "footer.credits": "Free software under the GPLv3 licence. Based on <a href=\"https://github.com/CutWire-Studios/Drift\" rel=\"noopener\">Drift</a> by CutWire Studios, with design ideas from <a href=\"https://github.com/jub0t/Concat\" rel=\"noopener\">Concat</a>.",
     "footer.media": "Sample footage in the screenshots: <a href=\"https://images.nasa.gov/\" rel=\"noopener\">NASA</a> (public domain). Sample 3D model: BoxAnimated, © Cesium, <a href=\"https://creativecommons.org/licenses/by/4.0/\" rel=\"noopener\">CC BY 4.0</a> (<a href=\"https://github.com/KhronosGroup/glTF-Sample-Assets\" rel=\"noopener\">Khronos glTF Sample Assets</a>).",
     "footer.source": "Source code",
@@ -230,16 +231,16 @@
     .catch(() => { /* sem a versão, o resto do site funciona igual */ });
 
   // Apoiar: só o que estiver configurado em APOIO aparece.
-  if (APOIO.pix || APOIO.paypal) {
+  if (APOIO.pix || APOIO.sponsors) {
     document.getElementById("apoiar").hidden = false;
     document.querySelector(".nav-support").hidden = false;
     if (APOIO.pix) {
       document.getElementById("pix-key").textContent = APOIO.pix;
       document.getElementById("way-pix").hidden = false;
     }
-    if (APOIO.paypal && /^https:\/\/(www\.)?(paypal\.com|paypal\.me)\//.test(APOIO.paypal)) {
-      document.getElementById("paypal-link").href = APOIO.paypal;
-      document.getElementById("way-paypal").hidden = false;
+    if (APOIO.sponsors && /^https:\/\/github\.com\/sponsors\/[A-Za-z0-9-]+\/?$/.test(APOIO.sponsors)) {
+      document.getElementById("sponsors-link").href = APOIO.sponsors;
+      document.getElementById("way-sponsors").hidden = false;
     }
   }
 
