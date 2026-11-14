@@ -27,12 +27,25 @@ jobs:
         run: |
           set -euo pipefail
           tag="v${VERSAO#v}"
-          nomes=$(gh release view "$tag" -R "$GITHUB_REPOSITORY" --json assets -q '.assets[].name')
-          falta=0
-          for f in Kipper-Windows.exe Kipper-Fedora.rpm Kipper-Ubuntu-Debian.deb Kipper-Linux.AppImage \
-                   Kipper-Flatpak.flatpak Kipper-Matsu-OS.flatpak instalar.sh SHA256SUMS.txt atualizacoes.json; do
-            if echo "$nomes" | grep -qx "$f"; then echo "ok: $f"; else echo "FALTA: $f"; falta=1; fi
+          padrao="Kipper-Windows.exe Kipper-Fedora.rpm Kipper-Ubuntu-Debian.deb Kipper-Linux.AppImage
+                  Kipper-Flatpak.flatpak Kipper-Matsu-OS.flatpak instalar.sh SHA256SUMS.txt atualizacoes.json"
+          # Rascunhos desta versão, do mais novo para o mais antigo (uma tentativa que falhou pode ter
+          # deixado um rascunho incompleto com a mesma etiqueta).
+          ids=$(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" \
+                  --jq "[.[] | select(.draft and .tag_name == \"$tag\")] | sort_by(.created_at) | reverse | .[].id")
+          [ -n "$ids" ] || { echo "Não há rascunho da versão $tag."; exit 1; }
+          escolhido=""
+          for id in $ids; do
+            nomes=$(gh api "repos/$GITHUB_REPOSITORY/releases/$id/assets?per_page=100" --jq '.[].name')
+            completo=1
+            for f in $padrao; do echo "$nomes" | grep -qx "$f" || completo=0; done
+            echo "rascunho $id: $([ $completo = 1 ] && echo completo || echo incompleto)"
+            if [ $completo = 1 ] && [ -z "$escolhido" ]; then escolhido=$id; fi
           done
-          [ "$falta" = 0 ] || { echo "Não publiquei: falta arquivo do padrão."; exit 1; }
-          gh release edit "$tag" -R "$GITHUB_REPOSITORY" --draft=false --latest
+          [ -n "$escolhido" ] || { echo "Não publiquei: nenhum rascunho de $tag tem os 9 arquivos do padrão."; exit 1; }
+          # Os outros rascunhos da mesma versão nunca foram públicos; sem eles, a etiqueta fica de um só.
+          for id in $ids; do
+            [ "$id" = "$escolhido" ] || { echo "apagando rascunho repetido $id"; gh api -X DELETE "repos/$GITHUB_REPOSITORY/releases/$id"; }
+          done
+          gh api -X PATCH "repos/$GITHUB_REPOSITORY/releases/$escolhido" -F draft=false -f make_latest=true >/dev/null
           echo "### Kipper $tag publicado" >> "$GITHUB_STEP_SUMMARY"

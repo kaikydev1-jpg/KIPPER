@@ -162,6 +162,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          # Só com os 9 arquivos do padrão: uma tentativa que falhou não deixa rascunho incompleto.
+          for f in Kipper-Windows.exe Kipper-Fedora.rpm Kipper-Ubuntu-Debian.deb Kipper-Linux.AppImage \
+                   Kipper-Flatpak.flatpak Kipper-Matsu-OS.flatpak instalar.sh SHA256SUMS.txt atualizacoes.json; do
+            [ -f "saida/$f" ] || { echo "Sem $f: rascunho não criado."; exit 1; }
+          done
           sed "s/{{VERSAO}}/$VERSAO/g" .github/release/notas-kipper.md > notas.md
           cat .github/release/resumo-kipper.txt >> notas.md
           gh release create "v$VERSAO" saida/* --draft --target "$GITHUB_SHA" --title "Kipper $VERSAO" --notes-file notas.md
