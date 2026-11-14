@@ -17317,6 +17317,10 @@ If playback stutters, try another.</source>
 <context>
     <name>RecentProjectsPopup</name>
     <message>
+        <source>Untitled Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>All changes saved</source>
         <translation type="unfinished"></translation>
     </message>
@@ -22058,10 +22062,6 @@ If playback stutters, try another.</source>
     <name>StartScreen</name>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Debug info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

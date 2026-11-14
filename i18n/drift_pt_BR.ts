@@ -17323,6 +17323,10 @@ Se a reprodução travar, experimente outro.</translation>
 <context>
     <name>RecentProjectsPopup</name>
     <message>
+        <source>Untitled Project</source>
+        <translation>Projeto sem título</translation>
+    </message>
+    <message>
         <source>All changes saved</source>
         <translation>Todas as alterações salvas</translation>
     </message>
@@ -22066,10 +22070,6 @@ Se a reprodução travar, experimente outro.</translation>
     <message>
         <source>Settings</source>
         <translation>Configurações</translation>
-    </message>
-    <message>
-        <source>Debug info</source>
-        <translation>Informações de depuração</translation>
     </message>
     <message>
         <source>System, playback and codec details for bug reports</source>
