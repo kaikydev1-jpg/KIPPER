@@ -13,7 +13,7 @@ name: Instaladores do Kipper
 #
 # Manual (Actions > Instaladores do Kipper > Run workflow): versão de TESTE, só artefatos do
 # GitHub Actions, separada da oficial.
-# Tag vX.Y.Z: os mesmos arquivos e um RASCUNHO de versão no GitHub. Gerar não é publicar: a
+# Tag vX.Y.Z, ou disparo manual com "oficial": os mesmos arquivos e um RASCUNHO de versão no GitHub. Gerar não é publicar: a
 # versão oficial só aparece para todo mundo quando o criador publicar o rascunho.
 on:
   workflow_dispatch:
@@ -23,6 +23,11 @@ on:
         required: true
         default: "flatpak,linux,windows"
         type: string
+      oficial:
+        description: "Versão oficial: gera o RASCUNHO da versão vX.Y.Z (a do CMakeLists.txt). Publicar é outro passo (Publicar versão do Kipper)."
+        required: false
+        default: false
+        type: boolean
   push:
     tags:
       - "v*.*.*"
@@ -48,6 +53,12 @@ jobs:
         run: |
           if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
             echo "versao=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+            echo "oficial=true" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ inputs.oficial }}" == "true" ]]; then
+            # Disparo manual da versão oficial: a versão é a do CMakeLists.txt; a etiqueta vX.Y.Z é
+            # criada pelo GitHub no commit deste disparo quando o rascunho for publicado.
+            base=$(grep -m1 -oP '^project\(Drift VERSION \K[0-9]+\.[0-9]+\.[0-9]+' CMakeLists.txt)
+            echo "versao=${base}" >> "$GITHUB_OUTPUT"
             echo "oficial=true" >> "$GITHUB_OUTPUT"
           else
             base=$(grep -m1 -oP '^project\(Drift VERSION \K[0-9]+\.[0-9]+\.[0-9]+' CMakeLists.txt)
@@ -153,4 +164,4 @@ jobs:
           set -euo pipefail
           sed "s/{{VERSAO}}/$VERSAO/g" .github/release/notas-kipper.md > notas.md
           cat .github/release/resumo-kipper.txt >> notas.md
-          gh release create "v$VERSAO" saida/* --draft --title "Kipper $VERSAO" --notes-file notas.md
+          gh release create "v$VERSAO" saida/* --draft --target "$GITHUB_SHA" --title "Kipper $VERSAO" --notes-file notas.md
