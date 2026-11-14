@@ -3104,14 +3104,14 @@ include(GNUInstallDirs)
 # Icon= all carry that string — and the human-facing name suffixed, so the launcher shows
 # "Drift Nightly" next to a stable entry rather than two identical ones.
 function(drift_install_metadata source destination name)
-    if(DRIFT_CHANNEL STREQUAL "stable")
-        install(FILES "${source}" DESTINATION "${destination}" RENAME "${name}" COMPONENT drift)
-        return()
-    endif()
+    # Kipper: sempre reescreve o ID (o app não é mais org.cutwire.Drift), também na versão oficial.
     file(READ "${CMAKE_SOURCE_DIR}/${source}" _content)
+    string(REPLACE "io.github.kaikydev1jpg.Kipper" "${DRIFT_APP_ID}" _content "${_content}")
     string(REPLACE "org.cutwire.Drift" "${DRIFT_APP_ID}" _content "${_content}")
     string(REPLACE "Name=Drift\n" "Name=${DRIFT_APP_NAME}\n" _content "${_content}")
     string(REPLACE "<name>Drift</name>" "<name>${DRIFT_APP_NAME}</name>" _content "${_content}")
+    string(REPLACE "Name=Kipper\n" "Name=${DRIFT_APP_NAME}\n" _content "${_content}")
+    string(REPLACE "<name>Kipper</name>" "<name>${DRIFT_APP_NAME}</name>" _content "${_content}")
     set(_generated "${CMAKE_CURRENT_BINARY_DIR}/metadata/${name}")
     file(WRITE "${_generated}" "${_content}")
     install(FILES "${_generated}" DESTINATION "${destination}" COMPONENT drift)
@@ -3149,9 +3149,10 @@ else()
     # channel's app id: flatpak build-export silently drops anything in /app/share whose name does
     # not start with the app id, so a nightly named after the stable id would export no launcher
     # entry and no icon at all.
-    drift_install_metadata(flatpak/org.cutwire.Drift.desktop
+    # Kipper: atalho do menu e descrição da loja próprios (packaging/kipper/).
+    drift_install_metadata(packaging/kipper/io.github.kaikydev1jpg.Kipper.desktop
         "${CMAKE_INSTALL_DATADIR}/applications" "${DRIFT_APP_ID}.desktop")
-    drift_install_metadata(flatpak/org.cutwire.Drift.metainfo.xml
+    drift_install_metadata(packaging/kipper/io.github.kaikydev1jpg.Kipper.metainfo.xml
         "${CMAKE_INSTALL_DATADIR}/metainfo" "${DRIFT_APP_ID}.metainfo.xml")
     drift_install_metadata(flatpak/org.cutwire.Drift.xml
         "${CMAKE_INSTALL_DATADIR}/mime/packages" "${DRIFT_APP_ID}.xml")

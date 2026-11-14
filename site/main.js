@@ -66,6 +66,7 @@
     "dl.atomic": "Silverblue, Kinoite and friends: through Flatpak, without touching the system.",
     "dl.debian": "Also Linux Mint, Pop!_OS and Zorin. Or <code>sudo apt install ./Kipper-Ubuntu-Debian.deb</code>.",
     "dl.other.t": "Other Linux",
+    "dl.debian.t": "Ubuntu and Debian",
     "dl.other": "The AppImage runs on any Linux without installing. Flatpak works on any distro that has it.",
     "dl.sums": "Every file and its SHA-256 checksum is on the <a href=\"https://github.com/kaikydev1-jpg/KIPPER/releases\">GitHub releases page</a>.",
     "dl.suggested": "For you",

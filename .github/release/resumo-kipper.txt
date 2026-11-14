@@ -1,0 +1,1 @@
+Primeira versão do Kipper: visual no estilo do CapCut, barra de título integrada e tudo em português.

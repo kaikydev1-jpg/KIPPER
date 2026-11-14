@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Kipper: editor de vídeo baseado no Drift, da CutWire Studios (GPL-3.0-or-later). -->
+<component type="desktop-application">
+  <id>io.github.kaikydev1jpg.Kipper</id>
+  <name>Kipper</name>
+  <summary>Free video editor, from your first cut to a whole film</summary>
+  <summary xml:lang="pt-BR">Editor de vídeo gratuito, do primeiro corte ao filme inteiro</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <developer id="io.github.kaikydev1jpg">
+    <name>Kipper</name>
+  </developer>
+  <description>
+    <p>
+      Kipper is a free video editor with no watermark, no account and no subscription.
+      It is easy when you are starting out and has everything people who already edit need.
+    </p>
+    <p xml:lang="pt-BR">
+      Kipper é um editor de vídeo gratuito, sem marca d'água, sem conta e sem assinatura.
+      É fácil para quem está começando e tem tudo o que quem já edita precisa.
+    </p>
+    <ul>
+      <li>Vertical projects for Reels, TikTok and Shorts, with the preview standing beside the timeline</li>
+      <li xml:lang="pt-BR">Projetos em pé para Reels, TikTok e Shorts, com a prévia em pé ao lado da linha do tempo</li>
+      <li>Automatic captions made on your own computer</li>
+      <li xml:lang="pt-BR">Legendas automáticas feitas no seu próprio computador</li>
+      <li>Color grading with wheels, curves, HSL and LUTs</li>
+      <li xml:lang="pt-BR">Correção de cor com rodas, curvas, HSL e LUTs</li>
+      <li>Keyframes, masks and motion tracking</li>
+      <li xml:lang="pt-BR">Quadros-chave, máscaras e rastreamento de movimento</li>
+      <li>Over 150 transitions and dozens of effects</li>
+      <li xml:lang="pt-BR">Mais de 150 transições e dezenas de efeitos</li>
+      <li>Export up to 4K</li>
+      <li xml:lang="pt-BR">Exportação até 4K</li>
+    </ul>
+    <p>Based on Drift by CutWire Studios. Nothing about you is sent anywhere: no telemetry.</p>
+    <p xml:lang="pt-BR">Baseado no Drift, da CutWire Studios. Nada sobre você é enviado: sem telemetria.</p>
+  </description>
+  <branding>
+    <color type="primary" scheme_preference="light">#e6f8fb</color>
+    <color type="primary" scheme_preference="dark">#0b2a2f</color>
+  </branding>
+  <launchable type="desktop-id">io.github.kaikydev1jpg.Kipper.desktop</launchable>
+  <provides>
+    <mediatype>application/x-drift-project</mediatype>
+    <binary>drift</binary>
+  </provides>
+  <url type="homepage">https://github.com/kaikydev1-jpg/KIPPER</url>
+  <url type="bugtracker">https://github.com/kaikydev1-jpg/KIPPER/issues</url>
+  <url type="vcs-browser">https://github.com/kaikydev1-jpg/KIPPER</url>
+  <screenshots>
+    <screenshot type="default">
+      <caption>The editor with a landscape project</caption>
+      <caption xml:lang="pt-BR">O editor com um projeto deitado</caption>
+      <image>https://raw.githubusercontent.com/kaikydev1-jpg/KIPPER/claude/dazzling-ritchie-pvl7ur/site/assets/editor.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>A vertical project for Reels, TikTok and Shorts</caption>
+      <caption xml:lang="pt-BR">Um projeto em pé para Reels, TikTok e Shorts</caption>
+      <image>https://raw.githubusercontent.com/kaikydev1-jpg/KIPPER/claude/dazzling-ritchie-pvl7ur/site/assets/portrait.png</image>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1" />
+  <requires>
+    <display_length compare="ge">900</display_length>
+  </requires>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+  <releases>
+    <release version="0.9.2" date="2026-11-14">
+      <description>
+        <p>First Kipper build: CapCut-like look, integrated title bar, Brazilian Portuguese.</p>
+        <p xml:lang="pt-BR">Primeira versão do Kipper: visual no estilo do CapCut, barra de título integrada e português do Brasil.</p>
+      </description>
+    </release>
+  </releases>
+</component>

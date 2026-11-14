@@ -10,27 +10,10 @@ name: Nightly
 # uninstalled without disturbing a stable install. They deliberately share the settings and addon
 # directory with it: a nightly that starts with no fonts, no speech model and none of your
 # projects is not a nightly anyone will test with.
+# Kipper: este fluxo é do Drift (publica nightly/versões com os segredos da CutWire). No Kipper
+# fica só manual; quem gera e publica os instaladores é kipper-instaladores.yml.
 on:
-  schedule:
-    # Midnight in UTC+05:30, which cron can only express in UTC: 18:30 the previous day.
-    # The guard below skips the run entirely when main has not moved.
-    - cron: "30 18 * * *"
   workflow_dispatch:
-    inputs:
-      platforms:
-        description: "Which platform(s) to build"
-        required: true
-        default: all
-        type: choice
-        options:
-          - all
-          - flatpak
-          - linux
-          - windows
-          - macos
-          - arch
-          - android
-
 permissions:
   contents: write
 

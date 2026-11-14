@@ -1,0 +1,153 @@
+name: Instaladores do Kipper
+
+# Gera os arquivos de instalação do padrão dos apps do criador (seção 6):
+#   Kipper-Windows.exe        Windows 10 e 11 (por usuário, não pede administrador)
+#   Kipper-Fedora.rpm         Fedora
+#   Kipper-Ubuntu-Debian.deb  Ubuntu, Debian, Mint, Pop!_OS, Zorin
+#   Kipper-Linux.AppImage     qualquer Linux, sem instalar
+#   Kipper-Flatpak.flatpak    Fedora Atomic e qualquer distro com Flatpak
+#   Kipper-Matsu-OS.flatpak   Matsu OS (o mesmo pacote; o app reconhece o sistema sozinho)
+#   instalar.sh               instalador pelo terminal
+#   SHA256SUMS.txt            somas para conferir os arquivos
+#   atualizacoes.json         lista que o app lê para avisar de versão nova
+#
+# Manual (Actions > Instaladores do Kipper > Run workflow): versão de TESTE, só artefatos do
+# GitHub Actions, separada da oficial.
+# Tag vX.Y.Z: os mesmos arquivos e um RASCUNHO de versão no GitHub. Gerar não é publicar: a
+# versão oficial só aparece para todo mundo quando o criador publicar o rascunho.
+on:
+  workflow_dispatch:
+    inputs:
+      plataformas:
+        description: "Quais gerar: flatpak, linux (AppImage, deb, rpm) e windows, separados por vírgula"
+        required: true
+        default: "flatpak,linux,windows"
+        type: string
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kipper-instaladores-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  meta:
+    name: Versão
+    runs-on: ubuntu-latest
+    outputs:
+      versao: ${{ steps.v.outputs.versao }}
+      oficial: ${{ steps.v.outputs.oficial }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: v
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "versao=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+            echo "oficial=true" >> "$GITHUB_OUTPUT"
+          else
+            base=$(grep -oP 'project\(Drift VERSION \K[0-9.]+' CMakeLists.txt)
+            echo "versao=${base}-teste.${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+            echo "oficial=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  pacotes:
+    name: Compilar
+    needs: meta
+    permissions:
+      contents: read
+      actions: write
+    uses: ./.github/workflows/package.yml
+    with:
+      version: ${{ needs.meta.outputs.versao }}
+      platforms: ${{ inputs.plataformas || 'flatpak,linux,windows' }}
+      channel: stable
+
+  montar:
+    name: Montar os arquivos do padrão
+    needs: [meta, pacotes]
+    # Monta o que tiver dado certo; o resumo diz o que faltou.
+    if: ${{ always() && needs.meta.result == 'success' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    env:
+      VERSAO: ${{ needs.meta.outputs.versao }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Baixar o que foi compilado
+        uses: actions/download-artifact@v4
+        with:
+          path: compilado
+
+      - name: Ferramentas de pacote
+        run: |
+          sudo apt-get update -o Acquire::Retries=3
+          sudo apt-get install -y -o Acquire::Retries=3 rpm
+
+      - name: Montar Kipper-*
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p saida
+          achar() { find compilado -type f -name "$1" | head -n 1; }
+
+          exe=$(achar 'Kipper-Setup-*-x64.exe' || true)
+          [ -n "$exe" ] && cp "$exe" saida/Kipper-Windows.exe
+
+          flat=$(achar 'Kipper-*-x86_64.flatpak' || true)
+          if [ -n "$flat" ]; then
+            cp "$flat" saida/Kipper-Flatpak.flatpak
+            # O mesmo pacote: o Kipper reconhece o Matsu OS pelo os-release e aplica o visual dele.
+            cp "$flat" saida/Kipper-Matsu-OS.flatpak
+          fi
+
+          app=$(achar 'Kipper-Linux.AppImage' || true)
+          if [ -n "$app" ]; then
+            cp "$app" saida/Kipper-Linux.AppImage
+            zs=$(achar 'Kipper-Linux.AppImage.zsync' || true)
+            [ -n "$zs" ] && cp "$zs" saida/Kipper-Linux.AppImage.zsync
+            # .deb e .rpm com o mesmo conteúdo do AppImage, em /opt/kipper.
+            tools/kipper/pacotes-linux.sh saida/Kipper-Linux.AppImage "$VERSAO" saida
+          fi
+
+          cp scripts/kipper/instalar.sh saida/instalar.sh
+          python3 scripts/kipper/gerar_atualizacoes.py "$VERSAO" saida
+
+          {
+            echo "### Kipper $VERSAO"
+            echo
+            for f in Kipper-Windows.exe Kipper-Fedora.rpm Kipper-Ubuntu-Debian.deb Kipper-Linux.AppImage \
+                     Kipper-Flatpak.flatpak Kipper-Matsu-OS.flatpak instalar.sh SHA256SUMS.txt atualizacoes.json; do
+              if [ -f "saida/$f" ]; then
+                echo "- ✅ \`$f\` ($(du -h "saida/$f" | cut -f1))"
+              else
+                echo "- ❌ \`$f\` não foi gerado"
+              fi
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
+          ls -la saida
+
+      - name: Guardar como versão de teste
+        uses: actions/upload-artifact@v4
+        with:
+          name: Kipper-${{ needs.meta.outputs.versao }}
+          path: saida/*
+          retention-days: 30
+
+      # Só com tag. Cria um RASCUNHO: ninguém vê até o criador clicar em "Publicar".
+      - name: Rascunho da versão no GitHub
+        if: ${{ needs.meta.outputs.oficial == 'true' }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          sed "s/{{VERSAO}}/$VERSAO/g" .github/release/notas-kipper.md > notas.md
+          cat .github/release/resumo-kipper.txt >> notas.md
+          gh release create "v$VERSAO" saida/* --draft --title "Kipper $VERSAO" --notes-file notas.md

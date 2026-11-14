@@ -1,10 +1,9 @@
 name: Release
 
+# Kipper: este fluxo é do Drift (publica nightly/versões com os segredos da CutWire). No Kipper
+# fica só manual; quem gera e publica os instaladores é kipper-instaladores.yml.
 on:
-  push:
-    tags:
-      - "v*.*.*"
-
+  workflow_dispatch:
 permissions:
   contents: write
 

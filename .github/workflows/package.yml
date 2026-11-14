@@ -11,7 +11,7 @@ on:
         required: true
         type: string
       platforms:
-        description: "all, flatpak, linux, windows, macos, arch or android"
+        description: "all, or a comma list of flatpak, linux, windows, macos, arch, android"
         required: false
         default: all
         type: string
@@ -83,7 +83,7 @@ jobs:
     permissions:
       contents: read
       actions: write
-    if: inputs.platforms == 'all' || inputs.platforms == 'flatpak'
+    if: inputs.platforms == 'all' || contains(format(',{0},', inputs.platforms), ',flatpak,')
     strategy:
       # Each arch reports its own result: a failing aarch64 build should not hide x86_64's.
       fail-fast: false
@@ -127,16 +127,18 @@ jobs:
 
       - name: Lint flatpak manifest and metadata
         run: |
-          appstreamcli validate --no-net flatpak/org.cutwire.Drift.metainfo.xml
-          desktop-file-validate flatpak/org.cutwire.Drift.desktop
-          flatpak-builder --show-manifest flatpak/org.cutwire.Drift.yml > /dev/null
-          flatpak-builder --show-manifest flatpak/org.cutwire.Drift.flathub.yml > /dev/null
+          appstreamcli validate --no-net packaging/kipper/io.github.kaikydev1jpg.Kipper.metainfo.xml
+          desktop-file-validate packaging/kipper/io.github.kaikydev1jpg.Kipper.desktop
+          # Kipper: o manifesto é gerado a partir do do Drift; tem que estar em dia.
+          python3 tools/kipper/make-flatpak-manifest.py
+          git diff --exit-code flatpak/io.github.kaikydev1jpg.Kipper.yml
+          flatpak-builder --show-manifest flatpak/io.github.kaikydev1jpg.Kipper.yml > /dev/null
 
       - name: Cache flatpak runtimes
         uses: actions/cache@v4
         with:
           path: ~/.local/share/flatpak
-          key: flatpak-runtimes-${{ matrix.arch }}-${{ hashFiles('flatpak/org.cutwire.Drift.yml') }}
+          key: flatpak-runtimes-${{ matrix.arch }}-${{ hashFiles('flatpak/io.github.kaikydev1jpg.Kipper.yml') }}
 
       # flatpak-builder --ccache keeps its cache in .flatpak-builder/ccache and points the sandbox's
       # CCACHE_DIR at it, so the action must not export CCACHE_DIR for the host. The host ccache
@@ -165,7 +167,7 @@ jobs:
       - name: Build flatpak
         id: build
         env:
-          MANIFEST: ${{ inputs.channel == 'nightly' && 'flatpak/org.cutwire.Drift.Nightly.yml' || 'flatpak/org.cutwire.Drift.yml' }}
+          MANIFEST: flatpak/io.github.kaikydev1jpg.Kipper.yml
         run: |
           flatpak-builder --user --force-clean --ccache --install-deps-from=flathub \
             --repo="${{ runner.temp }}/flatpak-repo" \
@@ -184,11 +186,11 @@ jobs:
 
       - name: Export bundle
         env:
-          APP_ID: ${{ inputs.channel == 'nightly' && 'org.cutwire.Drift.Nightly' || 'org.cutwire.Drift' }}
+          APP_ID: io.github.kaikydev1jpg.Kipper
         run: |
           mkdir -p dist
           flatpak build-bundle "${{ runner.temp }}/flatpak-repo" \
-            "dist/Drift-${{ env.ASSET_LABEL }}-${{ matrix.arch }}.flatpak" \
+            "dist/Kipper-${{ env.ASSET_LABEL }}-${{ matrix.arch }}.flatpak" \
             "${APP_ID}" --arch="${{ matrix.arch }}"
 
       - name: Upload flatpak bundle
@@ -203,7 +205,7 @@ jobs:
     permissions:
       contents: read
       actions: write
-    if: inputs.platforms == 'all' || inputs.platforms == 'linux'
+    if: inputs.platforms == 'all' || contains(format(',{0},', inputs.platforms), ',linux,')
     strategy:
       # Each arch reports its own result: a failing aarch64 build should not hide x86_64's.
       fail-fast: false
@@ -377,7 +379,7 @@ jobs:
             -DCMAKE_PREFIX_PATH="${QT_ROOT_DIR};${GITHUB_WORKSPACE}/.deps/ffmpeg" \
             -DFETCHCONTENT_BASE_DIR="${FETCHCONTENT_BASE_DIR}" \
             -DDRIFT_BUNDLE_ONNXRUNTIME=OFF \
-            -DDRIFT_BUNDLE_CORE_PACKAGES_ONLY=ON \
+            -DDRIFT_BUNDLE_CORE_PACKAGES_ONLY=OFF \
             -DDRIFT_WITH_SKIA=ON \
             -DDRIFT_DISTRIBUTION=appimage \
             -DDRIFT_LINKER=lld \
@@ -474,8 +476,11 @@ jobs:
             echo "desktop=build/metadata/org.cutwire.Drift.Nightly.desktop" >> "$GITHUB_OUTPUT"
             echo "icon=${icon}" >> "$GITHUB_OUTPUT"
           else
-            echo "desktop=flatpak/org.cutwire.Drift.desktop" >> "$GITHUB_OUTPUT"
-            echo "icon=flatpak/share/icons/hicolor/256x256/apps/org.cutwire.Drift.png" >> "$GITHUB_OUTPUT"
+            # Kipper: o nome do ícone tem que bater com o Icon= do atalho.
+            icon="${RUNNER_TEMP}/io.github.kaikydev1jpg.Kipper.png"
+            cp flatpak/share/icons/hicolor/256x256/apps/org.cutwire.Drift.png "${icon}"
+            echo "desktop=packaging/kipper/io.github.kaikydev1jpg.Kipper.desktop" >> "$GITHUB_OUTPUT"
+            echo "icon=${icon}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Build AppImage
@@ -496,9 +501,10 @@ jobs:
           if [ "${{ inputs.channel }}" = "nightly" ]; then
             export LDAI_UPDATE_INFORMATION="gh-releases-zsync|${GITHUB_REPOSITORY/\//|}|nightly|Drift-nightly-${{ matrix.arch }}.AppImage.zsync"
           else
-            export LDAI_UPDATE_INFORMATION="gh-releases-zsync|${GITHUB_REPOSITORY/\//|}|latest|Drift-*-${{ matrix.arch }}.AppImage.zsync"
+            export LDAI_UPDATE_INFORMATION="gh-releases-zsync|${GITHUB_REPOSITORY/\//|}|latest|Kipper-Linux.AppImage.zsync"
           fi
-          export LDAI_OUTPUT="Drift-${{ env.ASSET_LABEL }}-${{ matrix.arch }}.AppImage"
+          # Kipper: já com o nome final do padrão (o .zsync guarda esse nome).
+          export LDAI_OUTPUT="Kipper-Linux.AppImage"
           # Drift's own QML is compiled into the binary, but the Qt Quick modules it imports are
           # not: without QML_SOURCES_PATHS the qt plugin has nothing to scan and ships an AppImage
           # whose every import fails at startup.
@@ -556,7 +562,7 @@ jobs:
     permissions:
       contents: read
       actions: write
-    if: inputs.platforms == 'all' || inputs.platforms == 'windows'
+    if: inputs.platforms == 'all' || contains(format(',{0},', inputs.platforms), ',windows,')
     strategy:
       # Each arch reports its own result: a failing arm64 build should not hide x64's.
       fail-fast: false
@@ -744,7 +750,7 @@ jobs:
             -DZLIB_INCLUDE_DIR=${{ github.workspace }}\vcpkg\installed\${{ matrix.arch }}-windows-static-md\include `
             -DZLIB_LIBRARY=${{ github.workspace }}\vcpkg\installed\${{ matrix.arch }}-windows-static-md\lib\zs.lib `
             -DDRIFT_BUNDLE_ONNXRUNTIME=OFF `
-            -DDRIFT_BUNDLE_CORE_PACKAGES_ONLY=ON `
+            -DDRIFT_BUNDLE_CORE_PACKAGES_ONLY=OFF `
             -DDRIFT_WITH_SKIA=ON `
             -DDRIFT_DISTRIBUTION=windows `
             -DCMAKE_C_COMPILER_LAUNCHER=ccache `
@@ -940,7 +946,7 @@ jobs:
       - name: Build Inno Setup installer
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.6
         with:
-          path: installer/windows/Drift.iss
+          path: installer/windows/Kipper.iss
           # /DNightly gives the installer its own AppId, name and install directory, so it lands
           # beside a stable install rather than upgrading it.
           options: |
@@ -956,7 +962,7 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path dist | Out-Null
           $built = Get-ChildItem installer\windows\output\*.exe
-          Copy-Item $built.FullName "dist\Drift-Setup-${{ env.ASSET_LABEL }}-${{ matrix.arch }}.exe" -Force
+          Copy-Item $built.FullName "dist\Kipper-Setup-${{ env.ASSET_LABEL }}-${{ matrix.arch }}.exe" -Force
 
       - name: Upload installer artifact
         uses: actions/upload-artifact@v4
@@ -976,12 +982,12 @@ jobs:
       - name: Build portable zip
         shell: pwsh
         env:
-          FOLDER: ${{ inputs.channel == 'nightly' && 'Drift Nightly' || 'Drift' }}
+          FOLDER: ${{ inputs.channel == 'nightly' && 'Kipper Teste' || 'Kipper' }}
         run: |
           New-Item -ItemType Directory -Force -Path "portable\$env:FOLDER", dist\portable | Out-Null
           Copy-Item dist\bin\* "portable\$env:FOLDER" -Recurse -Force
           & "$env:ProgramFiles\7-Zip\7z.exe" a -tzip -mx=9 `
-            "dist\portable\Drift-Portable-${{ env.ASSET_LABEL }}-${{ matrix.arch }}.zip" ".\portable\$env:FOLDER"
+            "dist\portable\Kipper-Portable-${{ env.ASSET_LABEL }}-${{ matrix.arch }}.zip" ".\portable\$env:FOLDER"
 
       - name: Upload portable artifact
         uses: actions/upload-artifact@v4
@@ -995,7 +1001,7 @@ jobs:
     permissions:
       contents: read
       actions: write
-    if: inputs.platforms == 'all' || inputs.platforms == 'macos'
+    if: inputs.platforms == 'all' || contains(format(',{0},', inputs.platforms), ',macos,')
     strategy:
       # Separate per-arch images, not a universal one: Homebrew bottles are single-architecture.
       # Each arch reports its own result: a failing x86_64 build should not hide arm64's.
@@ -1153,7 +1159,7 @@ jobs:
             -DCMAKE_PREFIX_PATH="${qt_ffmpeg};$(brew --prefix openssl@3);$(brew --prefix)" \
             -DFETCHCONTENT_BASE_DIR="${FETCHCONTENT_BASE_DIR}" \
             -DDRIFT_BUNDLE_ONNXRUNTIME=OFF \
-            -DDRIFT_BUNDLE_CORE_PACKAGES_ONLY=ON \
+            -DDRIFT_BUNDLE_CORE_PACKAGES_ONLY=OFF \
             -DDRIFT_WITH_SKIA=ON \
             -DDRIFT_DISTRIBUTION=macos \
             -DCMAKE_C_COMPILER_LAUNCHER=ccache \
@@ -1317,7 +1323,7 @@ jobs:
     permissions:
       contents: read
       actions: write
-    if: inputs.platforms == 'all' || inputs.platforms == 'arch'
+    if: inputs.platforms == 'all' || contains(format(',{0},', inputs.platforms), ',arch,')
     strategy:
       # Each arch reports its own result: a failing aarch64 build should not hide x86_64's.
       fail-fast: false
@@ -1519,7 +1525,7 @@ jobs:
     permissions:
       contents: read
       actions: write
-    if: inputs.platforms == 'all' || inputs.platforms == 'android'
+    if: inputs.platforms == 'all' || contains(format(',{0},', inputs.platforms), ',android,')
     strategy:
       # Every ABI reports its own result: one failing arch should not hide whether the
       # other two compile.

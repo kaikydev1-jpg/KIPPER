@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Name=Kipper
+GenericName=Video Editor
+GenericName[pt_BR]=Editor de vídeo
+Comment=Free video editor, from your first cut to a whole film
+Comment[pt_BR]=Editor de vídeo gratuito, do primeiro corte ao filme inteiro
+Exec=drift %u
+Icon=io.github.kaikydev1jpg.Kipper
+Terminal=false
+Categories=AudioVideo;Video;AudioVideoEditing;
+Keywords=video;editor;movie;clip;capcut;tiktok;reels;shorts;subtitles;
+Keywords[pt_BR]=vídeo;editor;filme;clipe;capcut;tiktok;reels;shorts;legendas;
+MimeType=application/x-drift-project;
+StartupWMClass=drift
+SingleMainWindow=true
