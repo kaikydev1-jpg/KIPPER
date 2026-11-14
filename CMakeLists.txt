@@ -2858,6 +2858,7 @@ if(Qt6LinguistTools_FOUND)
             src/engine/packages/audio/AudioEffectCatalog.cpp
             src/engine/packages/transitions/TransitionCatalog.cpp
             src/engine/packages/assets/FontCatalog.cpp
+            src/engine/encode/export/Exporter.cpp
             src/engine/encode/proxies/ReverseRenderer.cpp
             src/engine/encode/proxies/ProxyEncoder.cpp
             src/engine/encode/proxies/PreviewProxyRenderer.cpp

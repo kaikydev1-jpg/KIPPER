@@ -15,6 +15,7 @@
 #include "engine/diagnostics/DebugReport.h"
 #include "engine/project/ProjectDependencies.h"
 #include "engine/encode/export/Exporter.h"
+#include <QCoreApplication>
 #include "engine/packages/assets/EmojiCatalog.h"
 // Engine-internal by its own header comment, and included here only for releaseCaches(): the GPU
 // caches have no other owner outside src/engine to ask. A one-line forwarder on GpuCompositor
@@ -729,7 +730,9 @@ void AppController::exportWithSettings(const QUrl &outputUrl, const QVariantMap 
 #endif
                 emit exportProgressChanged();
                 emit exportInProgressChanged();
+                // Kipper: o Exporter devolve o texto já traduzido.
                 const bool cancelled = error == QLatin1String("Export cancelled")
+                                       || error == QCoreApplication::translate("drift::Exporter", "Export cancelled")
                                        || error == QLatin1String("Cancelled");
                 const QString severity = ok          ? QStringLiteral("success")
                                          : cancelled ? QStringLiteral("info")

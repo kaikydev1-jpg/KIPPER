@@ -2338,6 +2338,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Untitled Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Notifications</source>
         <translation type="unfinished"></translation>
     </message>
@@ -28349,6 +28353,57 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Holographic</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>drift::Exporter</name>
+    <message>
+        <source>Export cancelled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid export range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export range is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Timeline is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Same as project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Same as project · %1×%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>23.976 fps (NTSC film)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>25 fps (PAL)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>29.97 fps (NTSC)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>59.94 fps (NTSC)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Same as project (%1 fps)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

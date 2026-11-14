@@ -117,7 +117,10 @@ ApplicationWindow {
         }
         // The name is the project's title, independent of the file name, so it is asked for
         // before the picker. The save finishes later; onProjectSaved runs any queued action.
-        projectNameDialog.openWith(qsTr("Name your project"), EditorState.projectFile.projectName)
+        // Kipper: o nome padrão guardado é "Untitled Project"; na caixa, aparece traduzido.
+        const current = EditorState.projectFile.projectName
+        projectNameDialog.openWith(qsTr("Name your project"),
+                                   current === "Untitled Project" ? qsTr("Untitled Project") : current)
         return false
     }
 

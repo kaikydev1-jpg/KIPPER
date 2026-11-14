@@ -37,6 +37,19 @@ PT = {
     "If it keeps happening, you can start in safe mode, which uses the default graphics backend and loads no add-ons for this session.":
         "Se continuar acontecendo, você pode abrir no modo de segurança, que usa o motor gráfico padrão e não carrega complementos nesta sessão.",
     "Kipper closed unexpectedly during your last session.": "O Kipper fechou de repente da última vez que foi usado.",
+    # Exportar (os textos vêm do motor de exportação).
+    "Same as project": "Igual ao projeto",
+    "Same as project · %1×%2": "Igual ao projeto · %1×%2",
+    "Same as project (%1 fps)": "Igual ao projeto (%1 fps)",
+    "23.976 fps (NTSC film)": "23,976 fps (cinema NTSC)",
+    "25 fps (PAL)": "25 fps (PAL)",
+    "29.97 fps (NTSC)": "29,97 fps (NTSC)",
+    "59.94 fps (NTSC)": "59,94 fps (NTSC)",
+    "Invalid export range": "Trecho de exportação inválido",
+    "Export range is empty": "O trecho para exportar está vazio",
+    "Timeline is empty": "A linha do tempo está vazia",
+    "Export cancelled": "Exportação cancelada",
+    "Export failed": "A exportação falhou",
 }
 
 ts = Path(__file__).resolve().parents[2] / "i18n" / "drift_pt_BR.ts"

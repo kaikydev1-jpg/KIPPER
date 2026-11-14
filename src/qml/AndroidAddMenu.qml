@@ -21,7 +21,7 @@ AndroidBottomSheet {
     // empty 16dp when the sheet took its resting height — which then froze at 103dp
     // with every row laid out below the bottom of the screen.
     readonly property real desiredHeight: Theme.androidSheetHeaderHeight
-                                          + root.options.length * Theme.androidAddRowHeight
+                                          + root.shownOptions.length * Theme.androidAddRowHeight
                                           + Theme.spacingLg * 2
                                           + Theme.spacing2xl
                                           + root.safeBottom
@@ -34,6 +34,8 @@ AndroidBottomSheet {
     // Order follows the timeline layers you build in: footage first, then the
     // words over it, then the decoration. Mirrors AssetsPanel's tab order so the
     // sheet that opens next is not in a different sequence.
+    // Kipper: sem o mercado (desligado), sem a linha "Mercado".
+    readonly property var shownOptions: options.filter(o => o.id !== "market" || Marketplace.available)
     readonly property var options: [
         {
             id: "media",
@@ -119,7 +121,7 @@ AndroidBottomSheet {
             bottomPadding: Theme.spacingLg
 
             Repeater {
-                model: root.options
+                model: root.shownOptions
 
                 delegate: SheetActionRow {
                     required property var modelData

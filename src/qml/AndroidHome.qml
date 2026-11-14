@@ -84,6 +84,8 @@ Item {
                     iconSize: Theme.iconSizeLg
                     glyph: Theme.icons.store
                     variant: "text"
+                    // Kipper: o mercado está desligado; sem ele, o botão não leva a nada.
+                    visible: Marketplace.available
                     tooltip: qsTr("Marketplace")
                     onClicked: ShellBridge.main.openMarketplace()
                 }

@@ -69,6 +69,13 @@ AbstractButton {
 
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
+                        // Kipper: em português os nomes são mais longos ("Transformação"); a letra
+                        // diminui um pouco para caber na vaga, em vez de encostar no vizinho.
+                        width: Math.max(0, railBtn.width - 4)
+                        horizontalAlignment: Text.AlignHCenter
+                        fontSizeMode: Text.HorizontalFit
+                        minimumPixelSize: Math.max(8, Theme.fontSizeXs - 3)
+                        elide: Text.ElideRight
                         text: railBtn.entry.label
                         color: railBtn.selected ? Theme.c.androidRailButton.foregroundSelected
                                                 : Theme.c.androidRailButton.foreground

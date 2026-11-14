@@ -13,13 +13,19 @@ ThemedDialog {
     // Return would commit while the user is still in the description.
     acceptOnReturn: false
 
+    function shortDate(value) {
+        const d = new Date(value)
+        return isNaN(d.getTime()) ? "" : d.toLocaleString(Qt.locale(), Locale.ShortFormat)
+    }
+
     function openDialog() {
         const meta = EditorState.projectFile.projectMetadata
         titleField.text = meta.title
         authorField.text = meta.author
         descriptionField.text = meta.description
-        createdLabel.text = Qt.formatDateTime(meta.createdAt, Locale.ShortFormat)
-        modifiedLabel.text = Qt.formatDateTime(meta.modifiedAt, Locale.ShortFormat)
+        // Kipper: no formato curto do idioma (Qt.formatDateTime com Locale.ShortFormat saía em ISO).
+        createdLabel.text = root.shortDate(meta.createdAt)
+        modifiedLabel.text = root.shortDate(meta.modifiedAt)
         open()
     }
 

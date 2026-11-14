@@ -34,7 +34,7 @@ Rectangle {
         const parts = []
         const m = card.modelData.modified
         if (m && !isNaN(m.getTime()))
-            parts.push(Qt.formatDateTime(m, Locale.ShortFormat))
+            parts.push(m.toLocaleString(Qt.locale(), Locale.ShortFormat))
         if (card.modelData.sizeBytes > 0)
             parts.push(DownloadFormat.formatBytes(card.modelData.sizeBytes))
         return parts.join(" · ")

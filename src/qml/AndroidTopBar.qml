@@ -80,7 +80,9 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             maxTextWidth: Math.max(0, barBody.width - actionsRow.width - backBtn.width
                                       - Theme.iconSizeMd - Theme.spacing3xl)
-            projectName: EditorState.projectFile.projectName
+            // Kipper: "Untitled Project" é o nome guardado no arquivo; na tela, traduzido.
+            projectName: EditorState.projectFile.projectName === "Untitled Project"
+                         ? qsTr("Untitled Project") : EditorState.projectFile.projectName
             unsaved: EditorState.projectFile.hasUnsavedChanges
             updateAvailable: Updates.updateAvailable
             onRequested: root.projectMenuRequested()

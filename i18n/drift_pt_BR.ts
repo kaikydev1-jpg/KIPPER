@@ -2338,6 +2338,10 @@
         <translation>Voltar</translation>
     </message>
     <message>
+        <source>Untitled Project</source>
+        <translation type="unfinished">Projeto sem título</translation>
+    </message>
+    <message>
         <source>Notifications</source>
         <translation>Notificações</translation>
     </message>
@@ -28358,6 +28362,57 @@ Se a reprodução travar, experimente outro.</translation>
     <message>
         <source>Holographic</source>
         <translation>Holográfico</translation>
+    </message>
+</context>
+<context>
+    <name>drift::Exporter</name>
+    <message>
+        <source>Export cancelled</source>
+        <translation>Exportação cancelada</translation>
+    </message>
+    <message>
+        <source>Invalid export range</source>
+        <translation>Trecho de exportação inválido</translation>
+    </message>
+    <message>
+        <source>Export range is empty</source>
+        <translation>O trecho para exportar está vazio</translation>
+    </message>
+    <message>
+        <source>Timeline is empty</source>
+        <translation>A linha do tempo está vazia</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished">Falha na exportação</translation>
+    </message>
+    <message>
+        <source>Same as project</source>
+        <translation>Igual ao projeto</translation>
+    </message>
+    <message>
+        <source>Same as project · %1×%2</source>
+        <translation>Igual ao projeto · %1×%2</translation>
+    </message>
+    <message>
+        <source>23.976 fps (NTSC film)</source>
+        <translation>23,976 fps (cinema NTSC)</translation>
+    </message>
+    <message>
+        <source>25 fps (PAL)</source>
+        <translation>25 fps (PAL)</translation>
+    </message>
+    <message>
+        <source>29.97 fps (NTSC)</source>
+        <translation>29,97 fps (NTSC)</translation>
+    </message>
+    <message>
+        <source>59.94 fps (NTSC)</source>
+        <translation>59,94 fps (NTSC)</translation>
+    </message>
+    <message>
+        <source>Same as project (%1 fps)</source>
+        <translation>Igual ao projeto (%1 fps)</translation>
     </message>
 </context>
 <context>

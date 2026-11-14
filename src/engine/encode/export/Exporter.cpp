@@ -1,4 +1,6 @@
 #include "engine/encode/export/Exporter.h"
+
+#include <QCoreApplication>
 #include "core/base/CacheRoot.h"
 #include "engine/EngineTuning.h"
 
@@ -104,7 +106,7 @@ void resolveExportRange(const drift::Project &project, const ExportSettings &set
     } else {
         if (startUs < 0 || endUs <= startUs) {
             if (errorOut)
-                *errorOut = QStringLiteral("Invalid export range");
+                *errorOut = QCoreApplication::translate("drift::Exporter", "Invalid export range");
             *startUsOut = 0;
             *endUsOut = 0;
             return;
@@ -112,7 +114,7 @@ void resolveExportRange(const drift::Project &project, const ExportSettings &set
         endUs = qMin(endUs, projectDuration);
         if (endUs <= startUs) {
             if (errorOut)
-                *errorOut = QStringLiteral("Export range is empty");
+                *errorOut = QCoreApplication::translate("drift::Exporter", "Export range is empty");
             *startUsOut = 0;
             *endUsOut = 0;
             return;
@@ -121,7 +123,7 @@ void resolveExportRange(const drift::Project &project, const ExportSettings &set
 
     if (endUs <= startUs) {
         if (errorOut)
-            *errorOut = QStringLiteral("Timeline is empty");
+            *errorOut = QCoreApplication::translate("drift::Exporter", "Timeline is empty");
         *startUsOut = 0;
         *endUsOut = 0;
         return;
@@ -726,7 +728,7 @@ bool encodeWriteFrame(AVFormatContext *fmt, AVCodecContext *codec, AVStream *str
             av_packet_unref(pkt);
             if (!keep) {
                 if (errorOut)
-                    *errorOut = QStringLiteral("Export cancelled");
+                    *errorOut = QCoreApplication::translate("drift::Exporter", "Export cancelled");
                 return false;
             }
             continue;
@@ -1236,8 +1238,8 @@ cleanup:
         QFile::remove(outputPath);
 
     if (!ok && errorOut) {
-        *errorOut = cancelled ? QStringLiteral("Export cancelled")
-                              : (error.isEmpty() ? QStringLiteral("Export failed") : error);
+        *errorOut = cancelled ? QCoreApplication::translate("drift::Exporter", "Export cancelled")
+                              : (error.isEmpty() ? QCoreApplication::translate("drift::Exporter", "Export failed") : error);
     }
     return ok;
 }
@@ -1560,7 +1562,7 @@ cleanup:
         QFile::remove(outputPath);
 
     if (!ok && errorOut) {
-        *errorOut = cancelled ? QStringLiteral("Export cancelled")
+        *errorOut = cancelled ? QCoreApplication::translate("drift::Exporter", "Export cancelled")
                               : (error.isEmpty() ? QStringLiteral("GIF export failed") : error);
     }
     return ok;
@@ -1849,7 +1851,10 @@ QVariantList Exporter::scaleOptions(int projectWidth, int projectHeight)
         int outH = 0;
         scaleSize(projectWidth, projectHeight, preset.targetHeight, outW, outH);
 
-        const QString label = QStringLiteral("%1 · %2×%3").arg(preset.label).arg(outW).arg(outH);
+        // Kipper: "Same as project" traduzido (as outras são 1080p/720p/480p).
+        const QString name = preset.id == QLatin1String("source")
+                ? QCoreApplication::translate("drift::Exporter", "Same as project") : preset.label;
+        const QString label = QStringLiteral("%1 · %2×%3").arg(name).arg(outW).arg(outH);
 
         out.append(QVariantMap{
             {QStringLiteral("id"), preset.id},
@@ -1868,7 +1873,7 @@ QVariantList Exporter::scaleOptions(int projectWidth, int projectHeight)
         scaleSize(projectWidth, projectHeight, 0, outW, outH);
         out.append(QVariantMap{
             {QStringLiteral("id"), QStringLiteral("source")},
-            {QStringLiteral("label"), QStringLiteral("Same as project · %1×%2").arg(outW).arg(outH)},
+            {QStringLiteral("label"), QCoreApplication::translate("drift::Exporter", "Same as project · %1×%2").arg(outW).arg(outH)},
             {QStringLiteral("targetHeight"), 0},
             {QStringLiteral("width"), outW},
             {QStringLiteral("height"), outH},
@@ -1891,14 +1896,14 @@ QVariantList Exporter::frameRateOptions(int projectFps)
     // NTSC rates carry a 1001 denominator; an integer fps could not express them,
     // which is why ExportSettings keeps the rate rational.
     static const FrameRatePreset presets[] = {
-        {"23.976", 24000, 1001, "23.976 fps (NTSC film)"},
+        {"23.976", 24000, 1001, QT_TRANSLATE_NOOP("drift::Exporter", "23.976 fps (NTSC film)")},
         {"24", 24, 1, "24 fps"},
-        {"25", 25, 1, "25 fps (PAL)"},
-        {"29.97", 30000, 1001, "29.97 fps (NTSC)"},
+        {"25", 25, 1, QT_TRANSLATE_NOOP("drift::Exporter", "25 fps (PAL)")},
+        {"29.97", 30000, 1001, QT_TRANSLATE_NOOP("drift::Exporter", "29.97 fps (NTSC)")},
         {"30", 30, 1, "30 fps"},
         {"48", 48, 1, "48 fps"},
         {"50", 50, 1, "50 fps"},
-        {"59.94", 60000, 1001, "59.94 fps (NTSC)"},
+        {"59.94", 60000, 1001, QT_TRANSLATE_NOOP("drift::Exporter", "59.94 fps (NTSC)")},
         {"60", 60, 1, "60 fps"},
         {"120", 120, 1, "120 fps"},
         {"240", 240, 1, "240 fps"},
@@ -1909,14 +1914,14 @@ QVariantList Exporter::frameRateOptions(int projectFps)
     // project-setup changes instead of pinning the rate at dialog time.
     out.append(QVariantMap{
         {QStringLiteral("id"), QStringLiteral("project")},
-        {QStringLiteral("label"), QStringLiteral("Same as project (%1 fps)").arg(qMax(1, projectFps))},
+        {QStringLiteral("label"), QCoreApplication::translate("drift::Exporter", "Same as project (%1 fps)").arg(qMax(1, projectFps))},
         {QStringLiteral("fpsNum"), 0},
         {QStringLiteral("fpsDen"), 1},
     });
     for (const FrameRatePreset &preset : presets) {
         out.append(QVariantMap{
             {QStringLiteral("id"), QString::fromLatin1(preset.id)},
-            {QStringLiteral("label"), QString::fromLatin1(preset.label)},
+            {QStringLiteral("label"), QCoreApplication::translate("drift::Exporter", preset.label)},
             {QStringLiteral("fpsNum"), preset.num},
             {QStringLiteral("fpsDen"), preset.den},
         });
@@ -2688,8 +2693,8 @@ cleanup:
         QFile::remove(outputPath);
 
     if (!ok && errorOut) {
-        *errorOut = cancelled ? QStringLiteral("Export cancelled")
-                              : (error.isEmpty() ? QStringLiteral("Export failed") : error);
+        *errorOut = cancelled ? QCoreApplication::translate("drift::Exporter", "Export cancelled")
+                              : (error.isEmpty() ? QCoreApplication::translate("drift::Exporter", "Export failed") : error);
     }
     return ok;
 }

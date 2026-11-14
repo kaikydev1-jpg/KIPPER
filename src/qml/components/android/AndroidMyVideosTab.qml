@@ -111,7 +111,7 @@ Item {
                     anchors.right: parent.right
                     text: {
                         const d = new Date(cell.modelData.created)
-                        return isNaN(d.getTime()) ? "" : Qt.formatDateTime(d, Locale.ShortFormat)
+                        return isNaN(d.getTime()) ? "" : d.toLocaleString(Qt.locale(), Locale.ShortFormat)
                     }
                     color: Theme.c.androidHomeRecentCard.foregroundMuted
                     font.family: Theme.fontFamily
