@@ -28,7 +28,8 @@
     </a>
     <nav class="nav" aria-label="Seções">
       <a href="#recursos" data-i18n="nav.features">Recursos</a>
-      <a href="#para-quem" data-i18n="nav.who">Para quem</a>
+      <a href="#tres-d" data-i18n="nav.3d">3D</a>
+      <a href="#para-quem" data-i18n="nav.who">Tudo o que faz</a>
       <a href="#baixar" data-i18n="nav.download">Baixar</a>
       <a href="#apoiar" data-i18n="nav.support" class="nav-support" hidden>Apoiar</a>
     </nav>
@@ -44,7 +45,7 @@
   <main id="conteudo">
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow" data-i18n="hero.eyebrow">Grátis · Código aberto · Windows, Linux e Android</p>
+        <p class="eyebrow" id="hero-eyebrow" data-i18n="hero.eyebrow">Grátis · Código aberto · Windows e Linux</p>
         <h1 data-i18n-html="hero.title">Edite vídeos do primeiro corte <em>ao filme inteiro.</em></h1>
         <p class="lede" data-i18n="hero.lede">Kipper é um editor de vídeo completo, sem marca d'água, sem conta e sem assinatura. Fácil para quem está começando, com tudo o que quem já edita precisa.</p>
         <div class="cta">
@@ -54,7 +55,7 @@
           </a>
           <a class="btn btn-ghost" href="https://github.com/kaikydev1-jpg/KIPPER" rel="noopener" data-i18n="hero.source">Ver o código no GitHub</a>
         </div>
-        <p class="fineprint" id="cta-hint" data-i18n="hero.hint">Windows 10 e 11 · Fedora · Ubuntu · Matsu OS · qualquer Linux · celular Android</p>
+        <p class="fineprint" id="cta-hint" data-i18n="hero.hint">Windows 10 e 11 · Fedora · Ubuntu · Matsu OS · qualquer Linux</p>
       </div>
       <figure class="hero-shot">
         <img src="/assets/editor.webp" width="1600" height="1000" alt="O editor do Kipper: mídia à esquerda, prévia no meio, ajustes à direita e a linha do tempo embaixo." loading="eager" fetchpriority="high">
@@ -115,12 +116,12 @@
         <li class="card">
           <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 14v-4M8 17V7M12 20V4M16 16V8M20 13v-2"/></svg></span>
           <h3 data-i18n="f.audio.t">Áudio que soa pronto</h3>
-          <p data-i18n="f.audio.d">Limpeza de voz, medidor de volume, equalizador, narração gravada e música que abaixa sozinha na fala.</p>
+          <p data-i18n="f.audio.d">Limpeza de voz, medidor de volume, equalizador, compressor e narração gravada pelo microfone.</p>
         </li>
         <li class="card">
           <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5h6v6H5zM13 13h6v6h-6z"/><path d="M13 5h6v6M5 13v6h6"/></svg></span>
-          <h3 data-i18n="f.fx.t">Mais de 150 transições</h3>
-          <p data-i18n="f.fx.d">E dezenas de efeitos, todos com prévia no seu próprio vídeo, antes de aplicar.</p>
+          <h3 data-i18n="f.fx.t">28 transições e 71 efeitos</h3>
+          <p data-i18n="f.fx.d">Todos com prévia no seu próprio vídeo antes de aplicar. E dá para criar os seus.</p>
         </li>
         <li class="card">
           <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h13"/><path d="M18 14l3 3-3 3"/></svg></span>
@@ -135,28 +136,89 @@
       </ul>
     </section>
 
+    <section class="section" id="tres-d">
+      <div class="feature-split">
+        <div class="feature-copy">
+          <h3 data-i18n="d3.title">3D dentro do editor</h3>
+          <p data-i18n="d3.text">Não precisa de outro programa: modelos, luzes, câmera e profundidade ficam na mesma linha do tempo do vídeo, com quadros-chave como qualquer outro clipe. Tem até uma área de trabalho só para o 3D.</p>
+          <ul class="ticks">
+            <li data-i18n="d3.i1">Modelos 3D (.glb) na linha do tempo, com as animações deles</li>
+            <li data-i18n="d3.i2">Cenas capturadas em Gaussian splat (.ply e .sog)</li>
+            <li data-i18n="d3.i3">Qualquer clipe vira camada 3D: posição, rotação e escala em 3D, com perspectiva</li>
+            <li data-i18n="d3.i4">Até 4 luzes por modelo, coloridas e animáveis</li>
+            <li data-i18n="d3.i5">Camadas 3D que se escondem umas atrás das outras pela profundidade</li>
+            <li data-i18n="d3.i6">Câmera de cena, com cortes de câmera e mira num ponto</li>
+            <li data-i18n="d3.i7">Vista 3D livre para navegar no jeito do Blender ou do Maya, com grade, ímã e lista de objetos</li>
+            <li data-i18n="d3.i8">Profundidade estimada por IA para efeitos de profundidade em vídeo comum</li>
+            <li data-i18n="d3.i9">Adereços 3D que acompanham o rosto</li>
+            <li data-i18n="d3.i10">Cenas 3D procedurais, feitas com código (Lua e shaders GLSL)</li>
+          </ul>
+        </div>
+        <figure class="feature-shot">
+          <img src="/assets/3d.webp" width="1180" height="480" alt="Um modelo 3D animado sobre um vídeo da Terra, com a aba Modelo 3D aberta no painel do Kipper." loading="lazy">
+        </figure>
+      </div>
+    </section>
+
     <section class="section" id="para-quem">
       <div class="section-head">
-        <h2 data-i18n="who.title">Para quem começa, para quem já edita</h2>
-        <p data-i18n="who.lede">O mesmo programa cresce junto com você.</p>
+        <h2 data-i18n="all.title">Tudo o que o Kipper faz</h2>
+        <p data-i18n="all.lede">O mesmo programa cresce junto com você: comece pelo básico e vá descobrindo o resto quando precisar.</p>
       </div>
-      <ol class="levels">
+      <ol class="levels levels-full">
         <li>
-          <span class="level-tag" data-i18n="who.l1.tag">Começando</span>
-          <h3 data-i18n="who.l1.t">Corte, legenda e publique</h3>
-          <p data-i18n="who.l1.d">Arraste o vídeo, corte o que sobrou, gere a legenda e exporte no formato da rede social.</p>
+          <span class="level-tag" data-i18n="lv1.tag">Começando</span>
+          <h3 data-i18n="lv1.t">Corte, legende e publique</h3>
+          <ul class="ticks">
+            <li data-i18n="lv1.i1">Projetos prontos para Reels, TikTok, Shorts, Stories e YouTube (9:16, 16:9 e 1:1)</li>
+            <li data-i18n="lv1.i2">Arraste vídeos, fotos e músicas; corte, divida, apague e mude a ordem</li>
+            <li data-i18n="lv1.i3">Legendas automáticas a partir da fala, no seu computador</li>
+            <li data-i18n="lv1.i4">Texto com 35 estilos prontos, adesivos, emoji e formas</li>
+            <li data-i18n="lv1.i5">28 transições e 71 efeitos, com prévia no seu próprio vídeo</li>
+            <li data-i18n="lv1.i6">Música, volume e entrada e saída suaves do som</li>
+            <li data-i18n="lv1.i7">Velocidade, câmera lenta, de trás para a frente e congelar quadro</li>
+            <li data-i18n="lv1.i8">Recortar, reenquadrar e fundo de cor ou de imagem</li>
+            <li data-i18n="lv1.i9">Exportar em MP4 até 4K, em GIF ou só o áudio</li>
+            <li data-i18n="lv1.i10" data-android hidden>No celular Android, o mesmo editor no estilo do CapCut</li>
+          </ul>
         </li>
         <li>
-          <span class="level-tag" data-i18n="who.l2.tag">Intermediário</span>
-          <h3 data-i18n="who.l2.t">Deixe com cara de pronto</h3>
-          <p data-i18n="who.l2.d">Transições, títulos com estilo, música no ritmo, cor acertada e áudio limpo.</p>
+          <span class="level-tag" data-i18n="lv2.tag">Intermediário</span>
+          <h3 data-i18n="lv2.t">Deixe com cara de pronto</h3>
+          <ul class="ticks">
+            <li data-i18n="lv2.i1">Quadros-chave em posição, escala, rotação, opacidade e efeitos, com curvas</li>
+            <li data-i18n="lv2.i2">Animação de texto e títulos com estilo</li>
+            <li data-i18n="lv2.i3">Cor: rodas, curvas, HSL e LUTs .cube, com histograma, forma de onda, parade e vetorscópio</li>
+            <li data-i18n="lv2.i4">Máscaras de forma e de pincel; desfocar ou pixelizar uma área</li>
+            <li data-i18n="lv2.i5">Recortar pessoas do fundo sem tela verde</li>
+            <li data-i18n="lv2.i6">Estabilizar vídeo tremido, até o efeito de tripé</li>
+            <li data-i18n="lv2.i7">31 efeitos de áudio, limpeza de voz, medidor de volume e tirar silêncios</li>
+            <li data-i18n="lv2.i8">Vozes divertidas: robô, esquilo, voz grave, telefone, megafone, embaixo d’água</li>
+            <li data-i18n="lv2.i9">Gravar narração pelo microfone, ou gerar a voz a partir de um texto</li>
+            <li data-i18n="lv2.i10">Marcadores de batida e efeitos no ritmo da música</li>
+            <li data-i18n="lv2.i11">Modos de mesclagem e camadas de ajuste</li>
+          </ul>
         </li>
         <li>
-          <span class="level-tag" data-i18n="who.l3.tag">Avançado</span>
-          <h3 data-i18n="who.l3.t">Faça um filme</h3>
-          <p data-i18n="who.l3.d">Áreas de trabalho para cor, áudio e máscaras, várias câmeras, 3D na linha do tempo e proxies para 4K.</p>
+          <span class="level-tag" data-i18n="lv3.tag">Avançado</span>
+          <h3 data-i18n="lv3.t">Faça um filme</h3>
+          <ul class="ticks">
+            <li data-i18n="lv3.i1">12 áreas de trabalho: edição, em pé, áudio, gravação, legendas, IA, cor, quadros-chave, máscaras e rastreamento, 3D e procedural</li>
+            <li data-i18n="lv3.i2">Rastreamento de ponto e de plano (até 4 pontos, com perspectiva) e máscara que segue o objeto</li>
+            <li data-i18n="lv3.i3">Recorte de objeto por IA: clique no objeto e ele é recortado no clipe inteiro</li>
+            <li data-i18n="lv3.i4">Várias câmeras (multicam), sincronizadas pelo som, trocando de ângulo enquanto toca</li>
+            <li data-i18n="lv3.i5">Curvas de velocidade (rampas)</li>
+            <li data-i18n="lv3.i6">Encontrar as cenas de um vídeo longo, com cada trecho ordenado por movimento e volume</li>
+            <li data-i18n="lv3.i7">Melhorar vídeo: aumentar a resolução com IA</li>
+            <li data-i18n="lv3.i8">Proxies para editar 4K sem travar</li>
+            <li data-i18n="lv3.i9">Animações Lottie e SVG</li>
+            <li data-i18n="lv3.i10">Seus próprios efeitos e transições em GLSL</li>
+            <li data-i18n="lv3.i11">H.264, H.265, AV1 e VP9 com transparência, com aceleração NVIDIA, Intel e AMD</li>
+            <li data-i18n="lv3.i12">Projeto salvo com as mídias juntas, salvamento automático e recuperação depois de um travamento</li>
+          </ul>
         </li>
       </ol>
+      <p class="fineprint center" data-i18n="all.note">Legendas automáticas, recorte de pessoas e objetos, voz a partir de texto, melhorar vídeo, profundidade e procurar cenas rodam no seu computador. Na primeira vez, cada um baixa o seu complemento em Extras.</p>
     </section>
 
     <section class="section download" id="baixar">
@@ -266,7 +328,7 @@
       <span>Kipper</span>
     </div>
     <p data-i18n-html="footer.credits">Software livre sob a licença GPLv3. Baseado no <a href="https://github.com/CutWire-Studios/Drift" rel="noopener">Drift</a>, da CutWire Studios, com ideias de design do <a href="https://github.com/jub0t/Concat" rel="noopener">Concat</a>.</p>
-    <p class="fineprint" data-i18n-html="footer.media">Imagens de exemplo nos prints: <a href="https://images.nasa.gov/" rel="noopener">NASA</a> (domínio público).</p>
+    <p class="fineprint" data-i18n-html="footer.media">Imagens de exemplo nos prints: <a href="https://images.nasa.gov/" rel="noopener">NASA</a> (domínio público). Modelo 3D de exemplo: BoxAnimated, © Cesium, <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a> (<a href="https://github.com/KhronosGroup/glTF-Sample-Assets" rel="noopener">Khronos glTF Sample Assets</a>).</p>
     <p><a href="https://github.com/kaikydev1-jpg/KIPPER" rel="noopener" data-i18n="footer.source">Código-fonte</a> · <a href="https://github.com/kaikydev1-jpg/KIPPER/issues" rel="noopener" data-i18n="footer.issues">Relatar um problema</a></p>
   </footer>
 

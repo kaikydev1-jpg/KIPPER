@@ -243,8 +243,10 @@ h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
 .icon svg { width: 20px; height: 20px; fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 
 .levels { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-.levels li { padding: 26px; border-radius: var(--radius-md); border: 1px solid var(--line); background: var(--bg-raised); }
+.levels > li { padding: 26px; border-radius: var(--radius-md); border: 1px solid var(--line); background: var(--bg-raised); }
 .levels p { margin: 8px 0 0; color: var(--muted); font-size: 15px; }
+.levels-full .ticks { margin-top: 14px; }
+.levels-full .ticks li { font-size: 14.5px; }
 .level-tag {
   display: inline-block; margin-bottom: 18px; padding: 5px 10px; border-radius: 999px;
   background: var(--chip); color: var(--ink-soft); font-size: 12.5px; font-weight: 500;
