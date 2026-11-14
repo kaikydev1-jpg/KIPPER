@@ -1774,6 +1774,29 @@ jobs:
           "$BT/apksigner" verify --print-certs "$OUT"
           rm -f "$KS"
 
+      # Kipper: confere o APK pronto (nome, ID, versão, ícone e assinatura) e escreve no resumo,
+      # para dar para ver o que saiu sem baixar o arquivo.
+      - name: Conferir o APK
+        shell: bash
+        env:
+          ABI: ${{ matrix.abi }}
+          VERSION: ${{ env.ASSET_LABEL }}
+        run: |
+          set -euo pipefail
+          OUT="dist/Kipper-${VERSION}-${ABI}.apk"
+          BT="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/* | sort -V | tail -1)"
+          badging="$("$BT/aapt2" dump badging "$OUT")"
+          certs="$("$BT/apksigner" verify --print-certs "$OUT" | grep -E 'Signer #1 certificate (DN|SHA-256)')"
+          echo "$badging" | grep -E "^(package|application-label|application-label-pt|launchable-activity|sdkVersion|targetSdkVersion|native-code|application-icon-640):" || true
+          {
+            echo "### APK $ABI"
+            echo '```'
+            echo "$badging" | grep -E "^(package|application-label|application-label-pt|launchable-activity|sdkVersion|targetSdkVersion|native-code|application-icon-640):" || true
+            echo "$certs"
+            echo "tamanho: $(du -h "$OUT" | cut -f1)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - uses: actions/upload-artifact@v4
         with:
           name: android-apk-${{ matrix.abi }}

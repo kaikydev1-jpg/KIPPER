@@ -163,6 +163,38 @@ jobs:
           path: saida/*
           retention-days: 30
 
+      # Versão de teste com APK: o APK vai para um RASCUNHO privado (só quem cuida do repositório vê),
+      # para baixar direto no celular, sem zip. Não é publicar: o rascunho não aparece para mais
+      # ninguém, não mexe na versão oficial (releases/latest) e o do teste anterior é trocado.
+      - name: APK de teste para baixar no celular
+        if: ${{ needs.meta.outputs.oficial != 'true' && hashFiles('saida/Kipper-Android.apk') != '' }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="android-teste"
+          for id in $(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" \
+                        --jq ".[] | select(.draft and .tag_name == \"$tag\") | .id"); do
+            gh api -X DELETE "repos/$GITHUB_REPOSITORY/releases/$id"
+          done
+          arquivos=(saida/Kipper-Android.apk)
+          [ -f saida/Kipper-Android-32bits.apk ] && arquivos+=(saida/Kipper-Android-32bits.apk)
+          {
+            echo "Versão de TESTE do Kipper para Android ($VERSAO). Rascunho privado: só você vê."
+            echo
+            echo "- **Kipper-Android.apk**: quase todo celular de hoje (64 bits)."
+            echo "- **Kipper-Android-32bits.apk**: só para celular antigo, se o outro não instalar."
+            echo
+            echo "Aparece como **Kipper Teste** e fica separado da versão oficial (quando ela existir). Na primeira vez, o"
+            echo "Android pede para permitir instalar apps baixados pelo navegador."
+          } > notas-android.md
+          gh release create "$tag" "${arquivos[@]}" --draft --target "$GITHUB_SHA" \
+            --title "Kipper Teste para Android ($VERSAO)" --notes-file notas-android.md
+          url=$(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" \
+                  --jq ".[] | select(.draft and .tag_name == \"$tag\") | .html_url" | head -n 1)
+          { echo "### APK de teste (rascunho privado)"; echo; echo "$url"; } >> "$GITHUB_STEP_SUMMARY"
+
       # Só com tag. Cria um RASCUNHO: ninguém vê até o criador clicar em "Publicar".
       - name: Rascunho da versão no GitHub
         if: ${{ needs.meta.outputs.oficial == 'true' }}
