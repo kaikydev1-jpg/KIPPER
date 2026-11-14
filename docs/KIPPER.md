@@ -43,7 +43,8 @@ mínimo no código do Drift, para continuar dando para puxar as correções dele
 | `tools/kipper/pacotes-linux.sh` | `.deb` e `.rpm` a partir do AppImage (em `/opt/kipper`, comando `kipper`) |
 | `scripts/kipper/instalar.sh` | Instalador pelo terminal |
 | `scripts/kipper/gerar_atualizacoes.py` | `atualizacoes.json` e `SHA256SUMS.txt` |
-| `.github/workflows/kipper-instaladores.yml` | Gera todos os arquivos; tag `vX.Y.Z` cria só um RASCUNHO de versão |
+| `.github/workflows/kipper-instaladores.yml` | Gera todos os arquivos; tag `vX.Y.Z` ou disparo com `oficial` cria só um RASCUNHO de versão (só com os 9 arquivos) |
+| `.github/workflows/kipper-publicar.yml` | Só quando o criador pede: confere os 9 arquivos no rascunho, apaga rascunhos repetidos e publica |
 | `site/` | Site de apresentação (HTML/CSS/JS puro, para a Vercel) |
 | `tests/tst_windowchrome.cpp` | Testes da escolha dos botões e do Matsu OS |
 
@@ -57,6 +58,14 @@ mínimo no código do Drift, para continuar dando para puxar as correções dele
   servidor local (só aceita endereços deste computador).
 - `./build/drift --agent-access` liga a porta de agente (MCP), que dá para usar para montar
   projetos de teste (`import_media`, `place_clip`, `add_text`, `set_project_setup`...).
+
+## Publicar uma versão
+
+1. Ajustar `project(Drift VERSION X.Y.Z)` no `CMakeLists.txt` e o resumo em `.github/release/resumo-kipper.txt`.
+2. Actions → Instaladores do Kipper → Run workflow, com `oficial` marcado. Os testes bloqueiam; sai
+   um RASCUNHO `vX.Y.Z` com os 9 arquivos.
+3. Só quando o criador pedir: Actions → Publicar versão do Kipper, com a versão. A etiqueta `vX.Y.Z`
+   é criada no commit da geração. Versões publicadas: 0.9.2 (14/11/2026).
 
 ## Em aberto
 
