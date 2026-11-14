@@ -84,6 +84,8 @@
   Object.assign(PT, PT_EXTRA);
 
   let lang = "pt";
+  // Versão mais nova publicada no GitHub (preenchida mais abaixo; null até chegar).
+  let latest = null;
   const t = (key) => (lang === "en" ? EN : PT)[key] ?? PT[key] ?? key;
 
   function applyLanguage(next) {
@@ -96,6 +98,7 @@
     toggle.setAttribute("aria-label", lang === "en" ? "Mudar idioma para português" : "Switch language to English");
     document.querySelectorAll(".system.suggested h3").forEach((el) => el.setAttribute("data-suggested", t("dl.suggested")));
     try { localStorage.setItem("kipper-lang", lang); } catch (_) { /* sem armazenamento: tudo bem */ }
+    renderVersion();
   }
 
   let saved = null;
@@ -119,6 +122,25 @@
       card.querySelector("h3").setAttribute("data-suggested", t("dl.suggested"));
     }
   }
+
+  // Versão atual: lida da lista pública de versões do GitHub, então o site acompanha cada versão
+  // publicada sem precisar ser mexido. Sem resposta (sem internet, limite do GitHub), a linha some.
+  function renderVersion() {
+    const el = document.getElementById("versao-atual");
+    if (!el || !latest) return;
+    const when = new Date(latest.published_at);
+    const date = isNaN(when) ? "" : when.toLocaleDateString(lang === "en" ? "en-US" : "pt-BR",
+                                                             { day: "numeric", month: "long", year: "numeric" });
+    const version = latest.tag_name.replace(/^v/, "");
+    el.textContent = lang === "en"
+      ? `Current version: ${version}${date ? " · released " + date : ""}`
+      : `Versão atual: ${version}${date ? " · publicada em " + date : ""}`;
+    el.hidden = false;
+  }
+  fetch("https://api.github.com/repos/kaikydev1-jpg/KIPPER/releases/latest", { headers: { Accept: "application/vnd.github+json" } })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((data) => { if (data && data.tag_name) { latest = data; renderVersion(); } })
+    .catch(() => { /* sem a versão, o resto do site funciona igual */ });
 
   // Copiar o comando do terminal, com o visto se desenhando.
   const copyBtn = document.getElementById("copy-cmd");
