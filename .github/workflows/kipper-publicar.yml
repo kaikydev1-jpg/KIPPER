@@ -1,0 +1,38 @@
+name: Publicar versão do Kipper
+
+# "Gerar não é publicar": a tag vX.Y.Z gera os arquivos e um RASCUNHO de versão (Instaladores do
+# Kipper). Este fluxo só roda quando o criador pede, e torna o rascunho a versão oficial
+# (releases/latest), depois de conferir que os 9 arquivos do padrão estão lá.
+on:
+  workflow_dispatch:
+    inputs:
+      versao:
+        description: "Versão a publicar (ex.: 0.9.2)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    name: Publicar
+    runs-on: ubuntu-latest
+    steps:
+      - name: Conferir os arquivos e publicar
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSAO: ${{ inputs.versao }}
+        run: |
+          set -euo pipefail
+          tag="v${VERSAO#v}"
+          nomes=$(gh release view "$tag" -R "$GITHUB_REPOSITORY" --json assets -q '.assets[].name')
+          falta=0
+          for f in Kipper-Windows.exe Kipper-Fedora.rpm Kipper-Ubuntu-Debian.deb Kipper-Linux.AppImage \
+                   Kipper-Flatpak.flatpak Kipper-Matsu-OS.flatpak instalar.sh SHA256SUMS.txt atualizacoes.json; do
+            if echo "$nomes" | grep -qx "$f"; then echo "ok: $f"; else echo "FALTA: $f"; falta=1; fi
+          done
+          [ "$falta" = 0 ] || { echo "Não publiquei: falta arquivo do padrão."; exit 1; }
+          gh release edit "$tag" -R "$GITHUB_REPOSITORY" --draft=false --latest
+          echo "### Kipper $tag publicado" >> "$GITHUB_STEP_SUMMARY"

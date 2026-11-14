@@ -1,1 +1,1 @@
-Primeira versão do Kipper: visual no estilo do CapCut, barra de título integrada e tudo em português.
+Primeira versão do Kipper, baseada no Drift (atualizado em 14/11/2026): visual no estilo do CapCut, prévia em pé ao lado para vídeos 9:16, barra de título integrada no Windows e no Linux, tudo em português e atualização com um clique. Se algo não funcionar, conte em https://github.com/kaikydev1-jpg/KIPPER/issues
