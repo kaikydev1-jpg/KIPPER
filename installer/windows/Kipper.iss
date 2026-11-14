@@ -14,6 +14,11 @@
 #ifndef MyAppVersion
   #define MyAppVersion "0.0.0"
 #endif
+; O Windows só aceita números na versão do arquivo (ex.: 0.9.2.4 para 0.9.2-teste.4); o
+; fluxo de instaladores passa /DMyAppNumericVersion. Sem ela, usa a versão como veio.
+#ifndef MyAppNumericVersion
+  #define MyAppNumericVersion MyAppVersion
+#endif
 
 #ifndef MyAppSource
   #define MyAppSource "dist\\bin"
@@ -51,7 +56,7 @@ AppPublisherURL=https://github.com/kaikydev1-jpg/KIPPER
 AppSupportURL=https://github.com/kaikydev1-jpg/KIPPER/issues
 AppUpdatesURL=https://github.com/kaikydev1-jpg/KIPPER/releases
 AppCopyright=GPL-3.0-or-later · Baseado no Drift, da CutWire Studios
-VersionInfoVersion={#MyAppVersion}
+VersionInfoVersion={#MyAppNumericVersion}
 VersionInfoDescription=Instalador do {#MyAppName}
 
 ; Só para o usuário, sem administrador: vai para %LOCALAPPDATA%\Programs\Kipper.
