@@ -78,7 +78,7 @@ runs:
       run: if command -v ccache >/dev/null 2>&1; then ccache -s || true; fi
 
     - name: Trim ccache
-      if: inputs.phase == 'save' && github.ref == 'refs/heads/main' && env.DRIFT_CCACHE_EXACT_HIT != 'true'
+      if: inputs.phase == 'save' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && env.DRIFT_CCACHE_EXACT_HIT != 'true'
       shell: bash
       env:
         CCACHE_DIR: ${{ inputs.path != '' && inputs.path || format('{0}/ccache', runner.temp) }}
@@ -91,21 +91,21 @@ runs:
         fi
 
     - name: Save ccache
-      if: inputs.phase == 'save' && github.ref == 'refs/heads/main' && env.DRIFT_CCACHE_EXACT_HIT != 'true'
+      if: inputs.phase == 'save' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && env.DRIFT_CCACHE_EXACT_HIT != 'true'
       uses: actions/cache/save@v4
       with:
         path: ${{ inputs.path != '' && inputs.path || format('{0}/ccache', runner.temp) }}
         key: ${{ inputs.key-prefix }}${{ github.sha }}
 
     - name: Prune older ccache entries
-      if: inputs.phase == 'save' && github.ref == 'refs/heads/main' && env.DRIFT_CCACHE_EXACT_HIT != 'true'
+      if: inputs.phase == 'save' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && env.DRIFT_CCACHE_EXACT_HIT != 'true'
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
         KEEP_KEY: ${{ inputs.key-prefix }}${{ github.sha }}
         PREFIX: ${{ inputs.key-prefix }}
       run: |
-        ids="$(gh cache list --repo "${{ github.repository }}" --ref refs/heads/main --key "$PREFIX" \
+        ids="$(gh cache list --repo "${{ github.repository }}" --ref "refs/heads/${{ github.event.repository.default_branch }}" --key "$PREFIX" \
           --limit 100 --json id,key --jq ".[] | select(.key != \"$KEEP_KEY\") | .id")" \
           || { echo "::warning::could not list caches (job needs actions: write)"; exit 0; }
         for id in $ids; do

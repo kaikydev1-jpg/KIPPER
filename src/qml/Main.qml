@@ -918,6 +918,18 @@ ApplicationWindow {
         return true
     }
 
+    // Kipper: cartões de formato da tela inicial. Pula a escolha de layout, porque o formato
+    // já foi escolhido no cartão.
+    function requestNewProjectWithFormat(width, height) {
+        if (window.rejectIfProjectOpenPending())
+            return
+        editorHeader.confirmIfDirty(function () {
+            EditorState.projectFile.newProject()
+            EditorState.projectFile.setProjectSetup(width, height, 30)
+            window.showStartScreen = false
+        })
+    }
+
     function requestNewProject() {
         if (window.rejectIfProjectOpenPending())
             return
@@ -1578,6 +1590,7 @@ ApplicationWindow {
                 // use, so there is exactly one place that gates on unsaved changes and decides
                 // when the screen is allowed to disappear.
                 onNewProjectRequested: window.requestNewProject()
+                onNewProjectWithFormatRequested: (w, h) => window.requestNewProjectWithFormat(w, h)
                 onOpenProjectRequested: window.requestOpenProjectDialog()
                 onOpenRecentRequested: (path) => window.requestOpenRecentProject(path)
                 onHelpRequested: window.openHelpDialog()

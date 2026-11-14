@@ -11,6 +11,8 @@ Item {
 
     signal newProjectRequested()
     signal openProjectRequested()
+    // Kipper: projeto novo já no formato do cartão (em pé, deitado, quadrado).
+    signal newProjectWithFormatRequested(int width, int height)
     signal openRecentRequested(string path)
     // The header's app-level entries, which do not need a project: without them here,
     // turning on agent access or changing a setting meant creating an empty project first.
@@ -95,7 +97,7 @@ Item {
 
         Column {
             id: column
-            width: Math.min(560, flick.width - Theme.spacing3xl * 2)
+            width: Math.min(880, flick.width - Theme.spacing3xl * 2)
             anchors.horizontalCenter: parent.horizontalCenter
             y: Math.max(Theme.spacing3xl, (flick.height - implicitHeight) / 2)
             spacing: Theme.spacing3xl
@@ -108,6 +110,7 @@ Item {
                 width: parent.width
                 onNewProjectRequested: root.newProjectRequested()
                 onOpenProjectRequested: root.openProjectRequested()
+                onNewProjectWithFormatRequested: (w, h) => root.newProjectWithFormatRequested(w, h)
             }
 
             StartScreenRecents {

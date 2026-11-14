@@ -158,7 +158,8 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path $env:VCPKG_DEFAULT_BINARY_CACHE | Out-Null
           if (-not (Test-Path vcpkg\vcpkg.exe)) {
-            git clone --depth 1 https://github.com/microsoft/vcpkg.git vcpkg
+            # Kipper: vcpkg fixo (o master novo quebrou o Skia estático: pedia um zs.lib inexistente).
+            git clone --depth 1 --branch 2026.10.16 https://github.com/microsoft/vcpkg.git vcpkg
             .\vcpkg\bootstrap-vcpkg.bat
           }
           .\vcpkg\vcpkg.exe install zstd openssl soundtouch --triplet ${{ matrix.arch }}-windows
