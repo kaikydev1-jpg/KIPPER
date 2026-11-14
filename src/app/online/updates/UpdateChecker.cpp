@@ -20,6 +20,7 @@
 #include <QNetworkRequest>
 #if !defined(Q_OS_WASM)
 #include <QProcess>
+#include <QRegularExpression>
 #endif
 #include <QSettings>
 #include <QStandardPaths>
@@ -62,7 +63,8 @@ const QString kDistribution = QStringLiteral(DRIFT_DISTRIBUTION);
 
 // The newest stable version. A TXT record, so the check is one DNS query and does not depend on
 // GitHub's API answering before we know whether anything changed.
-const QString kVersionHost = QStringLiteral("drift-version.cutwire.org");
+// Kipper: não é mais usado (a versão vem do atualizacoes.json); fica para facilitar merges do Drift.
+[[maybe_unused]] const QString kVersionHost = QStringLiteral("drift-version.cutwire.org");
 
 QString settingsKey(const char *name)
 {
@@ -87,6 +89,39 @@ QString powerShellQuote(const QString &text)
     QString escaped = text;
     escaped.replace(QLatin1Char('\''), QLatin1String("''"));
     return QLatin1Char('\'') + escaped + QLatin1Char('\'');
+}
+
+// Kipper: a versão nova vem do atualizacoes.json publicado junto com cada versão no GitHub do
+// Kipper (padrão dos apps, seção 7), e não de um registro de DNS da CutWire. Uma leitura por dia,
+// nada sobre a pessoa é enviado, e dá para desligar nas configurações.
+QString kipperManifestUrl()
+{
+    // kFeedUrl: https://api.github.com/repos/<dono>/<repo>/releases/latest
+    static const QRegularExpression re(QStringLiteral("^https://api\\.github\\.com/repos/([^/]+)/([^/]+)/"));
+    const QRegularExpressionMatch m = re.match(kFeedUrl);
+    if (!m.hasMatch())
+        return {};
+    return QStringLiteral("https://github.com/%1/%2/releases/latest/download/atualizacoes.json")
+            .arg(m.captured(1), m.captured(2));
+}
+
+// Qual arquivo do atualizacoes.json serve para esta instalação.
+QString kipperAssetType()
+{
+#if defined(Q_OS_WIN)
+    return QStringLiteral("windows");
+#elif defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+    return QStringLiteral("appimage");
+#else
+    return {};
+#endif
+}
+
+bool kipperIsGitHubDownload(const QUrl &url)
+{
+    return url.scheme() == QLatin1String("https") && url.host() == QLatin1String("github.com")
+            && url.userName().isEmpty() && url.password().isEmpty()
+            && url.path().contains(QLatin1String("/releases/download/"));
 }
 
 QString updatePlatform()
@@ -443,34 +478,31 @@ void UpdateChecker::check(bool manual)
         setStatus(QString());
     setError(QString());
 
-    auto *dns = new QDnsLookup(QDnsLookup::TXT, kVersionHost, this);
-    connect(dns, &QDnsLookup::finished, this, [this, dns, manual] {
-        dns->deleteLater();
+    QNetworkRequest request{QUrl(kipperManifestUrl())};
+    request.setHeader(QNetworkRequest::UserAgentHeader, QLatin1String("Kipper/") + kCurrentVersion);
+    // releases/latest/download redireciona para o arquivo da versão mais nova.
+    request.setAttribute(QNetworkRequest::RedirectPolicyAttribute,
+                         QNetworkRequest::NoLessSafeRedirectPolicy);
+    request.setTransferTimeout(kTransferTimeoutMs);
 
-        if (dns->error() != QDnsLookup::NoError) {
-            // A background check that failed says nothing: being offline is not an error the user
-            // asked about. Only record the attempt when the record was actually read, so a laptop
-            // that launches offline all week still checks the day it has a connection.
-            // Status is published before checking goes false, so a manual check's toast sees it.
+    QNetworkReply *reply = m_network->get(request);
+    connect(reply, &QNetworkReply::finished, this, [this, reply, manual] {
+        reply->deleteLater();
+
+        if (reply->error() != QNetworkReply::NoError) {
+            // Uma verificação em segundo plano que falhou não diz nada: estar sem internet não é um
+            // erro que a pessoa pediu para ver. Só a verificação manual mostra o motivo.
             if (manual)
-                setStatus(tr("Couldn’t check for updates: %1").arg(dns->errorString()));
+                setStatus(tr("Couldn’t check for updates: %1").arg(reply->errorString()));
             else
                 announceIfNeeded();
             setChecking(false);
             return;
         }
 
-        QString version;
-        const auto records = dns->textRecords();
-        for (const QDnsTextRecord &record : records) {
-            QByteArray joined;
-            const auto values = record.values();
-            for (const QByteArray &part : values)
-                joined += part;
-            version = drift::parseVersionText(joined);
-            if (!version.isEmpty())
-                break;
-        }
+        const QJsonObject root = QJsonDocument::fromJson(reply->readAll()).object();
+        const QJsonObject app = root.value(QStringLiteral("app")).toObject();
+        const QString version = drift::parseVersionText(app.value(QStringLiteral("versao")).toString().toUtf8());
         if (version.isEmpty()) {
             if (manual)
                 setStatus(tr("Couldn’t check for updates: unexpected response."));
@@ -487,9 +519,21 @@ void UpdateChecker::check(bool manual)
             return;
         }
 
-        fetchRelease(version, manual);
+        // Só o arquivo do tipo de instalação deste computador, e só de github.com/.../releases.
+        const QJsonObject asset = root.value(QStringLiteral("arquivos")).toObject()
+                                          .value(kipperAssetType()).toObject();
+        const QUrl assetUrl(asset.value(QStringLiteral("url")).toString());
+        const bool assetOk = kipperIsGitHubDownload(assetUrl);
+        QString sha = asset.value(QStringLiteral("sha256")).toString().trimmed().toLower();
+        static const QRegularExpression hex64(QStringLiteral("^[0-9a-f]{64}$"));
+        if (!hex64.match(sha).hasMatch())
+            sha.clear();
+        publishRelease(version, app.value(QStringLiteral("notas")).toString(),
+                       app.value(QStringLiteral("pagina")).toString(),
+                       assetOk ? asset.value(QStringLiteral("nome")).toString() : QString(),
+                       assetOk ? assetUrl.toString() : QString(), assetOk ? sha : QString(), 0);
+        finishCheck(version, manual);
     });
-    dns->lookup();
 }
 
 void UpdateChecker::fetchRelease(const QString &version, bool manual)
@@ -552,8 +596,8 @@ void UpdateChecker::finishCheck(const QString &version, bool manual)
     }
 
     QNetworkRequest request{QUrl(drift::releaseDownloadUrl(kFeedUrl, version,
-                                                           QStringLiteral("SHA256SUMS")))};
-    request.setHeader(QNetworkRequest::UserAgentHeader, QLatin1String("Drift/") + kCurrentVersion);
+                                                           QStringLiteral("SHA256SUMS.txt")))};
+    request.setHeader(QNetworkRequest::UserAgentHeader, QLatin1String("Kipper/") + kCurrentVersion);
     request.setAttribute(QNetworkRequest::RedirectPolicyAttribute,
                          QNetworkRequest::NoLessSafeRedirectPolicy);
     request.setTransferTimeout(kTransferTimeoutMs);
@@ -758,7 +802,7 @@ void UpdateChecker::beginDownload()
     emit downloadStarted();
 
     QNetworkRequest request{QUrl(m_assetUrl)};
-    request.setHeader(QNetworkRequest::UserAgentHeader, QLatin1String("Drift/") + kCurrentVersion);
+    request.setHeader(QNetworkRequest::UserAgentHeader, QLatin1String("Kipper/") + kCurrentVersion);
     request.setAttribute(QNetworkRequest::RedirectPolicyAttribute,
                          QNetworkRequest::NoLessSafeRedirectPolicy);
     request.setTransferTimeout(kDownloadIdleTimeoutMs);
