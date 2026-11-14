@@ -26,6 +26,12 @@ class QCryptographicHash;
 // Builds that a package manager owns are configured with an empty DRIFT_UPDATE_FEED_URL and get
 // none of this — see supported(). Nagging a Flatpak or pacman user about a version their package
 // manager will fetch on its own schedule is noise they cannot act on.
+//
+// Kipper: a versão nova vem do atualizacoes.json do GitHub do Kipper, e o arquivo baixado é o do
+// tipo de instalação deste computador (padrão dos apps, seção 7): instalador silencioso no
+// Windows, troca do AppImage, `pkexec apt-get install -y` no .deb, `pkexec dnf install -y` no
+// .rpm e `flatpak-spawn --host flatpak install --reinstall --bundle` no Flatpak e no Matsu OS.
+// No Fedora Atomic (rpm em camada) o botão abre a página da versão.
 class UpdateChecker : public QObject
 {
     Q_OBJECT
@@ -58,6 +64,8 @@ class UpdateChecker : public QObject
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
     // Download or install failure. Empty while a check or transfer is healthy.
     Q_PROPERTY(QString error READ error NOTIFY statusChanged)
+    // Kipper: comando para instalar à mão o arquivo já baixado, quando o clique não terminou.
+    Q_PROPERTY(QString manualCommand READ manualCommand NOTIFY statusChanged)
     // The update download as a row for the Downloads window, in the same shape as a marketplace
     // job. Empty when there is nothing to show.
     Q_PROPERTY(QVariantMap downloadJob READ downloadJob NOTIFY downloadJobChanged)
@@ -84,6 +92,7 @@ public:
     QString releaseUrl() const;
     QString status() const;
     QString error() const;
+    QString manualCommand() const { return m_manualCommand; }
     QVariantMap downloadJob() const;
 
     // User pressed "Check now": ignores the once-a-day throttle and the skipped version, and
@@ -128,6 +137,9 @@ signals:
     void installReady();
     // The user chose to restart. QML closes the window, which is what runs the unsaved-changes prompt.
     void quitRequested();
+    // Kipper: a instalação com um clique da última vez não terminou; error() diz o comando para
+    // instalar à mão o arquivo que já foi baixado.
+    void installFailed();
 
 private:
     void scheduleStartup();
@@ -158,6 +170,8 @@ private:
     void stagePackage();
     void stageMacApp();
     void stageAppImage();
+    // Kipper: .deb, .rpm, Flatpak e Matsu OS.
+    void launchPackageInstall(const QString &dir, qint64 pid);
     void copyMacApp();
     void detachMacImage(bool thenInstall);
     void failPrepare(const QString &message);
@@ -194,6 +208,7 @@ private:
     QString m_announcedVersion;
     QString m_status;
     QString m_error;
+    QString m_manualCommand;
     QNetworkAccessManager *m_network = nullptr;
     QNetworkReply *m_reply = nullptr;
     QFile *m_downloadFile = nullptr;

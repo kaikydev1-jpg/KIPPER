@@ -4251,17 +4251,25 @@ void McpTest::relinkMediaMovesAFolder()
     QVERIFY2(reasons.join(QLatin1Char('|')).contains(QStringLiteral("another asset")), qPrintable(reasons.join(QLatin1Char('|'))));
     QVERIFY2(reasons.join(QLatin1Char('|')).contains(QStringLiteral("same size")), qPrintable(reasons.join(QLatin1Char('|'))));
 
-    // A root as from: the whole tree, mirrored under to.
+    // A root as from: the whole tree, mirrored under to. The root is "/" here and the drive
+    // ("C:/") on Windows, where "mirror" + "C:/..." would not be a path at all.
     const QString mirror = dir.filePath(QStringLiteral("mirror"));
-    QVERIFY(QDir().mkpath(mirror + oldRoot + QStringLiteral("/shots")));
-    touch(mirror + oldRoot + QStringLiteral("/shots/c.mp4"), 10);
-    reply = dispatcher.applyOne(QStringLiteral("relink_media"), {{QStringLiteral("from"), QStringLiteral("/")},
+#if defined(Q_OS_WIN)
+    const QString fsRoot = oldRoot.left(3);
+    const QString underRoot = oldRoot.mid(2);
+#else
+    const QString fsRoot = QStringLiteral("/");
+    const QString underRoot = oldRoot;
+#endif
+    QVERIFY(QDir().mkpath(mirror + underRoot + QStringLiteral("/shots")));
+    touch(mirror + underRoot + QStringLiteral("/shots/c.mp4"), 10);
+    reply = dispatcher.applyOne(QStringLiteral("relink_media"), {{QStringLiteral("from"), fsRoot},
                                                                  {QStringLiteral("to"), mirror},
                                                                  {QStringLiteral("dry_run"), true}});
     QVERIFY(reply.value(QStringLiteral("matched")).toInt() > 0);
     bool mirrored = false;
     for (const QJsonValue &row : reply.value(QStringLiteral("relinked")).toArray())
-        mirrored = mirrored || row.toObject().value(QStringLiteral("to")).toString() == mirror + oldRoot + QStringLiteral("/shots/c.mp4");
+        mirrored = mirrored || row.toObject().value(QStringLiteral("to")).toString() == mirror + underRoot + QStringLiteral("/shots/c.mp4");
     QVERIFY2(mirrored, qPrintable(QJsonDocument(reply).toJson()));
 
     // A from that names nothing in the project says so.

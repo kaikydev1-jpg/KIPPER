@@ -11,7 +11,8 @@ ThemedDialog {
     id: root
 
     title: Updates.readyToInstall ? qsTr("Update ready") : qsTr("Update available")
-    preferredWidth: Theme.dialogWidthMd
+    // Kipper: largura para os botões em português caberem numa linha só.
+    preferredWidth: Theme.dialogWidthLg
     showFooter: false
     acceptOnReturn: false
 
@@ -22,11 +23,16 @@ ThemedDialog {
     }
 
     function download() {
-        if (Updates.canInstall)
+        if (Updates.canInstall) {
             Updates.downloadAndInstall(installOnCloseBox.checked)
-        else
+            // Kipper: sem "instalar ao fechar", a janela fica aberta mostrando o download e vira
+            // "Reiniciar e instalar" quando ele termina. Com a opção marcada, baixa em segundo plano.
+            if (installOnCloseBox.checked)
+                close()
+        } else {
             Updates.openDownloadPage()
-        close()
+            close()
+        }
     }
 
     readonly property bool busy: Updates.downloading || Updates.preparing
@@ -113,6 +119,44 @@ ThemedDialog {
             tone: "default"
             visible: root.progressText.length > 0
             text: root.progressText
+        }
+
+        // Kipper: a instalação da última vez não terminou. O comando instala à mão o arquivo
+        // que já foi baixado e conferido.
+        Rectangle {
+            width: parent.width
+            visible: Updates.manualCommand.length > 0
+            height: manualCommandText.implicitHeight + Theme.spacingLg * 2
+            radius: Theme.radiusSm
+            color: Theme.c.assetsPanel.background
+            border.width: 1
+            border.color: Theme.c.assetsPanel.border
+
+            TextEdit {
+                id: manualCommandText
+                anchors.fill: parent
+                anchors.margins: Theme.spacingLg
+                readOnly: true
+                selectByMouse: true
+                wrapMode: TextEdit.WrapAnywhere
+                text: Updates.manualCommand
+                color: Theme.c.iconButton.labelForeground
+                selectionColor: Theme.c.iconButton.foregroundActive
+                font.family: Theme.monoFontFamily
+                font.pixelSize: Theme.fontSizeBase * 0.92
+            }
+        }
+
+        ThemedButton {
+            visible: Updates.manualCommand.length > 0
+            variant: "secondary"
+            text: qsTr("Copy command")
+            onClicked: {
+                manualCommandText.selectAll()
+                manualCommandText.copy()
+                manualCommandText.deselect()
+                Toasts.success(qsTr("Command copied"))
+            }
         }
 
         Item {

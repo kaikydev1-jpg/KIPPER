@@ -10,7 +10,8 @@
 # Precisa de: dpkg-deb (deb) e rpmbuild (rpm). Sem um deles, gera só o outro e avisa.
 set -euo pipefail
 
-ENTRADA="$1"
+# Caminho completo: o AppImage é extraído de dentro de outra pasta.
+ENTRADA="$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
 VERSAO="${2#v}"
 SAIDA="$(mkdir -p "$3" && cd "$3" && pwd)"
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -29,7 +30,7 @@ if [ -d "$ENTRADA" ]; then
   APPDIR="$ENTRADA"
 else
   chmod +x "$ENTRADA"
-  (cd "$TMP" && "$(cd "$(dirname "$ENTRADA")" && pwd)/$(basename "$ENTRADA")" --appimage-extract >/dev/null)
+  (cd "$TMP" && "$ENTRADA" --appimage-extract >/dev/null)
   APPDIR="$TMP/squashfs-root"
 fi
 [ -x "$APPDIR/AppRun" ] || [ -x "$APPDIR/usr/bin/drift" ] || { echo "Não achei o Kipper em $ENTRADA" >&2; exit 1; }

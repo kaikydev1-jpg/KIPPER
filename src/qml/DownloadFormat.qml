@@ -91,6 +91,9 @@ QtObject {
         if (job.status === "done") {
             if (job.doneDetail)
                 return job.doneDetail
+            // Kipper: a atualização não vai para a mídia; o texto diz quando ela instala.
+            if (job.kind === "update" && job.phase)
+                return job.phase
             const size = downloadFormat.formatBytes(job.bytesReceived)
             return size.length > 0 ? qsTr("%1 · in the media bin").arg(size)
                                    : qsTr("In the media bin")

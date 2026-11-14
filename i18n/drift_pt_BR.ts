@@ -26821,6 +26821,10 @@ Se a reprodução travar, experimente outro.</translation>
         <translation>Pronto para instalar</translation>
     </message>
     <message>
+        <source>The update didn’t finish installing. You can install it from the terminal:</source>
+        <translation>A atualização não terminou de instalar. Dá para instalar pelo terminal:</translation>
+    </message>
+    <message>
         <source>Kipper %1 will install when you close Kipper.</source>
         <translation>O Kipper %1 será instalado quando você fechar o Kipper.</translation>
     </message>
@@ -26902,6 +26906,14 @@ Se a reprodução travar, experimente outro.</translation>
     <message>
         <source>Downloads in the background and installs the next time you close Kipper. Unchecked, you choose when to install once the download finishes.</source>
         <translation>Baixa em segundo plano e instala na próxima vez que você fechar o Kipper. Se desmarcado, você escolhe quando instalar após a conclusão do download.</translation>
+    </message>
+    <message>
+        <source>Copy command</source>
+        <translation>Copiar comando</translation>
+    </message>
+    <message>
+        <source>Command copied</source>
+        <translation>Comando copiado</translation>
     </message>
     <message>
         <source>Skip</source>

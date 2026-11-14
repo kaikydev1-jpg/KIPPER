@@ -23,6 +23,7 @@ Rectangle {
 
     IconGlyph {
         id: updateIcon
+        anchors.left: parent.left
         anchors.leftMargin: horizontalPadding
         anchors.verticalCenter: parent.verticalCenter
         glyph: Theme.icons.download
@@ -48,6 +49,7 @@ Rectangle {
 
     ThemedButton {
         id: updateButton
+        anchors.right: parent.right
         anchors.rightMargin: horizontalPadding
         anchors.verticalCenter: parent.verticalCenter
         variant: "primary"

@@ -33,7 +33,8 @@ Item {
             if (pages[i].id === currentPage)
                 return currentPage
         }
-        return pages.length > 0 ? pages[0].id : ""
+        // Kipper: sem mercado, a janela abre em Efeitos personalizados.
+        return pages.length > 0 ? pages[0].id : "custom-effects"
     }
     property var visited: ({})
 
@@ -347,6 +348,7 @@ Item {
                 variant: "ghost"
                 glyph: Theme.icons.externalLink
                 text: qsTr("Browse more online")
+                visible: Marketplace.available
                 onClicked: Qt.openUrlExternally("https://cutwire.studio")
             }
         }
@@ -426,6 +428,7 @@ Item {
                 variant: "ghost"
                 glyph: Theme.icons.externalLink
                 text: qsTr("Browse more online")
+                visible: Marketplace.available
                 onClicked: Qt.openUrlExternally("https://cutwire.studio")
             }
         }

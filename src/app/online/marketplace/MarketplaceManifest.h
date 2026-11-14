@@ -26,6 +26,8 @@ class MarketplaceManifest : public QObject
     Q_PROPERTY(QString error READ error NOTIFY errorChanged)
     Q_PROPERTY(bool offline READ offline NOTIFY errorChanged)
     Q_PROPERTY(int revision READ revision NOTIFY changed)
+    // Kipper: falso quando não há servidor de mercado (o normal no Kipper).
+    Q_PROPERTY(bool available READ available CONSTANT)
 
 public:
     static constexpr int kSupportedSchema = 1;
@@ -35,6 +37,7 @@ public:
                                  const QString &cacheDir = {});
 
     QVariantList pages() const { return m_pages; }
+    bool available() const;
     QVariantMap features() const { return m_features; }
     QVariantMap sources() const { return m_sources; }
     bool loading() const { return m_loading; }

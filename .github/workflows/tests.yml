@@ -501,7 +501,9 @@ jobs:
   windows:
     name: CTest (Windows)
     runs-on: windows-2022
-    timeout-minutes: 120
+    # Kipper: sem o cache do vcpkg (primeira rodada depois de mudar o CMakeLists.txt ou o
+    # package.yml), só as dependências levam uns 50 minutos e a compilação mais uns 60.
+    timeout-minutes: 180
     permissions:
       contents: read
       actions: write

@@ -26813,6 +26813,10 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>The update didn’t finish installing. You can install it from the terminal:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Kipper %1 will install when you close Kipper.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -26893,6 +26897,14 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Downloads in the background and installs the next time you close Kipper. Unchecked, you choose when to install once the download finishes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command copied</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

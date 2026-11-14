@@ -55,6 +55,16 @@ def main() -> int:
         f"        commit: {qwk_commit()}\n"
         "        dest: third_party/qwindowkit\n"
         "      # Audio effect DSP. Only juce_dsp and its dependencies are compiled; nothing GUI-facing.\n")
+    # O Kipper.flatpak não vem do Flathub: o próprio app avisa da versão nova e instala com um
+    # clique (padrão dos apps, seção 7), então a verificação de versão fica ligada.
+    sub("        -DDRIFT_UPDATE_FEED_URL=\n",
+        "        -DDRIFT_UPDATE_FEED_URL=https://api.github.com/repos/kaikydev1-jpg/KIPPER/releases/latest\n")
+    sub("    #   DRIFT_UPDATE_FEED_URL= — Flathub updates this build, so the in-app update check is compiled\n"
+        "    #     out: an app that nags about a version flatpak will fetch on its own is noise the user\n"
+        "    #     cannot act on.\n",
+        "    #   DRIFT_UPDATE_FEED_URL — Kipper: o pacote .flatpak é baixado do GitHub, não do Flathub, então\n"
+        "    #     o app lê o atualizacoes.json uma vez por dia e instala a versão nova com\n"
+        "    #     flatpak-spawn --host flatpak install --reinstall --bundle.\n")
     t = t.replace("org.cutwire.Drift", "io.github.kaikydev1jpg.Kipper")
     DST.write_text(header + t, encoding="utf-8")
     print(DST.relative_to(ROOT))

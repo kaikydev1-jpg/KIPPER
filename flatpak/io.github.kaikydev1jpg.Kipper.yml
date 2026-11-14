@@ -144,7 +144,7 @@ modules:
         -DONNXRUNTIME_ROOT=/app
         -DDRIFT_FETCH_JUCE=OFF
         -DDRIFT_JUCE_DIR=juce
-        -DDRIFT_UPDATE_FEED_URL=
+        -DDRIFT_UPDATE_FEED_URL=https://api.github.com/repos/kaikydev1-jpg/KIPPER/releases/latest
         -DDRIFT_DISTRIBUTION=flatpak
         -DDRIFT_AUTO_UPDATE_TRANSLATIONS=OFF
       - cmake --build build -j${FLATPAK_BUILDER_N_JOBS}
@@ -152,9 +152,9 @@ modules:
     # Option notes:
     #   DRIFT_FETCH_JUCE=OFF — JUCE is checked out as a source below rather than fetched by CMake:
     #     the build runs with no network, so FetchContent would fail here.
-    #   DRIFT_UPDATE_FEED_URL= — Flathub updates this build, so the in-app update check is compiled
-    #     out: an app that nags about a version flatpak will fetch on its own is noise the user
-    #     cannot act on.
+    #   DRIFT_UPDATE_FEED_URL — Kipper: o pacote .flatpak é baixado do GitHub, não do Flathub, então
+    #     o app lê o atualizacoes.json uma vez por dia e instala a versão nova com
+    #     flatpak-spawn --host flatpak install --reinstall --bundle.
     #   DRIFT_AUTO_UPDATE_TRANSLATIONS=OFF — a package build compiles the committed catalogs and
     #     never regenerates them. org.kde.Sdk's lupdate has no QML parser, so a refresh here strips
     #     every QML string from i18n/*.ts and ships .qm files that only translate the C++ side

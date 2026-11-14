@@ -181,8 +181,17 @@ bool MarketplaceManifest::applyRaw(const QJsonObject &raw)
     return true;
 }
 
+bool MarketplaceManifest::available() const
+{
+    return MarketTransport::configured();
+}
+
 void MarketplaceManifest::loadLocal()
 {
+    // Kipper: sem o servidor de mercado da CutWire, as páginas dele (Início, Recursos, Efeitos
+    // sonoros...) só mostrariam erro. A janela fica com Efeitos personalizados e Downloads.
+    if (!MarketTransport::configured())
+        return;
     const QJsonObject cached = readJson(cachePath());
     if (!cached.isEmpty() && applyRaw(cached)) {
         QFile etag(etagPath());
@@ -230,7 +239,8 @@ void MarketplaceManifest::refresh()
     if (m_loading)
         return;
     if (!MarketTransport::configured()) {
-        setStatus(MarketTransport::fallbackMessageForCode(QStringLiteral("invalid_client")), true);
+        // Kipper: não há mercado para avisar que está fora do ar.
+        setStatus(QString(), false);
         return;
     }
     setLoading(true);

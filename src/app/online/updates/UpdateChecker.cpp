@@ -1,8 +1,10 @@
 #include "app/online/updates/UpdateChecker.h"
 #include "core/base/CacheRoot.h"
 
+#include "app/online/updates/KipperInstallScripts.h"
 #include "app/online/updates/UpdateAsset.h"
 #include "core/base/VersionCompare.h"
+#include "ui/window/WindowChrome.h"
 
 #include <QCoreApplication>
 #include <QCryptographicHash>
@@ -94,8 +96,21 @@ QString powerShellQuote(const QString &text)
 // Kipper: a versão nova vem do atualizacoes.json publicado junto com cada versão no GitHub do
 // Kipper (padrão dos apps, seção 7), e não de um registro de DNS da CutWire. Uma leitura por dia,
 // nada sobre a pessoa é enviado, e dá para desligar nas configurações.
+// Só para testar a atualização sem publicar nada: KIPPER_UPDATE_MANIFEST=http://127.0.0.1:porta/...
+// aponta a lista de versões (e os arquivos) para um servidor neste computador. Nada fora deste
+// computador é aceito por aqui.
+QUrl kipperTestManifest()
+{
+    const QUrl url(qEnvironmentVariable("KIPPER_UPDATE_MANIFEST"));
+    const bool local = url.scheme() == QLatin1String("http")
+            && (url.host() == QLatin1String("127.0.0.1") || url.host() == QLatin1String("localhost"));
+    return local ? url : QUrl();
+}
+
 QString kipperManifestUrl()
 {
+    if (const QUrl test = kipperTestManifest(); test.isValid())
+        return test.toString();
     // kFeedUrl: https://api.github.com/repos/<dono>/<repo>/releases/latest
     static const QRegularExpression re(QStringLiteral("^https://api\\.github\\.com/repos/([^/]+)/([^/]+)/"));
     const QRegularExpressionMatch m = re.match(kFeedUrl);
@@ -105,20 +120,80 @@ QString kipperManifestUrl()
             .arg(m.captured(1), m.captured(2));
 }
 
-// Qual arquivo do atualizacoes.json serve para esta instalação.
+// Kipper: como este Kipper foi instalado (padrão dos apps, seção 7). Diz qual arquivo do
+// atualizacoes.json baixar e como instalar a versão nova.
+enum class KipperInstall { Manual, Windows, AppImage, Flatpak, Matsu, Debian, Fedora };
+
+KipperInstall kipperInstallKind()
+{
+    static const KipperInstall kind = [] {
+#if defined(Q_OS_WIN)
+        return kDistribution == QLatin1String("windows") ? KipperInstall::Windows : KipperInstall::Manual;
+#elif defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+        if (QFileInfo::exists(QStringLiteral("/.flatpak-info")))
+            return kDistribution == QLatin1String("flatpak")
+                    ? (WindowChrome::systemIsMatsu() ? KipperInstall::Matsu : KipperInstall::Flatpak)
+                    : KipperInstall::Manual;
+        if (kDistribution == QLatin1String("appimage") && !qEnvironmentVariableIsEmpty("APPIMAGE"))
+            return KipperInstall::AppImage;
+        // O .deb e o .rpm levam o mesmo Kipper do AppImage, instalado em /opt/kipper.
+        if (QCoreApplication::applicationDirPath().startsWith(QLatin1String("/opt/kipper/"))) {
+            // Fedora Atomic (rpm em camada): o botão abre a página da versão.
+            if (QFileInfo::exists(QStringLiteral("/run/ostree-booted")))
+                return KipperInstall::Manual;
+            if (QFileInfo::exists(QStringLiteral("/var/lib/dpkg/info/kipper.list")))
+                return KipperInstall::Debian;
+            if (!QStandardPaths::findExecutable(QStringLiteral("rpm")).isEmpty())
+                return KipperInstall::Fedora;
+        }
+        return KipperInstall::Manual;
+#else
+        return KipperInstall::Manual;
+#endif
+    }();
+    return kind;
+}
+
+// Qual arquivo do atualizacoes.json serve para esta instalação. Sem um (código-fonte, Fedora
+// Atomic), o aviso continua e o botão abre a página da versão.
 QString kipperAssetType()
 {
-#if defined(Q_OS_WIN)
-    return QStringLiteral("windows");
-#elif defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-    return QStringLiteral("appimage");
-#else
+    switch (kipperInstallKind()) {
+    case KipperInstall::Windows: return QStringLiteral("windows");
+    case KipperInstall::AppImage: return QStringLiteral("appimage");
+    case KipperInstall::Flatpak: return QStringLiteral("flatpak");
+    case KipperInstall::Matsu: return QStringLiteral("matsu");
+    case KipperInstall::Debian: return QStringLiteral("debian");
+    case KipperInstall::Fedora: return QStringLiteral("fedora");
+    case KipperInstall::Manual: break;
+    }
     return {};
-#endif
+}
+
+// Flatpak instalado só para a pessoa (--user) ou para o computador todo (--system).
+bool kipperFlatpakIsSystem()
+{
+    QFile info(QStringLiteral("/.flatpak-info"));
+    if (!info.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
+    const QString text = QString::fromUtf8(info.readAll());
+    for (const QString &line : text.split(QLatin1Char('\n'))) {
+        if (line.startsWith(QLatin1String("app-path=")))
+            return line.contains(QLatin1String("/var/lib/flatpak"));
+    }
+    return false;
+}
+
+// Deixado pelo ajudante quando a instalação não terminou; lido na próxima abertura.
+QString kipperFailureMarker(const QString &updatesDir)
+{
+    return updatesDir + QStringLiteral("/instalacao-falhou.txt");
 }
 
 bool kipperIsGitHubDownload(const QUrl &url)
 {
+    if (const QUrl test = kipperTestManifest(); test.isValid())
+        return url.scheme() == test.scheme() && url.host() == test.host() && url.port() == test.port();
     return url.scheme() == QLatin1String("https") && url.host() == QLatin1String("github.com")
             && url.userName().isEmpty() && url.password().isEmpty()
             && url.path().contains(QLatin1String("/releases/download/"));
@@ -178,10 +253,25 @@ bool UpdateChecker::installSupported() const
 #elif defined(Q_OS_MACOS)
     return supported() && kDistribution == QLatin1String("macos");
 #elif defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-    // The AppImage is replaced in place, so the folder holding it has to be writable.
-    const QString path = appImagePath();
-    return supported() && kDistribution == QLatin1String("appimage") && !path.isEmpty()
-            && QFileInfo(QFileInfo(path).absolutePath()).isWritable();
+    if (!supported())
+        return false;
+    switch (kipperInstallKind()) {
+    case KipperInstall::AppImage: {
+        // The AppImage is replaced in place, so the folder holding it has to be writable.
+        const QString path = appImagePath();
+        return !path.isEmpty() && QFileInfo(QFileInfo(path).absolutePath()).isWritable();
+    }
+    case KipperInstall::Flatpak:
+    case KipperInstall::Matsu:
+        // flatpak-spawn --host flatpak install (precisa de --talk-name=org.freedesktop.Flatpak).
+        return !QStandardPaths::findExecutable(QStringLiteral("flatpak-spawn")).isEmpty();
+    case KipperInstall::Debian:
+    case KipperInstall::Fedora:
+        // pkexec: o sistema pede a senha para instalar o pacote.
+        return !QStandardPaths::findExecutable(QStringLiteral("pkexec")).isEmpty();
+    default:
+        return false;
+    }
 #else
     return false;
 #endif
@@ -368,7 +458,25 @@ void UpdateChecker::setError(const QString &error)
 
 void UpdateChecker::scheduleStartup()
 {
-    if (!supported() || !enabled())
+    if (!supported())
+        return;
+
+    // Kipper: a última instalação com um clique não terminou (senha recusada, sem espaço...).
+    // A versão nova continua baixada; mostra o comando para instalar à mão.
+    QFile failed(kipperFailureMarker(updatesDir()));
+    if (failed.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        const QString command = QString::fromUtf8(failed.readAll()).trimmed();
+        failed.close();
+        failed.remove();
+        if (!command.isEmpty() && !m_latestVersion.isEmpty()) {
+            m_downloadOutcome = QStringLiteral("failed");
+            m_manualCommand = command;
+            setError(tr("The update didn’t finish installing. You can install it from the terminal:"));
+            QTimer::singleShot(kStartupDelayMs, this, [this] { emit installFailed(); });
+        }
+    }
+
+    if (!enabled())
         return;
 
     const QDateTime last = QSettings().value(settingsKey("lastCheck")).toDateTime();
@@ -760,6 +868,7 @@ void UpdateChecker::cancelDownload()
 
 void UpdateChecker::beginDownload()
 {
+    m_manualCommand.clear();
     setError(QString());
     setReadyToInstall(false);
     m_downloadOutcome.clear();
@@ -893,7 +1002,13 @@ void UpdateChecker::stagePackage()
 #if defined(Q_OS_MACOS)
     stageMacApp();
 #elif defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-    stageAppImage();
+    if (kipperInstallKind() == KipperInstall::AppImage) {
+        stageAppImage();
+        return;
+    }
+    // .deb, .rpm e .flatpak: o gerenciador de pacotes instala o arquivo como ele veio.
+    m_stagedPath = m_packagePath;
+    finishStage();
 #else
     m_stagedPath = m_packagePath;
     finishStage();
@@ -1031,6 +1146,54 @@ void UpdateChecker::finishStage()
     }
 }
 
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+// Kipper: .deb, .rpm, Flatpak e Matsu OS (padrão dos apps, seção 7). Um ajudante espera o Kipper
+// fechar, instala o arquivo já conferido pelo SHA-256 e, em "Reiniciar e instalar", abre o Kipper
+// de novo (também quando a instalação não termina, para a pessoa não ficar sem o app). Se não
+// terminar, deixa o comando para fazer à mão num arquivo que a próxima abertura mostra.
+void UpdateChecker::launchPackageInstall(const QString &dir, qint64 pid)
+{
+    const KipperInstall kind = kipperInstallKind();
+    const QString file = m_stagedPath;
+    const QString marker = kipperFailureMarker(dir);
+    QFile::remove(marker);
+
+    if (kind == KipperInstall::Flatpak || kind == KipperInstall::Matsu) {
+        const QString body = kipper::updates::flatpakScript(QStringLiteral(DRIFT_APP_ID),
+                                                            kipperFlatpakIsSystem(), file, marker,
+                                                            m_relaunch);
+        QProcess helper;
+        helper.setProgram(QStringLiteral("flatpak-spawn"));
+        helper.setArguments({QStringLiteral("--host"), QStringLiteral("sh"), QStringLiteral("-c"), body});
+        helper.startDetached();
+        return;
+    }
+
+    // .deb e .rpm: pkexec mostra o pedido de senha do sistema.
+    const QString body = kipper::updates::packageScript(kipperAssetType(), pid, file, marker, m_relaunch);
+    const QString scriptPath = dir + QStringLiteral("/install-update.sh");
+    QFile script(scriptPath);
+    if (!script.open(QIODevice::WriteOnly | QIODevice::Truncate))
+        return;
+    script.write(body.toUtf8());
+    script.close();
+
+    // O AppRun do Kipper em /opt/kipper aponta estas variáveis para as bibliotecas dele; o
+    // pkexec, o apt e o dnf têm que rodar com as do sistema.
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    for (const char *name : {"APPDIR", "ARGV0", "OWD", "LD_LIBRARY_PATH", "QT_PLUGIN_PATH",
+                             "QML2_IMPORT_PATH", "QML_IMPORT_PATH", "QT_QPA_PLATFORM_PLUGIN_PATH",
+                             "PYTHONHOME", "PYTHONPATH", "GDK_PIXBUF_MODULE_FILE"})
+        env.remove(QString::fromLatin1(name));
+
+    QProcess helper;
+    helper.setProgram(QStringLiteral("/bin/sh"));
+    helper.setArguments({scriptPath});
+    helper.setProcessEnvironment(env);
+    helper.startDetached();
+}
+#endif
+
 void UpdateChecker::launchStagedInstall()
 {
     if (!m_installOnQuit || m_stagedPath.isEmpty() || !QFileInfo::exists(m_stagedPath))
@@ -1048,7 +1211,9 @@ void UpdateChecker::launchStagedInstall()
     // The helper waits out this process, then runs the Inno installer. /DRIFTUPDATE=1 is what
     // makes a silent install launch Drift again, so it is passed only for "Restart and install";
     // an install on close leaves Drift closed, as skipifsilent does without it.
-    // -Verb RunAs is the UAC prompt — the installer writes to Program Files.
+    // Kipper: o instalador é só do usuário (PrivilegesRequired=lowest, %LOCALAPPDATA%\Programs),
+    // então nada de -Verb RunAs: pedir administrador aqui faria um usuário comum instalar na
+    // conta de outra pessoa.
     const QString body = QStringLiteral(
             "$processId = %1\r\n"
             "$installer = %2\r\n"
@@ -1058,7 +1223,7 @@ void UpdateChecker::launchStagedInstall()
             "try {\r\n"
             "    Start-Process -FilePath $installer -ArgumentList "
             "'/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART'%3 "
-            "-Verb RunAs -Wait\r\n"
+            "-Wait\r\n"
             "} catch {\r\n"
             "    exit 1\r\n"
             "}\r\n")
@@ -1119,6 +1284,10 @@ void UpdateChecker::launchStagedInstall()
 
     QProcess::startDetached(QStringLiteral("/bin/bash"), {waitPath});
 #elif defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+    if (kipperInstallKind() != KipperInstall::AppImage) {
+        launchPackageInstall(dir, pid);
+        return;
+    }
     const QString target = appImagePath();
     if (target.isEmpty())
         return;

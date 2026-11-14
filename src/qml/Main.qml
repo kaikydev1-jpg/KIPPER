@@ -530,8 +530,8 @@ ApplicationWindow {
         function onInstallReady() {
             window.openUpdateDialog()
         }
-        function onDownloadStarted() {
-            window.openMarketplace("downloads")
+        function onInstallFailed() {
+            window.openUpdateDialog()
         }
         function onQuitRequested() {
             window.close()
@@ -678,7 +678,8 @@ ApplicationWindow {
     Connections {
         target: Downloads
         function onJobStarted(id) {
-            if (window.downloadsAutoOpened)
+            // Kipper: a atualização mostra o progresso na própria janela de atualização.
+            if (window.downloadsAutoOpened || id === "update")
                 return
             window.downloadsAutoOpened = true
             window.openMarketplace("downloads")

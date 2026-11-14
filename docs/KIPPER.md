@@ -49,6 +49,8 @@ mínimo no código do Drift, para continuar dando para puxar as correções dele
 - `KIPPER_OS_RELEASE=/caminho/os-release` finge outro sistema (ex.: Matsu OS).
 - `KIPPER_DECORATION_LAYOUT="close,minimize,maximize:"` finge o lado dos botões.
 - `KIPPER_SYSTEM_TITLEBAR=1` volta para a barra do sistema (só para diagnóstico).
+- `KIPPER_UPDATE_MANIFEST=http://127.0.0.1:porta/atualizacoes.json` testa a atualização com um
+  servidor local (só aceita endereços deste computador).
 - `./build/drift --agent-access` liga a porta de agente (MCP), que dá para usar para montar
   projetos de teste (`import_media`, `place_clip`, `add_text`, `set_project_setup`...).
 
@@ -57,9 +59,17 @@ mínimo no código do Drift, para continuar dando para puxar as correções dele
 - **Complementos (fontes, LUTs, modelos das legendas automáticas):** o Drift baixa de um servidor
   da CutWire (`drift-addons.cutwire.org`). Efeitos, transições e efeitos de áudio já vêm junto com
   o Kipper. O ideal é o Kipper ter cópia própria desses pacotes (GitHub Releases + índice no site).
-- **Atualização com um clique:** funciona no Windows (instalador silencioso) e no AppImage. Falta
-  para Flatpak/Matsu OS (`flatpak-spawn --host flatpak install --reinstall --bundle`), `.deb`/`.rpm`
-  (`pkexec`) e Fedora Atomic (`rpm-ostree`).
+- **Atualização com um clique:** Windows (instalador silencioso, sem pedir administrador), AppImage
+  (troca o arquivo), `.deb` (`pkexec apt-get install -y`), `.rpm` (`pkexec dnf install -y`) e
+  Flatpak/Matsu OS (`flatpak-spawn --host flatpak install --reinstall --bundle`, depois
+  `flatpak run`). Se a instalação não terminar, a próxima abertura mostra o comando para instalar à
+  mão o arquivo já baixado. Testado de ponta a ponta só o `.deb`, aqui (com um `pkexec` falso, sem
+  polkit); os scripts do `.rpm` e do Flatpak rodam em `tests/tst_kipperupdate.cpp` com programas
+  falsos. Fedora Atomic (rpm em camada) ainda abre a página da versão.
+- **Testes do Drift que falham no Windows:** `McpTest::proxyOpsCreateCheckAndRemove` (cancelar e
+  pedir o proxy de novo logo em seguida não termina). Falha igual no Drift original; ainda sem
+  causa achada. Nas versões de teste o instalador do Windows sai mesmo assim (o trabalho fica
+  vermelho); na oficial, bloqueia.
 - **Leve em repouso (bandeja, instância única):** para um editor de vídeo, ficar perto do relógio
   não faz muito sentido. Ainda não foi avaliado nem mexido.
 - **Windows:** compila no GitHub Actions; ainda não foi aberto numa máquina Windows de verdade.

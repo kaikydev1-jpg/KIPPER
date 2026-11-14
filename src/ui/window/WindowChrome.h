@@ -75,6 +75,8 @@ public:
     // Matsu OS: ID, NAME ou PRETTY_NAME do os-release contém "matsu" (ignora maiúsculas,
     // espaços, hífen, sublinhado e aspas).
     static bool osReleaseIsMatsu(const QString &osReleaseText);
+    // Lê o os-release deste computador (no Flatpak, o do sistema) e diz se é o Matsu OS.
+    static bool systemIsMatsu();
 
     bool integrated() const { return m_integrated; }
     bool matsu() const { return m_system.matsu; }

@@ -440,6 +440,12 @@ if(UNIX AND NOT APPLE AND NOT ANDROID)
 endif()
 add_test(NAME WindowChrome COMMAND tst_windowchrome)
 
+# Kipper: scripts que instalam a versão nova no .deb, .rpm, Flatpak e Matsu OS.
+qt_add_executable(tst_kipperupdate tst_kipperupdate.cpp ../src/app/online/updates/KipperInstallScripts.h)
+target_include_directories(tst_kipperupdate PRIVATE ../src)
+target_link_libraries(tst_kipperupdate PRIVATE Qt6::Test Qt6::Core)
+add_test(NAME KipperUpdate COMMAND tst_kipperupdate)
+
 qt_add_executable(tst_workspacestore tst_workspacestore.cpp ../src/app/editor/WorkspaceStore.cpp)
 target_include_directories(tst_workspacestore PRIVATE ../src)
 target_link_libraries(tst_workspacestore PRIVATE Qt6::Test Qt6::Core)

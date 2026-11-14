@@ -298,6 +298,23 @@ WindowChrome::Buttons WindowChrome::choose(const System &sys, const QString &pre
     return build(style, layout);
 }
 
+bool WindowChrome::systemIsMatsu()
+{
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+    // os-release do sistema de verdade (no Flatpak, /run/host/os-release).
+    QStringList releases = {QStringLiteral("/run/host/os-release"), QStringLiteral("/etc/os-release"),
+                            QStringLiteral("/usr/lib/os-release")};
+    if (const QString overridePath = qEnvironmentVariable("KIPPER_OS_RELEASE"); !overridePath.isEmpty())
+        releases.prepend(overridePath);
+    for (const QString &path : std::as_const(releases)) {
+        const QString text = readFile(path);
+        if (!text.isEmpty())
+            return osReleaseIsMatsu(text);
+    }
+#endif
+    return false;
+}
+
 bool WindowChrome::osReleaseIsMatsu(const QString &text)
 {
     static const QRegularExpression strip(QStringLiteral("[\\s_\"'-]"));
@@ -327,18 +344,7 @@ WindowChrome::System WindowChrome::readSystem() const
     sys.os = QStringLiteral("linux");
     sys.desktop = qEnvironmentVariable("XDG_CURRENT_DESKTOP");
 
-    // Matsu OS: os-release do sistema de verdade (no Flatpak, /run/host/os-release).
-    QStringList releases = {QStringLiteral("/run/host/os-release"), QStringLiteral("/etc/os-release"),
-                            QStringLiteral("/usr/lib/os-release")};
-    if (const QString overridePath = qEnvironmentVariable("KIPPER_OS_RELEASE"); !overridePath.isEmpty())
-        releases.prepend(overridePath);
-    for (const QString &path : std::as_const(releases)) {
-        const QString text = readFile(path);
-        if (!text.isEmpty()) {
-            sys.matsu = osReleaseIsMatsu(text);
-            break;
-        }
-    }
+    sys.matsu = systemIsMatsu();
 
     const bool kde = sys.desktop.toUpper().contains(QLatin1String("KDE"));
     const QString wm = QStringLiteral("org.gnome.desktop.wm.preferences");

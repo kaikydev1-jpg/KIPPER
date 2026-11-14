@@ -30,6 +30,14 @@ on:
         required: false
         default: ""
         type: string
+      # Kipper: numa versão de TESTE, o instalador do Windows sai mesmo com teste falhando, para dar
+      # para experimentar. O trabalho continua vermelho (a falha aparece) e a versão oficial nunca
+      # usa isto: lá, teste falhando bloqueia o instalador.
+      allow_failed_tests:
+        description: "Só versões de teste: gerar o instalador do Windows mesmo com teste falhando"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -870,6 +878,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Stage runtime files
+        if: ${{ success() || (inputs.allow_failed_tests && !cancelled() && steps.test.outcome == 'failure') }}
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path dist\bin | Out-Null
@@ -898,6 +907,7 @@ jobs:
       # (c0000005 in MSVCP140.dll) against the older system runtime many machines still have.
       # The exe's own folder comes first in DLL search order, so these win over System32.
       - name: Bundle MSVC runtime
+        if: ${{ success() || (inputs.allow_failed_tests && !cancelled() && steps.test.outcome == 'failure') }}
         shell: pwsh
         run: |
           Remove-Item dist\bin\vc_redist*.exe -Force -ErrorAction SilentlyContinue
@@ -918,6 +928,7 @@ jobs:
       #
       # The device count is reported but not asserted: runners have no audio endpoint.
       - name: Verify audio backend
+        if: ${{ success() || (inputs.allow_failed_tests && !cancelled() && steps.test.outcome == 'failure') }}
         shell: pwsh
         env:
           QT_DEBUG_PLUGINS: "1"
@@ -948,6 +959,7 @@ jobs:
           }
 
       - name: Build Inno Setup installer
+        if: ${{ success() || (inputs.allow_failed_tests && !cancelled() && steps.test.outcome == 'failure') }}
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.6
         with:
           path: installer/windows/Kipper.iss
@@ -962,6 +974,7 @@ jobs:
       # Wildcard rather than a fixed name: the nightly channel's OutputBaseFilename differs, and
       # the script only ever emits one installer.
       - name: Collect installer
+        if: ${{ success() || (inputs.allow_failed_tests && !cancelled() && steps.test.outcome == 'failure') }}
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path dist | Out-Null
@@ -969,6 +982,7 @@ jobs:
           Copy-Item $built.FullName "dist\Kipper-Setup-${{ env.ASSET_LABEL }}-${{ matrix.arch }}.exe" -Force
 
       - name: Upload installer artifact
+        if: ${{ success() || (inputs.allow_failed_tests && !cancelled() && steps.test.outcome == 'failure') }}
         uses: actions/upload-artifact@v4
         with:
           name: windows-installer-${{ matrix.arch }}
@@ -984,6 +998,7 @@ jobs:
       # The inner folder is channel-named too, so unpacking both channels side by side does not
       # merge two builds into one directory.
       - name: Build portable zip
+        if: ${{ success() || (inputs.allow_failed_tests && !cancelled() && steps.test.outcome == 'failure') }}
         shell: pwsh
         env:
           FOLDER: ${{ inputs.channel == 'nightly' && 'Kipper Teste' || 'Kipper' }}
@@ -994,6 +1009,7 @@ jobs:
             "dist\portable\Kipper-Portable-${{ env.ASSET_LABEL }}-${{ matrix.arch }}.zip" ".\portable\$env:FOLDER"
 
       - name: Upload portable artifact
+        if: ${{ success() || (inputs.allow_failed_tests && !cancelled() && steps.test.outcome == 'failure') }}
         uses: actions/upload-artifact@v4
         with:
           name: windows-portable-${{ matrix.arch }}

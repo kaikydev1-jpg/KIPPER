@@ -17,6 +17,10 @@ PT = {
     "YouTube and TV": "YouTube e TV",
     "Square · 1:1": "Quadrado · 1:1",
     "Instagram feed": "Feed do Instagram",
+    "The update didn’t finish installing. You can install it from the terminal:":
+        "A atualização não terminou de instalar. Dá para instalar pelo terminal:",
+    "Copy command": "Copiar comando",
+    "Command copied": "Comando copiado",
 }
 
 ts = Path(__file__).resolve().parents[2] / "i18n" / "drift_pt_BR.ts"
