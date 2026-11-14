@@ -1796,7 +1796,8 @@ jobs:
           OUT="dist/Kipper-${VERSION}-${ABI}.apk"
           BT="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/* | sort -V | tail -1)"
           badging="$("$BT/aapt2" dump badging "$OUT")"
-          certs="$("$BT/apksigner" verify --print-certs "$OUT" | grep -E 'Signer #1 certificate (DN|SHA-256)')"
+          # apksigner escreve "V3.0 Signer: certificate DN: ..." (o prefixo muda com o esquema).
+          certs="$("$BT/apksigner" verify --print-certs "$OUT" | grep -E 'certificate (DN|SHA-256 digest):' || true)"
           echo "$badging" | grep -E "^(package|application-label|application-label-pt|launchable-activity|sdkVersion|targetSdkVersion|native-code|application-icon-640):" || true
           {
             echo "### APK $ABI"
