@@ -3996,7 +3996,7 @@ void EditorStateTest::projectJsonImportRejectsGarbageAndLeavesTimeline()
     state.projectFile()->loadProjectJson(QUrl::fromLocalFile(path));
     QTRY_VERIFY(!state.projectFile()->projectLoadPending());
     QCOMPARE(state.lastMessageSeverity(), QStringLiteral("error"));
-    QCOMPARE(state.lastMessage(), QStringLiteral("This file isn’t a Drift project."));
+    QCOMPARE(state.lastMessage(), QStringLiteral("This file isn’t a Kipper project."));
     QCOMPARE(state.tracks().size(), 2);
     QCOMPARE(state.tracks().at(0).toMap().value(QStringLiteral("clips")).toList().size(), 1);
 }

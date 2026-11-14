@@ -926,6 +926,8 @@ ApplicationWindow {
         editorHeader.confirmIfDirty(function () {
             EditorState.projectFile.newProject()
             EditorState.projectFile.setProjectSetup(width, height, 30)
+            // O formato veio do cartão: não abrir a escolha de layout por cima.
+            EditorState.markProjectLayoutChosen()
             window.showStartScreen = false
         })
     }

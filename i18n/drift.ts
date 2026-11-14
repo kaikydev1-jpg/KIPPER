@@ -22053,7 +22053,35 @@ If playback stutters, try another.</source>
 <context>
     <name>StartScreenActions</name>
     <message>
-        <source>New Project</source>
+        <source>Create project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start from scratch. Drop in your videos, photos and music.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vertical · 9:16</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TikTok, Reels and Shorts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Landscape · 16:9</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>YouTube and TV</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Square · 1:1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Instagram feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

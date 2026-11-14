@@ -22060,8 +22060,36 @@ Se a reprodução travar, experimente outro.</translation>
 <context>
     <name>StartScreenActions</name>
     <message>
-        <source>New Project</source>
-        <translation>Novo projeto</translation>
+        <source>Create project</source>
+        <translation>Criar projeto</translation>
+    </message>
+    <message>
+        <source>Start from scratch. Drop in your videos, photos and music.</source>
+        <translation>Comece do zero. Arraste seus vídeos, fotos e músicas.</translation>
+    </message>
+    <message>
+        <source>Vertical · 9:16</source>
+        <translation>Em pé · 9:16</translation>
+    </message>
+    <message>
+        <source>TikTok, Reels and Shorts</source>
+        <translation>TikTok, Reels e Shorts</translation>
+    </message>
+    <message>
+        <source>Landscape · 16:9</source>
+        <translation>Deitado · 16:9</translation>
+    </message>
+    <message>
+        <source>YouTube and TV</source>
+        <translation>YouTube e TV</translation>
+    </message>
+    <message>
+        <source>Square · 1:1</source>
+        <translation>Quadrado · 1:1</translation>
+    </message>
+    <message>
+        <source>Instagram feed</source>
+        <translation>Feed do Instagram</translation>
     </message>
     <message>
         <source>Open Project…</source>
