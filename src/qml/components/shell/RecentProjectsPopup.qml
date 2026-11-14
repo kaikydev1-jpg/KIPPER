@@ -108,7 +108,9 @@ Popup {
             popup: root
             modelData: ({})
             index: -1
-            title: EditorState.projectFile.projectName
+            // Kipper: "Untitled Project" é o nome guardado no arquivo; na tela, traduzido.
+            title: EditorState.projectFile.projectName === "Untitled Project"
+                   ? qsTr("Untitled Project") : EditorState.projectFile.projectName
             subtitle: root.currentSaved ? qsTr("All changes saved")
                                         : qsTr("Unsaved changes")
             tip: root.currentPath.length > 0 ? root.currentPath : ""

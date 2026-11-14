@@ -71,6 +71,7 @@
     "dl.sums": "Every file and its SHA-256 checksum is on the <a href=\"https://github.com/kaikydev1-jpg/KIPPER/releases\">GitHub releases page</a>.",
     "dl.suggested": "For you",
     "footer.credits": "Free software under the GPLv3 licence. Based on <a href=\"https://github.com/CutWire-Studios/Drift\" rel=\"noopener\">Drift</a> by CutWire Studios, with design ideas from <a href=\"https://github.com/jub0t/Concat\" rel=\"noopener\">Concat</a>.",
+    "footer.media": "Sample footage in the screenshots: <a href=\"https://images.nasa.gov/\" rel=\"noopener\">NASA</a> (public domain).",
     "footer.source": "Source code",
     "footer.issues": "Report a problem"
   };
