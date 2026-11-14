@@ -12,7 +12,7 @@
 #   compare -metric RMSE expected.png selftest.png null:
 set -euo pipefail
 
-PKG="org.cutwire.drift"
+PKG="${DRIFT_ANDROID_PACKAGE_NAME:-io.github.kaikydev1jpg.kipper}"
 REMOTE="/sdcard/Android/data/$PKG/files"
 
 [ $# -ge 1 ] || { echo "usage: $0 <project.json> [media...]" >&2; exit 1; }

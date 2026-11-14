@@ -148,12 +148,8 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
 
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="market.cutwire.org" android:pathPrefix="/app/auth/callback" />
-            </intent-filter>
+            <!-- Kipper: sem o retorno de login do mercado da CutWire (market.cutwire.org); o mercado
+                 está desligado no Kipper e o app não deve se oferecer para abrir links de outro site. -->
 
           <meta-data
                 android:name="android.app.lib_name"

@@ -19,7 +19,7 @@ on:
   workflow_dispatch:
     inputs:
       plataformas:
-        description: "Quais gerar: flatpak, linux (AppImage, deb, rpm) e windows, separados por vírgula"
+        description: "Quais gerar: flatpak, linux (AppImage, deb, rpm), windows e android, separados por vírgula"
         required: true
         default: "flatpak,linux,windows"
         type: string
@@ -77,6 +77,8 @@ jobs:
       version: ${{ needs.meta.outputs.versao }}
       platforms: ${{ inputs.plataformas || 'flatpak,linux,windows' }}
       channel: stable
+      # Android: oficial com a chave secreta; teste com o ID .teste e a chave de teste pública.
+      android_identity: ${{ needs.meta.outputs.oficial == 'true' && 'release' || 'ci' }}
       # Versão de teste: o instalador do Windows sai mesmo com teste falhando (o trabalho fica
       # vermelho e o resumo avisa). Na oficial (tag), teste falhando bloqueia.
       allow_failed_tests: ${{ needs.meta.outputs.oficial != 'true' }}
@@ -121,6 +123,12 @@ jobs:
             cp "$flat" saida/Kipper-Matsu-OS.flatpak
           fi
 
+          # Android: o de 64 bits (quase todo celular de hoje) e o de 32 bits (celulares antigos).
+          apk=$(achar 'Kipper-*-arm64-v8a.apk' || true)
+          [ -n "$apk" ] && cp "$apk" saida/Kipper-Android.apk
+          apk32=$(achar 'Kipper-*-armeabi-v7a.apk' || true)
+          [ -n "$apk32" ] && cp "$apk32" saida/Kipper-Android-32bits.apk
+
           app=$(achar 'Kipper-Linux.AppImage' || true)
           if [ -n "$app" ]; then
             cp "$app" saida/Kipper-Linux.AppImage
@@ -137,7 +145,8 @@ jobs:
             echo "### Kipper $VERSAO"
             echo
             for f in Kipper-Windows.exe Kipper-Fedora.rpm Kipper-Ubuntu-Debian.deb Kipper-Linux.AppImage \
-                     Kipper-Flatpak.flatpak Kipper-Matsu-OS.flatpak instalar.sh SHA256SUMS.txt atualizacoes.json; do
+                     Kipper-Flatpak.flatpak Kipper-Matsu-OS.flatpak Kipper-Android.apk Kipper-Android-32bits.apk \
+                     instalar.sh SHA256SUMS.txt atualizacoes.json; do
               if [ -f "saida/$f" ]; then
                 echo "- ✅ \`$f\` ($(du -h "saida/$f" | cut -f1))"
               else

@@ -21,6 +21,7 @@ TIPOS = {
     "appimage": "Kipper-Linux.AppImage",
     "flatpak": "Kipper-Flatpak.flatpak",
     "matsu": "Kipper-Matsu-OS.flatpak",
+    "android": "Kipper-Android.apk",
 }
 
 

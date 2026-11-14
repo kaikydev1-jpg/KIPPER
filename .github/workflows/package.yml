@@ -1684,18 +1684,19 @@ jobs:
         run: |
           case "${{ inputs.android_identity }}" in
             release)
-              echo "package=org.cutwire.drift" >> "$GITHUB_OUTPUT"
-              echo "app_name=Drift" >> "$GITHUB_OUTPUT"
+              echo "package=io.github.kaikydev1jpg.kipper" >> "$GITHUB_OUTPUT"
+              echo "app_name=Kipper" >> "$GITHUB_OUTPUT"
               echo "version_code=" >> "$GITHUB_OUTPUT"
               ;;
             nightly)
-              echo "package=org.cutwire.drift.nightly" >> "$GITHUB_OUTPUT"
-              echo "app_name=Drift Nightly" >> "$GITHUB_OUTPUT"
+              echo "package=io.github.kaikydev1jpg.kipper.nightly" >> "$GITHUB_OUTPUT"
+              echo "app_name=Kipper Nightly" >> "$GITHUB_OUTPUT"
               echo "version_code=${{ github.run_number }}" >> "$GITHUB_OUTPUT"
               ;;
             *)
-              echo "package=org.cutwire.drift.ci" >> "$GITHUB_OUTPUT"
-              echo "app_name=Drift CI" >> "$GITHUB_OUTPUT"
+              # Kipper: versão de teste, instala ao lado da oficial.
+              echo "package=io.github.kaikydev1jpg.kipper.teste" >> "$GITHUB_OUTPUT"
+              echo "app_name=Kipper Teste" >> "$GITHUB_OUTPUT"
               echo "version_code=${{ github.run_number }}" >> "$GITHUB_OUTPUT"
               ;;
           esac
@@ -1734,6 +1735,7 @@ jobs:
           KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          IDENTITY: ${{ inputs.android_identity }}
           ABI: ${{ matrix.abi }}
           VERSION: ${{ env.ASSET_LABEL }}
         run: |
@@ -1744,17 +1746,26 @@ jobs:
           [ -n "$APK" ] || { echo "no release APK under $BUILD/android-build" >&2; exit 1; }
 
           mkdir -p dist
-          OUT="dist/Drift-${VERSION}-${ABI}.apk"
-
-          if [ -z "${KEYSTORE_B64:-}" ]; then
-            echo "::warning::ANDROID_KEYSTORE_BASE64 not set; uploading unsigned APK"
-            cp "$APK" "$OUT"
-            exit 0
-          fi
-
+          OUT="dist/Kipper-${VERSION}-${ABI}.apk"
           BT="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/* | sort -V | tail -1)"
           KS="$RUNNER_TEMP/release.jks"
-          printf '%s' "$KEYSTORE_B64" | base64 -d > "$KS"
+
+          if [ -z "${KEYSTORE_B64:-}" ]; then
+            # Kipper: APK sem assinatura não instala. Sem a chave oficial (segredo do repositório),
+            # assina com a chave de TESTE pública (android/kipper-teste.keystore): serve para testar
+            # e instala por cima da versão de teste anterior. A versão oficial exige a chave secreta.
+            if [ "${IDENTITY}" = "release" ]; then
+              echo "::error::Versão oficial do Android sem ANDROID_KEYSTORE_BASE64: não assino com a chave de teste."
+              exit 1
+            fi
+            echo "::warning::Sem a chave oficial: APK assinado com a chave de teste do Kipper"
+            cp android/kipper-teste.keystore "$KS"
+            KEYSTORE_PASSWORD=kipper-teste
+            KEY_ALIAS=kipper-teste
+            export KEYSTORE_PASSWORD KEY_ALIAS
+          else
+            printf '%s' "$KEYSTORE_B64" | base64 -d > "$KS"
+          fi
           "$BT/zipalign" -p -f 4 "$APK" "$RUNNER_TEMP/aligned.apk"
           "$BT/apksigner" sign \
             --ks "$KS" --ks-pass env:KEYSTORE_PASSWORD --key-pass env:KEYSTORE_PASSWORD \
@@ -1766,5 +1777,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: android-apk-${{ matrix.abi }}
-          path: dist/Drift-${{ env.ASSET_LABEL }}-${{ matrix.abi }}.apk
+          path: dist/Kipper-${{ env.ASSET_LABEL }}-${{ matrix.abi }}.apk
           if-no-files-found: error

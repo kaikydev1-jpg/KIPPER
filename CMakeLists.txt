@@ -2748,9 +2748,9 @@ if(ANDROID)
         list(APPEND _drift_android_extra_libs "${_crypto}" "${_ssl}")
     endforeach()
 
-    set(DRIFT_ANDROID_PACKAGE_NAME "org.cutwire.drift" CACHE STRING
-        "Android application id (use org.cutwire.drift.ci for side-by-side test builds)")
-    set(DRIFT_ANDROID_APP_NAME "Drift" CACHE STRING
+    set(DRIFT_ANDROID_PACKAGE_NAME "io.github.kaikydev1jpg.kipper" CACHE STRING
+        "Android application id (Kipper: io.github.kaikydev1jpg.kipper.teste for side-by-side test builds)")
+    set(DRIFT_ANDROID_APP_NAME "Kipper" CACHE STRING
         "Launcher label")
     # versionName is PROJECT_VERSION — same string the desktop binary embeds as DRIFT_VERSION.
     # versionCode is the Play-Store integer; default tracks that semver so a desktop bump is an
