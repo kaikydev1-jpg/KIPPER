@@ -9,7 +9,9 @@ namespace {
 
 QString tr(const char *source)
 {
-    return QCoreApplication::translate("CrashReason", source);
+    // Kipper: o lupdate guarda os tr() deste arquivo no contexto do namespace ("drift::crash"),
+    // não em "CrashReason"; com o nome antigo as frases nunca saíam traduzidas.
+    return QCoreApplication::translate("drift::crash", source);
 }
 
 QString normalized(const QString &path)
