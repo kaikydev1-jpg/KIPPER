@@ -62,11 +62,9 @@ const QStringList kEssentialAddonIds = {
 };
 
 // First-run Quick Setup list: the essentials plus the content packs it offers on top.
+// Kipper: efeitos, transições e efeitos de áudio vêm junto com o programa (o instalador leva o
+// catálogo inteiro, DRIFT_BUNDLE_CORE_PACKAGES_ONLY=OFF), então não dependem de download.
 const QStringList kQuickSetupRequiredIds = {
-    QStringLiteral("effects.core"),
-    QStringLiteral("transitions.core"),
-    QStringLiteral("audioeffects.core"),
-    QStringLiteral("effects.trending"),
     QStringLiteral("fonts.essentials"),
     QStringLiteral("looks.essentials"),
 };
@@ -1392,7 +1390,7 @@ QVariantMap AddonManager::inspectUserPackage(const QUrl &url)
     const auto info = readManifest(staged, &error, Container::User);
     if (!info) {
         QFile::remove(staged);
-        return {{QStringLiteral("error"), tr("This is not a Drift effect file (%1).").arg(error)}};
+        return {{QStringLiteral("error"), tr("This is not a Kipper effect file (%1).").arg(error)}};
     }
     m_userPackagePath = staged;
     const PackageProvide &provide = info->provides.first();
@@ -1566,7 +1564,7 @@ QVariantMap AddonManager::inspectAddonFile(const QUrl &url)
         else if (drift::zip::looksLikeZip(head))
             m_addonFileType = QStringLiteral("zip");
         else
-            return {{QStringLiteral("error"), tr("This is not a Drift addon, a .driftfx or a Drift Forge zip.")}};
+            return {{QStringLiteral("error"), tr("This is not a Kipper addon, a .driftfx or a Drift Forge zip.")}};
 
         if (url.isLocalFile()) {
             path = url.toLocalFile();
@@ -1700,7 +1698,7 @@ QVariantMap AddonManager::inspectAddonFile(const QUrl &url)
 
     if (!info || !checkCompatible(*info, &error)) {
         discardAddonFile();
-        return {{QStringLiteral("error"), tr("Drift cannot use this file: %1.").arg(error)}};
+        return {{QStringLiteral("error"), tr("Kipper cannot use this file: %1.").arg(error)}};
     }
 
     m_addonFileId = info->id;

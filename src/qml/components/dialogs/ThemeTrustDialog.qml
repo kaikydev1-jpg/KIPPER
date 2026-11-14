@@ -34,7 +34,7 @@ ThemedDialog {
             wrapMode: Text.WordWrap
             size: "sm"
             color: Theme.c.themeTrustDialog.foreground
-            text: qsTr("“%1” includes QML files that replace controls. Those files run with Drift’s permissions. Trust a theme only after you have read it.")
+            text: qsTr("“%1” includes QML files that replace controls. Those files run with Kipper’s permissions. Trust a theme only after you have read it.")
                   .arg(root.themeId)
         }
 

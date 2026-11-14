@@ -40,7 +40,11 @@ Item {
         anchors.top: parent.top
         anchors.right: parent.right
         anchors.margins: Theme.spacingXl
+        // Kipper: espaço para os botões da janela à direita.
+        anchors.rightMargin: Theme.spacingXl + (ShellBridge.main?.chromeRightInset ?? 0)
         spacing: Theme.spacingSm
+        // Clicável dentro da faixa de título (o resto do topo arrasta a janela).
+        Component.onCompleted: WindowChrome.setHitTestVisible(appActions, true)
 
         // The header's own Settings menu, minus Multicam, which needs a timeline.
         IconButton {

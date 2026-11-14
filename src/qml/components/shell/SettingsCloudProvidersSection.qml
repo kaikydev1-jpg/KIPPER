@@ -9,7 +9,7 @@ Column {
         width: parent.width
         wrapMode: Text.Wrap
         color: Theme.c.settingsCloudProvidersSection.foregroundMuted
-        text: qsTr("Keys are stored unencrypted in Drift's settings. ELEVENLABS_API_KEY and FISH_API_KEY in the environment take precedence. Use is billed to your own account.")
+        text: qsTr("Keys are stored unencrypted in Kipper's settings. ELEVENLABS_API_KEY and FISH_API_KEY in the environment take precedence. Use is billed to your own account.")
     }
 
     Repeater {
@@ -115,7 +115,7 @@ Column {
             ThemedSwitch {
                 checked: { void provider.rev; return provider.cloud.consent(provider.modelData.id) }
                 text: qsTr("Allow sending audio and text to %1").arg(provider.modelData.name)
-                tooltip: qsTr("Needed before Drift or a connected agent can transcribe or generate audio with this service")
+                tooltip: qsTr("Needed before Kipper or a connected agent can transcribe or generate audio with this service")
                 onToggled: provider.cloud.setConsent(provider.modelData.id, checked)
             }
 

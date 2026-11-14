@@ -213,7 +213,7 @@ void StabilizeController::run(int trackIndex, int clipIndex)
     m_app->setPlaying(false);
 
     if (!drift::hasVideoFilter("vidstabdetect") || !drift::hasVideoFilter("vidstabtransform")) {
-        m_app->setLastMessage(tr("This build of Drift has no video stabilization support"),
+        m_app->setLastMessage(tr("This build of Kipper has no video stabilization support"),
                        QStringLiteral("error"));
         return;
     }

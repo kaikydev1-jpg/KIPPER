@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kipper — editor de vídeo gratuito</title>
+  <meta name="description" content="Kipper é um editor de vídeo gratuito e de código aberto para Windows e Linux. Do primeiro corte ao filme inteiro, sem marca d'água, sem conta e sem assinatura.">
+  <meta name="theme-color" content="#f6f5f2" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e0e0f" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="Kipper — editor de vídeo gratuito">
+  <meta property="og:description" content="Do primeiro corte ao filme inteiro. Sem marca d'água, sem conta, sem assinatura.">
+  <meta property="og:image" content="/assets/og.png">
+  <link rel="icon" href="/assets/kipper-icon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip" href="#conteudo" data-i18n="skip">Pular para o conteúdo</a>
+
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Kipper, página inicial">
+      <img src="/assets/kipper-icon.svg" alt="" width="32" height="32">
+      <span>Kipper</span>
+    </a>
+    <nav class="nav" aria-label="Seções">
+      <a href="#recursos" data-i18n="nav.features">Recursos</a>
+      <a href="#para-quem" data-i18n="nav.who">Para quem</a>
+      <a href="#baixar" data-i18n="nav.download">Baixar</a>
+    </nav>
+    <div class="topbar-actions">
+      <button class="lang" type="button" id="lang-toggle" aria-label="Mudar idioma para inglês">EN</button>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/kaikydev1-jpg/KIPPER" rel="noopener">
+        <svg class="gh" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow" data-i18n="hero.eyebrow">Grátis · Código aberto · Windows e Linux</p>
+        <h1 data-i18n-html="hero.title">Edite vídeos do primeiro corte <em>ao filme inteiro.</em></h1>
+        <p class="lede" data-i18n="hero.lede">Kipper é um editor de vídeo completo, sem marca d'água, sem conta e sem assinatura. Fácil para quem está começando, com tudo o que quem já edita precisa.</p>
+        <div class="cta">
+          <a class="btn btn-primary" id="cta-download" href="#baixar">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9m0 0 3.5-3.5M10 12 6.5 8.5M4 15.5h12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span id="cta-label" data-i18n="hero.cta">Baixar o Kipper</span>
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/kaikydev1-jpg/KIPPER" rel="noopener" data-i18n="hero.source">Ver o código no GitHub</a>
+        </div>
+        <p class="fineprint" id="cta-hint" data-i18n="hero.hint">Windows 10 e 11 · Fedora · Ubuntu · Matsu OS · qualquer Linux</p>
+      </div>
+      <figure class="hero-shot">
+        <img src="/assets/editor.png" width="1600" height="1000" alt="O editor do Kipper: mídia à esquerda, prévia no meio, ajustes à direita e a linha do tempo embaixo." loading="eager" fetchpriority="high">
+      </figure>
+    </section>
+
+    <section class="band" aria-label="Destaques">
+      <ul class="facts">
+        <li><strong data-i18n="facts.free.t">Grátis de verdade</strong><span data-i18n="facts.free.d">Sem marca d'água e sem plano pago escondido.</span></li>
+        <li><strong data-i18n="facts.local.t">Tudo no seu computador</strong><span data-i18n="facts.local.d">Nada sobe para a internet. Sem telemetria.</span></li>
+        <li><strong data-i18n="facts.open.t">Código aberto</strong><span data-i18n="facts.open.d">Licença GPLv3. Qualquer pessoa pode conferir.</span></li>
+        <li><strong data-i18n="facts.lang.t">Em português</strong><span data-i18n="facts.lang.d">Português do Brasil e inglês.</span></li>
+      </ul>
+    </section>
+
+    <section class="section" id="recursos">
+      <div class="section-head">
+        <h2 data-i18n="features.title">O que dá para fazer</h2>
+        <p data-i18n="features.lede">Os recursos de um editor profissional, organizados para não atrapalhar quem só quer cortar e publicar.</p>
+      </div>
+
+      <div class="feature-split">
+        <div class="feature-copy">
+          <h3 data-i18n="vertical.title">Vídeo em pé, do jeito certo</h3>
+          <p data-i18n="vertical.text">Projeto em 9:16 para Reels, TikTok e Shorts? A prévia fica em pé, do lado, e o resto da tela se ajeita em volta. Volte para 16:9 e o editor volta junto.</p>
+          <ul class="ticks">
+            <li data-i18n="vertical.t1">Formatos prontos: Reels, TikTok, Shorts, Stories, YouTube</li>
+            <li data-i18n="vertical.t2">Reenquadramento que segue o rosto</li>
+            <li data-i18n="vertical.t3">Legendas automáticas no tamanho certo</li>
+          </ul>
+        </div>
+        <figure class="feature-shot portrait">
+          <img src="/assets/portrait.png" width="1600" height="1000" alt="Kipper com um projeto em pé: a prévia vertical à direita e a linha do tempo à esquerda." loading="lazy">
+        </figure>
+      </div>
+
+      <ul class="grid">
+        <li class="card">
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h6M7 14h10"/></svg></span>
+          <h3 data-i18n="f.captions.t">Legendas automáticas</h3>
+          <p data-i18n="f.captions.d">A fala vira texto no próprio computador. Corte frases, tire os "é..." e estilize tudo de uma vez.</p>
+        </li>
+        <li class="card">
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/></svg></span>
+          <h3 data-i18n="f.color.t">Correção de cor</h3>
+          <p data-i18n="f.color.d">Rodas de sombra, meio-tom e luz, curvas, HSL e LUTs .cube, com histograma e vetorscópio.</p>
+        </li>
+        <li class="card">
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 18 9 8l4 6 3-4 4 8z"/><circle cx="9" cy="8" r="1.5"/><circle cx="16" cy="10" r="1.5"/></svg></span>
+          <h3 data-i18n="f.keys.t">Quadros-chave e curvas</h3>
+          <p data-i18n="f.keys.d">Anime posição, escala, rotação, opacidade e qualquer efeito, com editor de curvas.</p>
+        </li>
+        <li class="card">
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7a5 5 0 1 0 5 5"/><circle cx="12" cy="12" r="1.5"/></svg></span>
+          <h3 data-i18n="f.track.t">Máscaras que acompanham</h3>
+          <p data-i18n="f.track.d">Rastreamento de ponto e de plano, desfoque e pixelização em qualquer área, recorte de pessoas.</p>
+        </li>
+        <li class="card">
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 14v-4M8 17V7M12 20V4M16 16V8M20 13v-2"/></svg></span>
+          <h3 data-i18n="f.audio.t">Áudio que soa pronto</h3>
+          <p data-i18n="f.audio.d">Limpeza de voz, medidor de volume, equalizador, narração gravada e música que abaixa sozinha na fala.</p>
+        </li>
+        <li class="card">
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5h6v6H5zM13 13h6v6h-6z"/><path d="M13 5h6v6M5 13v6h6"/></svg></span>
+          <h3 data-i18n="f.fx.t">Mais de 150 transições</h3>
+          <p data-i18n="f.fx.d">E dezenas de efeitos, todos com prévia no seu próprio vídeo, antes de aplicar.</p>
+        </li>
+        <li class="card">
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h13"/><path d="M18 14l3 3-3 3"/></svg></span>
+          <h3 data-i18n="f.timeline.t">Linha do tempo que obedece</h3>
+          <p data-i18n="f.timeline.d">Várias faixas, corte em ondulação, ímã, congelar quadro, velocidade e marcadores.</p>
+        </li>
+        <li class="card">
+          <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4v11m0 0 4-4m-4 4-4-4"/><path d="M5 19h14"/></svg></span>
+          <h3 data-i18n="f.export.t">Exporta até 4K</h3>
+          <p data-i18n="f.export.d">MP4, GIF ou só o áudio, do vídeo inteiro ou de um trecho. A prévia é exatamente o que sai.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section" id="para-quem">
+      <div class="section-head">
+        <h2 data-i18n="who.title">Para quem começa, para quem já edita</h2>
+        <p data-i18n="who.lede">O mesmo programa cresce junto com você.</p>
+      </div>
+      <ol class="levels">
+        <li>
+          <span class="level-tag" data-i18n="who.l1.tag">Começando</span>
+          <h3 data-i18n="who.l1.t">Corte, legenda e publique</h3>
+          <p data-i18n="who.l1.d">Arraste o vídeo, corte o que sobrou, gere a legenda e exporte no formato da rede social.</p>
+        </li>
+        <li>
+          <span class="level-tag" data-i18n="who.l2.tag">Intermediário</span>
+          <h3 data-i18n="who.l2.t">Deixe com cara de pronto</h3>
+          <p data-i18n="who.l2.d">Transições, títulos com estilo, música no ritmo, cor acertada e áudio limpo.</p>
+        </li>
+        <li>
+          <span class="level-tag" data-i18n="who.l3.tag">Avançado</span>
+          <h3 data-i18n="who.l3.t">Faça um filme</h3>
+          <p data-i18n="who.l3.d">Áreas de trabalho para cor, áudio e máscaras, várias câmeras, 3D na linha do tempo e proxies para 4K.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="section download" id="baixar">
+      <div class="section-head">
+        <h2 data-i18n="dl.title">Baixar o Kipper</h2>
+        <p data-i18n="dl.lede">No Linux, o jeito mais fácil é este comando: ele descobre o seu sistema, baixa o arquivo certo, confere e instala.</p>
+      </div>
+
+      <div class="terminal" role="group" aria-label="Instalar pelo terminal">
+        <code id="install-cmd">curl -fsSL https://github.com/kaikydev1-jpg/KIPPER/releases/latest/download/instalar.sh | bash</code>
+        <button class="copy" type="button" id="copy-cmd" aria-label="Copiar comando">
+          <svg class="i-copy" viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M4 13V5a1 1 0 0 1 1-1h8"/></svg>
+          <svg class="i-check" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5 8 14l7.5-8"/></svg>
+          <span data-i18n="dl.copy">Copiar</span>
+        </button>
+      </div>
+
+      <ul class="systems">
+        <li class="system" data-os="windows">
+          <h3>Windows</h3>
+          <p data-i18n="dl.win">Windows 10 e 11. Instala só para o seu usuário, sem pedir administrador.</p>
+          <a class="btn btn-primary btn-sm" href="https://github.com/kaikydev1-jpg/KIPPER/releases/latest/download/Kipper-Windows.exe" data-i18n="dl.get">Baixar</a>
+          <span class="file">Kipper-Windows.exe</span>
+        </li>
+        <li class="system" data-os="matsu">
+          <h3>Matsu OS</h3>
+          <p data-i18n="dl.matsu">Já abre com o visual do Matsu OS.</p>
+          <a class="btn btn-primary btn-sm" href="https://github.com/kaikydev1-jpg/KIPPER/releases/latest/download/Kipper-Matsu-OS.flatpak" data-i18n="dl.get">Baixar</a>
+          <span class="file">Kipper-Matsu-OS.flatpak</span>
+        </li>
+        <li class="system" data-os="fedora">
+          <h3>Fedora</h3>
+          <p data-i18n-html="dl.fedora">Abra o arquivo e instale pela loja do sistema, ou use <code>sudo dnf install ./Kipper-Fedora.rpm</code>.</p>
+          <a class="btn btn-primary btn-sm" href="https://github.com/kaikydev1-jpg/KIPPER/releases/latest/download/Kipper-Fedora.rpm" data-i18n="dl.get">Baixar</a>
+          <span class="file">Kipper-Fedora.rpm</span>
+        </li>
+        <li class="system" data-os="atomic">
+          <h3>Fedora Atomic</h3>
+          <p data-i18n="dl.atomic">Silverblue, Kinoite e parecidos: pelo Flatpak, sem mexer no sistema.</p>
+          <a class="btn btn-primary btn-sm" href="https://github.com/kaikydev1-jpg/KIPPER/releases/latest/download/Kipper-Flatpak.flatpak" data-i18n="dl.get">Baixar</a>
+          <span class="file">Kipper-Flatpak.flatpak</span>
+        </li>
+        <li class="system" data-os="debian">
+          <h3>Ubuntu e Debian</h3>
+          <p data-i18n-html="dl.debian">Também Linux Mint, Pop!_OS e Zorin. Ou <code>sudo apt install ./Kipper-Ubuntu-Debian.deb</code>.</p>
+          <a class="btn btn-primary btn-sm" href="https://github.com/kaikydev1-jpg/KIPPER/releases/latest/download/Kipper-Ubuntu-Debian.deb" data-i18n="dl.get">Baixar</a>
+          <span class="file">Kipper-Ubuntu-Debian.deb</span>
+        </li>
+        <li class="system" data-os="linux">
+          <h3 data-i18n="dl.other.t">Outro Linux</h3>
+          <p data-i18n="dl.other">AppImage roda em qualquer Linux sem instalar. Flatpak, em qualquer distro que tenha.</p>
+          <div class="two">
+            <a class="btn btn-primary btn-sm" href="https://github.com/kaikydev1-jpg/KIPPER/releases/latest/download/Kipper-Linux.AppImage">AppImage</a>
+            <a class="btn btn-ghost btn-sm" href="https://github.com/kaikydev1-jpg/KIPPER/releases/latest/download/Kipper-Flatpak.flatpak">Flatpak</a>
+          </div>
+          <span class="file">Kipper-Linux.AppImage</span>
+        </li>
+      </ul>
+      <p class="fineprint center" data-i18n-html="dl.sums">Todos os arquivos e as somas SHA-256 ficam na <a href="https://github.com/kaikydev1-jpg/KIPPER/releases">página de versões do GitHub</a>.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-brand">
+      <img src="/assets/kipper-icon.svg" alt="" width="28" height="28">
+      <span>Kipper</span>
+    </div>
+    <p data-i18n-html="footer.credits">Software livre sob a licença GPLv3. Baseado no <a href="https://github.com/CutWire-Studios/Drift" rel="noopener">Drift</a>, da CutWire Studios, com ideias de design do <a href="https://github.com/jub0t/Concat" rel="noopener">Concat</a>.</p>
+    <p><a href="https://github.com/kaikydev1-jpg/KIPPER" rel="noopener" data-i18n="footer.source">Código-fonte</a> · <a href="https://github.com/kaikydev1-jpg/KIPPER/issues" rel="noopener" data-i18n="footer.issues">Relatar um problema</a></p>
+  </footer>
+
+  <script src="/main.js" defer></script>
+</body>
+</html>

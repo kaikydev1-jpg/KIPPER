@@ -1046,7 +1046,7 @@
       "id": "about-version",
       "target": "settings:about#about-version",
       "context": "SettingsAboutPage",
-      "source": "Drift",
+      "source": "Kipper",
       "keywords": "",
       "needs": []
     },
@@ -1057,7 +1057,7 @@
       "source": "Check for updates on startup",
       "keywords": "update version release newer",
       "needs": [],
-      "descriptionSource": "Once a day, check whether a newer Drift has been released."
+      "descriptionSource": "Once a day, check whether a newer Kipper has been released."
     },
     {
       "id": "about-check-for-updates",
@@ -1089,7 +1089,7 @@
       "id": "about-drift",
       "target": "settings:about#about-drift",
       "context": "SettingsAboutPage",
-      "source": "About Drift",
+      "source": "About Kipper",
       "keywords": "license credits version",
       "needs": [],
       "descriptionSource": "Open-source video editor by CutWire Studios."
@@ -1118,7 +1118,7 @@
       "source": "Scene detection sensitivity",
       "keywords": "shot cut detect",
       "needs": [],
-      "descriptionSource": "Higher finds more cuts. When a clip is flat or heavily graded, Drift still falls back to an adaptive threshold."
+      "descriptionSource": "Higher finds more cuts. When a clip is flat or heavily graded, Kipper still falls back to an adaptive threshold."
     },
     {
       "id": "ai-agent-access",
@@ -1136,7 +1136,7 @@
       "source": "Start agent access on launch",
       "keywords": "mcp startup autostart agent",
       "needs": [],
-      "descriptionSource": "Turn agent access on automatically the next time you open Drift. Turning access off resets this."
+      "descriptionSource": "Turn agent access on automatically the next time you open Kipper. Turning access off resets this."
     },
     {
       "id": "ai-agent-notifications",
@@ -1189,6 +1189,15 @@
       "source": "Interface size",
       "keywords": "scale zoom dpi",
       "needs": []
+    },
+    {
+      "id": "appearance-window-buttons",
+      "target": "settings:appearance#appearance-window-buttons",
+      "context": "SettingsAppearancePage",
+      "source": "Window buttons",
+      "keywords": "title bar window buttons close minimize maximize mac windows gnome kde",
+      "needs": [],
+      "descriptionSource": "How minimize, maximize and close look. Automatic follows your system."
     },
     {
       "id": "appearance-layout",
@@ -1347,7 +1356,7 @@
       "source": "Proxy",
       "keywords": "proxy http socks5 internet firewall network",
       "needs": [],
-      "descriptionSource": "How Drift reaches the internet for downloads, updates, and online services. Applies immediately."
+      "descriptionSource": "How Kipper reaches the internet for downloads, updates, and online services. Applies immediately."
     },
     {
       "id": "network-proxy-server",
@@ -1553,7 +1562,7 @@
       "source": "Graphics card",
       "keywords": "gpu integrated discrete nvidia power battery",
       "needs": [],
-      "descriptionSource": "Which graphics card Drift runs on. High performance keeps video decoded on an NVIDIA card on that card; power saving uses less battery. Takes effect after restart."
+      "descriptionSource": "Which graphics card Kipper runs on. High performance keeps video decoded on an NVIDIA card on that card; power saving uses less battery. Takes effect after restart."
     },
     {
       "id": "preview-graphics-card-system-settings",
@@ -1562,7 +1571,7 @@
       "source": "Graphics card",
       "keywords": "gpu windows display nvidia",
       "needs": [],
-      "descriptionSource": "Choose which graphics card Drift runs on in Windows Settings, under Display > Graphics. Takes effect after restart."
+      "descriptionSource": "Choose which graphics card Kipper runs on in Windows Settings, under Display > Graphics. Takes effect after restart."
     },
     {
       "id": "preview-use-proxies",
@@ -1598,7 +1607,7 @@
       "source": "Proxy name patterns",
       "keywords": "proxy naming file name regex",
       "needs": [],
-      "descriptionSource": "Linking a proxy teaches Drift its name pattern. Proxies next to your media that match a pattern below link automatically."
+      "descriptionSource": "Linking a proxy teaches Kipper its name pattern. Proxies next to your media that match a pattern below link automatically."
     },
     {
       "id": "timeline-mouse-wheel-scrolls",

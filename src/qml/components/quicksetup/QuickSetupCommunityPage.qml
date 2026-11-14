@@ -5,8 +5,9 @@ import Drift
 QuickSetupPage {
     id: root
 
-    readonly property string discordUrl: "https://cutwire.org/discord"
-    readonly property string email: "contact@cutwire.org"
+    // Kipper: o canal é o GitHub do projeto.
+    readonly property string projectUrl: "https://github.com/kaikydev1-jpg/KIPPER"
+    readonly property string issuesUrl: "https://github.com/kaikydev1-jpg/KIPPER/issues"
 
     title: qsTr("You're all set")
     subtitle: qsTr("Need help or have an idea? We'd love to hear from you.")
@@ -36,7 +37,7 @@ QuickSetupPage {
         id: clipboardProxy
 
         visible: false
-        text: root.email
+        text: root.issuesUrl
     }
 
     Item {
@@ -92,13 +93,13 @@ QuickSetupPage {
     ThemedButton {
         anchors.horizontalCenter: parent.horizontalCenter
         variant: "primary"
-        glyph: "users"
-        text: qsTr("Join our Discord")
+        glyph: "external-link"
+        text: qsTr("Open Kipper on GitHub")
         topPadding: root.mobile ? Theme.spacingXl : Theme.spacingMd
         bottomPadding: topPadding
         leftPadding: Theme.spacing2xl
         rightPadding: leftPadding
-        onClicked: Qt.openUrlExternally(root.discordUrl)
+        onClicked: Qt.openUrlExternally(root.projectUrl)
     }
 
     Rectangle {
@@ -119,14 +120,14 @@ QuickSetupPage {
             spacing: Theme.spacingMd
 
             IconGlyph {
-                glyph: "mail"
+                glyph: "bug"
                 iconSize: 18
                 iconColor: Theme.c.quickSetup.iconForeground
             }
 
             Text {
                 Layout.fillWidth: true
-                text: root.email
+                text: root.issuesUrl.replace("https://", "")
                 elide: Text.ElideRight
                 color: addressArea.containsMouse ? Theme.c.quickSetup.dotActive : Theme.c.quickSetup.foreground
                 font.family: Theme.fontFamily
@@ -134,7 +135,7 @@ QuickSetupPage {
                 font.underline: addressArea.containsMouse
 
                 Accessible.role: Accessible.Link
-                Accessible.name: root.email
+                Accessible.name: root.issuesUrl
 
                 MouseArea {
                     id: addressArea
@@ -142,13 +143,13 @@ QuickSetupPage {
                     anchors.fill: parent
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Qt.openUrlExternally("mailto:" + root.email)
+                    onClicked: Qt.openUrlExternally(root.issuesUrl)
                 }
             }
 
             IconButton {
                 glyph: root.copied ? Theme.icons.check : Theme.icons.copy
-                tooltip: root.copied ? qsTr("Copied") : qsTr("Copy email address")
+                tooltip: root.copied ? qsTr("Copied") : qsTr("Copy link")
                 onClicked: {
                     clipboardProxy.selectAll()
                     clipboardProxy.copy()
@@ -161,10 +162,10 @@ QuickSetupPage {
 
     Text {
         width: parent.width
-        visible: CrashReports.supported
+        visible: false // Kipper não envia relatórios (sem telemetria)
         horizontalAlignment: Text.AlignHCenter
         wrapMode: Text.WordWrap
-        text: qsTr("If Drift crashes, it sends an error report to help fix it. No project files or media are included. You can turn this off in Settings.")
+        text: qsTr("If Kipper crashes, it sends an error report to help fix it. No project files or media are included. You can turn this off in Settings.")
         color: Theme.c.quickSetup.foregroundMuted
         font.family: Theme.fontFamily
         font.pixelSize: Theme.fontSizeBase * 0.85

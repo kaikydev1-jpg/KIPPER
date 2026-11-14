@@ -939,7 +939,7 @@ bool SourceLabController::buildPipeline(const QString &mode, const QVariantMap &
         p.stabilize = video && r.stabilize;
         p.denoise = r.denoise && hasAudio();
         if (p.stabilize && !stabilizeAvailable()) {
-            *error = tr("This build of Drift has no video stabilization support");
+            *error = tr("This build of Kipper has no video stabilization support");
             return false;
         }
         if (p.denoise && !denoiseAvailable()) {

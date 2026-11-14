@@ -4,7 +4,7 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <source>About Drift</source>
+        <source>About Kipper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12,7 +12,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift</source>
+        <source>Kipper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -90,7 +90,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This is not a Drift effect file (%1).</source>
+        <source>This is not a Kipper effect file (%1).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -98,11 +98,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This is not a Drift addon, a .driftfx or a Drift Forge zip.</source>
+        <source>This is not a Kipper addon, a .driftfx or a Drift Forge zip.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift cannot use this file: %1.</source>
+        <source>Kipper cannot use this file: %1.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -209,11 +209,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Skip the manual toggle next time you open Drift. Turning access off resets this.</source>
+        <source>Skip the manual toggle next time you open Kipper. Turning access off resets this.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Let Cursor or Claude edit this project for you — add clips, change the timeline, and check how it looks. Only programs on this device. Off by default each time you open Drift, unless you turn on “Start agent on startup” below; turn it off here when you finish. The key stays the same between sessions, so a setup you pasted once keeps working.</source>
+        <source>Let Cursor or Claude edit this project for you — add clips, change the timeline, and check how it looks. Only programs on this device. Off by default each time you open Kipper, unless you turn on “Start agent on startup” below; turn it off here when you finish. The key stays the same between sessions, so a setup you pasted once keeps working.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -895,7 +895,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift project (*.drift)</source>
+        <source>Kipper project (*.drift)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1170,7 +1170,7 @@
 <context>
     <name>AndroidMain</name>
     <message>
-        <source>Drift project (*.drift)</source>
+        <source>Kipper project (*.drift)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1971,7 +1971,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>A newer version of Drift is ready</source>
+        <source>A newer version of Kipper is ready</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1983,7 +1983,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>About Drift</source>
+        <source>About Kipper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3039,7 +3039,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The interface graphics API you chose did not start, so Drift went back to OpenGL.</source>
+        <source>The interface graphics API you chose did not start, so Kipper went back to OpenGL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5246,7 +5246,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <source>“%1” matches this clip and %n other clips in the project. Drift will link them all, and link future imports whose proxy follows the same name.</source>
+        <source>“%1” matches this clip and %n other clips in the project. Kipper will link them all, and link future imports whose proxy follows the same name.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>
@@ -5268,7 +5268,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift can’t write to the folders listed below, because of their permissions or because they are on a read-only network share. The proxies or reversed clips were saved to Drift’s cache instead.</source>
+        <source>Kipper can’t write to the folders listed below, because of their permissions or because they are on a read-only network share. The proxies or reversed clips were saved to Kipper’s cache instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5283,7 +5283,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <source>Imported %n files into %1 folders. %2 files were skipped — Drift does not recognize their format. Drag them onto the bin to try anyway.</source>
+        <source>Imported %n files into %1 folders. %2 files were skipped — Kipper does not recognize their format. Drag them onto the bin to try anyway.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>
@@ -5995,7 +5995,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Not a sound Drift knows. Closest: %1</source>
+        <source>Not a sound Kipper knows. Closest: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6119,7 +6119,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Type one of the %1 sounds Drift knows, or pick a suggestion.</source>
+        <source>Type one of the %1 sounds Kipper knows, or pick a suggestion.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7128,15 +7128,15 @@
 <context>
     <name>CrashReport</name>
     <message>
-        <source>Drift closed unexpectedly</source>
+        <source>Kipper closed unexpectedly</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift did not close properly</source>
+        <source>Kipper did not close properly</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift did not close properly last time. If it keeps happening, you can start in safe mode, which uses the default graphics backend and loads no add-ons for this session.</source>
+        <source>Kipper did not close properly last time. If it keeps happening, you can start in safe mode, which uses the default graphics backend and loads no add-ons for this session.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8174,7 +8174,7 @@
 <context>
     <name>EditorHeader</name>
     <message>
-        <source>Drift project (*.drift)</source>
+        <source>Kipper project (*.drift)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8292,7 +8292,7 @@
 <context>
     <name>EditorHeaderNotificationsButton</name>
     <message>
-        <source>Notifications — Drift %1 is available</source>
+        <source>Notifications — Kipper %1 is available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8542,7 +8542,7 @@
 <context>
     <name>EffectStacksSection</name>
     <message>
-        <source>Drift effect stack (*.drifteffects)</source>
+        <source>Kipper effect stack (*.drifteffects)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9375,7 +9375,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Needs Drift %1</source>
+        <source>Needs Kipper %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9406,7 +9406,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Needs a newer Drift</source>
+        <source>Needs a newer Kipper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9446,7 +9446,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Requires Drift %1 or newer</source>
+        <source>Requires Kipper %1 or newer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9494,7 +9494,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Restart Drift for this to take effect.</source>
+        <source>Restart Kipper for this to take effect.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9579,7 +9579,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add-ons that make Drift do more.</source>
+        <source>Add-ons that make Kipper do more.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9701,7 +9701,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>prop.json needs a newer version of Drift</source>
+        <source>prop.json needs a newer version of Kipper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11713,7 +11713,7 @@
 <context>
     <name>Main</name>
     <message>
-        <source>Drift %1 is the latest version.</source>
+        <source>Kipper %1 is the latest version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11872,7 +11872,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>About Drift</source>
+        <source>About Kipper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12148,7 +12148,7 @@
 <context>
     <name>MarketItemDetail</name>
     <message>
-        <source>This needs a newer version of Drift. Update the app to install it.</source>
+        <source>This needs a newer version of Kipper. Update the app to install it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -14870,11 +14870,11 @@
 <context>
     <name>NotificationUpdateRow</name>
     <message>
-        <source>Drift %1 is ready to install</source>
+        <source>Kipper %1 is ready to install</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift %1 is available</source>
+        <source>Kipper %1 is available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -15230,11 +15230,11 @@
 <context>
     <name>PlaybackEngine</name>
     <message>
-        <source>%1 decodes on %2, but Drift draws on %3. Every frame is copied through system memory, which is slower than decoding on the graphics card that draws.</source>
+        <source>%1 decodes on %2, but Kipper draws on %3. Every frame is copied through system memory, which is slower than decoding on the graphics card that draws.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 decodes on a different graphics card than the one Drift draws on. Every frame is copied through system memory, which is slower than decoding on the graphics card that draws.</source>
+        <source>%1 decodes on a different graphics card than the one Kipper draws on. Every frame is copied through system memory, which is slower than decoding on the graphics card that draws.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -15320,15 +15320,15 @@
 <context>
     <name>PreferencesController</name>
     <message>
-        <source>Faster preview takes effect after you restart Drift.</source>
+        <source>Faster preview takes effect after you restart Kipper.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The graphics card choice takes effect after you restart Drift.</source>
+        <source>The graphics card choice takes effect after you restart Kipper.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The interface graphics API takes effect after you restart Drift.</source>
+        <source>The interface graphics API takes effect after you restart Kipper.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -15344,11 +15344,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>That file is not a Drift settings export.</source>
+        <source>That file is not a Kipper settings export.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Settings imported. Restart Drift to apply them all.</source>
+        <source>Settings imported. Restart Kipper to apply them all.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -15385,15 +15385,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Launching Drift with prime-run (or DRI_PRIME=1) puts OpenGL on the same card as the decoder.</source>
+        <source>Launching Kipper with prime-run (or DRI_PRIME=1) puts OpenGL on the same card as the decoder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Run Drift on the high-performance graphics card</source>
+        <source>Run Kipper on the high-performance graphics card</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Set Drift to High performance in Windows Settings &gt; Display &gt; Graphics, then restart Drift.</source>
+        <source>Set Kipper to High performance in Windows Settings &gt; Display &gt; Graphics, then restart Kipper.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -15533,11 +15533,11 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Your graphics driver only provides %1. Drift&apos;s preview needs OpenGL 3.3.</source>
+        <source>Your graphics driver only provides %1. Kipper&apos;s preview needs OpenGL 3.3.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift could not start its GPU renderer, so the preview cannot draw.</source>
+        <source>Kipper could not start its GPU renderer, so the preview cannot draw.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -15931,11 +15931,11 @@ If playback stutters, try another.</source>
 <context>
     <name>Project</name>
     <message>
-        <source>This project was saved by a newer version of Drift (project format %1; this build reads up to %2).</source>
+        <source>This project was saved by a newer version of Kipper (project format %1; this build reads up to %2).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This file isn’t a Drift project.</source>
+        <source>This file isn’t a Kipper project.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -15950,11 +15950,11 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>file is too short to be a Drift project</source>
+        <source>file is too short to be a Kipper project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>not a Drift project (bad magic)</source>
+        <source>not a Kipper project (bad magic)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -15982,7 +15982,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>this project was saved by a newer version of Drift (format %1) — update to open it</source>
+        <source>this project was saved by a newer version of Kipper (format %1) — update to open it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -16885,7 +16885,7 @@ If playback stutters, try another.</source>
 <context>
     <name>QuickSetup</name>
     <message>
-        <source>Drift setup</source>
+        <source>Kipper setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -16935,11 +16935,11 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift&apos;s basic effects, transitions, audio effects, fonts and color grading LUTs come as add-ons. Without them the editor will be missing most of what you expect, so they are installed now.</source>
+        <source>Kipper&apos;s basic effects, transitions, audio effects, fonts and color grading LUTs come as add-ons. Without them the editor will be missing most of what you expect, so they are installed now.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Needs a newer version of Drift.</source>
+        <source>Needs a newer version of Kipper.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17018,14 +17018,14 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>If Drift crashes, it sends an error report to help fix it. No project files or media are included. You can turn this off in Settings.</source>
+        <source>If Kipper crashes, it sends an error report to help fix it. No project files or media are included. You can turn this off in Settings.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QuickSetupMockEditor</name>
     <message>
-        <source>Drift</source>
+        <source>Kipper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17052,7 +17052,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift will restart when you finish setup to apply this size.</source>
+        <source>Kipper will restart when you finish setup to apply this size.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -17070,7 +17070,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Choose how Drift looks. You can change this any time in Settings.</source>
+        <source>Choose how Kipper looks. You can change this any time in Settings.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17256,7 +17256,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Quick pointers to the parts of Drift people tend to miss.</source>
+        <source>Quick pointers to the parts of Kipper people tend to miss.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17271,7 +17271,7 @@ If playback stutters, try another.</source>
 <context>
     <name>QuickSetupWelcomePage</name>
     <message>
-        <source>Welcome to Drift</source>
+        <source>Welcome to Kipper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17658,7 +17658,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift will render a reversed copy of this clip so it plays back smoothly. You can keep editing while it runs.</source>
+        <source>Kipper will render a reversed copy of this clip so it plays back smoothly. You can keep editing while it runs.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18213,7 +18213,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift</source>
+        <source>Kipper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18229,7 +18229,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Once a day, check whether a newer Drift has been released.</source>
+        <source>Once a day, check whether a newer Kipper has been released.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18277,7 +18277,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>About Drift</source>
+        <source>About Kipper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18320,7 +18320,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Restart Drift for this to take effect.</source>
+        <source>Restart Kipper for this to take effect.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18344,7 +18344,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Turn agent access on automatically the next time you open Drift. Turning access off resets this.</source>
+        <source>Turn agent access on automatically the next time you open Kipper. Turning access off resets this.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18388,7 +18388,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Higher finds more cuts. When a clip is flat or heavily graded, Drift still falls back to an adaptive threshold.</source>
+        <source>Higher finds more cuts. When a clip is flat or heavily graded, Kipper still falls back to an adaptive threshold.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -18538,7 +18538,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Restart Drift to apply this size.</source>
+        <source>Restart Kipper to apply this size.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18566,7 +18566,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Restart Drift to switch layouts.</source>
+        <source>Restart Kipper to switch layouts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18617,7 +18617,7 @@ If playback stutters, try another.</source>
 <context>
     <name>SettingsAppearanceTranslucency</name>
     <message>
-        <source>Restart Drift to apply window transparency.</source>
+        <source>Restart Kipper to apply window transparency.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18667,7 +18667,7 @@ If playback stutters, try another.</source>
 <context>
     <name>SettingsCloudProvidersSection</name>
     <message>
-        <source>Keys are stored unencrypted in Drift&apos;s settings. ELEVENLABS_API_KEY and FISH_API_KEY in the environment take precedence. Use is billed to your own account.</source>
+        <source>Keys are stored unencrypted in Kipper&apos;s settings. ELEVENLABS_API_KEY and FISH_API_KEY in the environment take precedence. Use is billed to your own account.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18715,7 +18715,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Needed before Drift or a connected agent can transcribe or generate audio with this service</source>
+        <source>Needed before Kipper or a connected agent can transcribe or generate audio with this service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19007,7 +19007,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>How Drift reaches the internet for downloads, updates, and online services. Applies immediately.</source>
+        <source>How Kipper reaches the internet for downloads, updates, and online services. Applies immediately.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19137,7 +19137,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>What draws panels, the timeline and menus. OpenGL hands the preview over without a copy. The others can make the interface smoother but copy every preview frame through the CPU, so playback may get slower. If Drift does not start with your choice, it goes back to OpenGL. Takes effect after restart.</source>
+        <source>What draws panels, the timeline and menus. OpenGL hands the preview over without a copy. The others can make the interface smoother but copy every preview frame through the CPU, so playback may get slower. If Kipper does not start with your choice, it goes back to OpenGL. Takes effect after restart.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19396,7 +19396,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Which graphics card Drift runs on. High performance keeps video decoded on an NVIDIA card on that card; power saving uses less battery. Takes effect after restart.</source>
+        <source>Which graphics card Kipper runs on. High performance keeps video decoded on an NVIDIA card on that card; power saving uses less battery. Takes effect after restart.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19412,7 +19412,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Choose which graphics card Drift runs on in Windows Settings, under Display &gt; Graphics. Takes effect after restart.</source>
+        <source>Choose which graphics card Kipper runs on in Windows Settings, under Display &gt; Graphics. Takes effect after restart.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19480,7 +19480,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Linking a proxy teaches Drift its name pattern. Proxies next to your media that match a pattern below link automatically.</source>
+        <source>Linking a proxy teaches Kipper its name pattern. Proxies next to your media that match a pattern below link automatically.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -20372,19 +20372,19 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Restart Drift to switch layouts.</source>
+        <source>Restart Kipper to switch layouts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>A mouse is connected. The desktop layout has full menus, panels and precise timeline editing. Drift restarts to switch, and your project is kept.</source>
+        <source>A mouse is connected. The desktop layout has full menus, panels and precise timeline editing. Kipper restarts to switch, and your project is kept.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The mobile layout is the touch interface made for phones. Drift restarts to switch.</source>
+        <source>The mobile layout is the touch interface made for phones. Kipper restarts to switch.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The desktop layout suits a mouse and keyboard. Drift restarts to switch.</source>
+        <source>The desktop layout suits a mouse and keyboard. Kipper restarts to switch.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -20653,7 +20653,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This build of Drift has no video stabilization support</source>
+        <source>This build of Kipper has no video stabilization support</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -21275,7 +21275,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This build of Drift has no video stabilization support</source>
+        <source>This build of Kipper has no video stabilization support</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -21836,7 +21836,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This build of Drift has no video stabilization support</source>
+        <source>This build of Kipper has no video stabilization support</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -21963,7 +21963,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Smooths camera shake. Drift scans the clip once, then renders a stabilized copy into the media bin and switches the clip to it. Changing smoothness or tripod does not update the preview until you apply.</source>
+        <source>Smooths camera shake. Kipper scans the clip once, then renders a stabilized copy into the media bin and switches the clip to it. Changing smoothness or tripod does not update the preview until you apply.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -23156,7 +23156,7 @@ If playback stutters, try another.</source>
 <context>
     <name>TextAssetsTab</name>
     <message>
-        <source>Drift text style (*.drifttextstyle)</source>
+        <source>Kipper text style (*.drifttextstyle)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -24085,7 +24085,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>“%1” includes QML files that replace controls. Those files run with Drift’s permissions. Trust a theme only after you have read it.</source>
+        <source>“%1” includes QML files that replace controls. Those files run with Kipper’s permissions. Trust a theme only after you have read it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -26757,7 +26757,7 @@ If playback stutters, try another.</source>
 <context>
     <name>UpdateChecker</name>
     <message>
-        <source>Drift %1 update</source>
+        <source>Kipper %1 update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -26765,7 +26765,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Installs when you close Drift</source>
+        <source>Installs when you close Kipper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -26773,7 +26773,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift %1 will install when you close Drift.</source>
+        <source>Kipper %1 will install when you close Kipper.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -26785,11 +26785,11 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift %1 is the latest version.</source>
+        <source>Kipper %1 is the latest version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift %1 is available.</source>
+        <source>Kipper %1 is available.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -26813,7 +26813,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift %1 is ready to install.</source>
+        <source>Kipper %1 is ready to install.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -26828,19 +26828,19 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift %1 will install when you close Drift.</source>
+        <source>Kipper %1 will install when you close Kipper.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift %1 is downloaded and ready to install</source>
+        <source>Kipper %1 is downloaded and ready to install</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift %1 is available</source>
+        <source>Kipper %1 is available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>A new Drift update is available</source>
+        <source>A new Kipper update is available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -26848,11 +26848,11 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Install automatically when I close Drift</source>
+        <source>Install automatically when I close Kipper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Downloads in the background and installs the next time you close Drift. Unchecked, you choose when to install once the download finishes.</source>
+        <source>Downloads in the background and installs the next time you close Kipper. Unchecked, you choose when to install once the download finishes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -26868,7 +26868,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Install when I close Drift</source>
+        <source>Install when I close Kipper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -26876,7 +26876,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Closes Drift, installs the update and opens Drift again</source>
+        <source>Closes Kipper, installs the update and opens Kipper again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -26888,7 +26888,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Downloading Drift %1…</source>
+        <source>Downloading Kipper %1…</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -26942,7 +26942,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift addons and effects (*.driftpkg *.driftfx *.zip)</source>
+        <source>Kipper addons and effects (*.driftpkg *.driftfx *.zip)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -28139,7 +28139,7 @@ If playback stutters, try another.</source>
 <context>
     <name>WorkspaceWindow</name>
     <message>
-        <source>Drift</source>
+        <source>Kipper</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -28209,11 +28209,11 @@ If playback stutters, try another.</source>
 <context>
     <name>drift::crash</name>
     <message>
-        <source>Drift ran out of memory. Close other programs, or work with smaller or lower-resolution media.</source>
+        <source>Kipper ran out of memory. Close other programs, or work with smaller or lower-resolution media.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>A Windows component Drift depends on looks out of date. Update the Microsoft Visual C++ Redistributable.</source>
+        <source>A Windows component Kipper depends on looks out of date. Update the Microsoft Visual C++ Redistributable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -28233,14 +28233,14 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift closed unexpectedly.</source>
+        <source>Kipper closed unexpectedly.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>drift::market</name>
     <message>
-        <source>This needs Drift %1 or newer. Update Drift to install it.</source>
+        <source>This needs Kipper %1 or newer. Update Kipper to install it.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -28301,7 +28301,7 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift could not create an OpenGL context, so it cannot draw its interface or render the preview.
+        <source>Kipper could not create an OpenGL context, so it cannot draw its interface or render the preview.
 
 Install or update your graphics driver.</source>
         <translation type="unfinished"></translation>
@@ -28311,7 +28311,7 @@ Install or update your graphics driver.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift could not create an OpenGL 3.3 core profile context, though this driver reports OpenGL %1.%2 (%3).
+        <source>Kipper could not create an OpenGL 3.3 core profile context, though this driver reports OpenGL %1.%2 (%3).
 
 The video preview cannot render. Updating your graphics driver may help.</source>
         <translation type="unfinished"></translation>
@@ -28321,19 +28321,19 @@ The video preview cannot render. Updating your graphics driver may help.</source
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift needs OpenGL 3.3, but this graphics driver only provides OpenGL %1.%2 (%3).
+        <source>Kipper needs OpenGL 3.3, but this graphics driver only provides OpenGL %1.%2 (%3).
 
-The video preview cannot render, and Drift may not start at all. Update your graphics driver, or run Drift on a machine with a newer GPU.</source>
+The video preview cannot render, and Kipper may not start at all. Update your graphics driver, or run Kipper on a machine with a newer GPU.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift is not drawing its window</source>
+        <source>Kipper is not drawing its window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Drift has been running for %1 seconds but its window has not drawn anything yet.
+        <source>Kipper has been running for %1 seconds but its window has not drawn anything yet.
 
-If the window is blank or black, your graphics driver is most likely outdated or faulty. Update it from your GPU vendor&apos;s website (AMD, NVIDIA or Intel) and start Drift again.</source>
+If the window is blank or black, your graphics driver is most likely outdated or faulty. Update it from your GPU vendor&apos;s website (AMD, NVIDIA or Intel) and start Kipper again.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

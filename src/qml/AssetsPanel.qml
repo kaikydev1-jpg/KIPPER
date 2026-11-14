@@ -13,6 +13,9 @@ PanelFrame {
     property string lockedTab: ""
     readonly property bool locked: lockedTab !== ""
     readonly property bool railHidden: sheetMode || locked
+    // Kipper: no computador as abas ficam no alto do painel, como no CapCut (a coluna lateral
+    // do Drift continua no código, escondida).
+    readonly property bool topTabs: !railHidden
     readonly property var selectedMediaAssetIds: mediaBrowser.item?.selectedAssetIds ?? []
 
     // One of the click-to-add tabs (text, subtitles, stickers, shapes) put a clip
@@ -541,7 +544,7 @@ PanelFrame {
             width: parent ? parent.width : Theme.dialogWidthSm
             wrapMode: Text.WordWrap
             size: "sm"
-            text: qsTr("“%1” matches this clip and %n other clips in the project. Drift will link them all, and link future imports whose proxy follows the same name.", "", root.pendingProxyMatches)
+            text: qsTr("“%1” matches this clip and %n other clips in the project. Kipper will link them all, and link future imports whose proxy follows the same name.", "", root.pendingProxyMatches)
                 .arg(root.pendingProxyPattern)
         }
 
@@ -567,7 +570,7 @@ PanelFrame {
                 width: parent.width
                 wrapMode: Text.WordWrap
                 size: "sm"
-                text: qsTr("Drift can’t write to the folders listed below, because of their permissions or because they are on a read-only network share. The proxies or reversed clips were saved to Drift’s cache instead.")
+                text: qsTr("Kipper can’t write to the folders listed below, because of their permissions or because they are on a read-only network share. The proxies or reversed clips were saved to Kipper’s cache instead.")
             }
             TextEdit {
                 width: parent.width
@@ -656,7 +659,7 @@ PanelFrame {
             } else if (truncated) {
                 Toasts.warning(qsTr("Imported %n files into %1 folders — as many as one folder import takes. Import the remaining subfolders separately.", "", files).arg(folders))
             } else if (skipped > 0) {
-                Toasts.warning(qsTr("Imported %n files into %1 folders. %2 files were skipped — Drift does not recognize their format. Drag them onto the bin to try anyway.", "", files).arg(folders).arg(skipped))
+                Toasts.warning(qsTr("Imported %n files into %1 folders. %2 files were skipped — Kipper does not recognize their format. Drag them onto the bin to try anyway.", "", files).arg(folders).arg(skipped))
             } else {
                 Toasts.success(qsTr("Imported %n files into %1 folders.", "", files).arg(folders))
             }
@@ -794,18 +797,20 @@ PanelFrame {
     // tabId "sounds" is kept for favorites persistence (settings key).
     ListModel {
         id: tabsModel
+        // Kipper: ordem parecida com a do CapCut (Mídia, Texto, Legendas, Figurinhas, Efeitos,
+        // Transições, Áudio...). Só muda a ordem na tela; o que fica salvo é o tabId.
         ListElement { tabId: "media"; icon: 0; separatorAfter: true }
         ListElement { tabId: "text"; icon: 1; separatorAfter: false }
         ListElement { tabId: "subtitles"; icon: 2; separatorAfter: false }
-        ListElement { tabId: "speech"; icon: 13; separatorAfter: false }
         ListElement { tabId: "stickers"; icon: 3; separatorAfter: false }
+        ListElement { tabId: "effects"; icon: 5; separatorAfter: false }
+        ListElement { tabId: "transitions"; icon: 7; separatorAfter: false }
+        ListElement { tabId: "sounds"; icon: 8; separatorAfter: true }
+        ListElement { tabId: "speech"; icon: 13; separatorAfter: false }
+        ListElement { tabId: "templates"; icon: 6; separatorAfter: false }
         ListElement { tabId: "shapes"; icon: 4; separatorAfter: false }
         ListElement { tabId: "masks"; icon: 11; separatorAfter: true }
         ListElement { tabId: "scenes"; icon: 10; separatorAfter: true }
-        ListElement { tabId: "effects"; icon: 5; separatorAfter: false }
-        ListElement { tabId: "templates"; icon: 6; separatorAfter: false }
-        ListElement { tabId: "transitions"; icon: 7; separatorAfter: false }
-        ListElement { tabId: "sounds"; icon: 8; separatorAfter: true }
     }
     property var tabIcons: [
         Theme.icons.film,
@@ -905,7 +910,7 @@ PanelFrame {
 
         AssetsPanelTabRail {
             id: tabRail
-            sheetMode: root.railHidden
+            sheetMode: root.railHidden || root.topTabs
             railWidth: root.railWidth
             activeTab: root.activeTab
             tabCount: tabsModel.count
@@ -916,9 +921,9 @@ PanelFrame {
         }
 
         Rectangle {
-            width: root.railHidden ? 0 : Theme.c.assetsPanel.borderWidth
+            width: root.railHidden || root.topTabs ? 0 : Theme.c.assetsPanel.borderWidth
             height: parent.height
-            visible: !root.railHidden
+            visible: !root.railHidden && !root.topTabs
             color: Theme.c.assetsPanel.railBorder
 
             MouseArea {
@@ -945,8 +950,29 @@ PanelFrame {
 
         Column {
             id: assetsContent
-            width: parent.width - (root.railHidden ? 0 : (tabRail.width + Theme.c.assetsPanel.borderWidth))
+            width: parent.width - (root.railHidden || root.topTabs ? 0 : (tabRail.width + Theme.c.assetsPanel.borderWidth))
             height: parent.height
+
+            AssetsPanelTopTabs {
+                id: topTabs
+                visible: root.topTabs
+                width: parent.width
+                height: visible ? 58 : 0
+                fadeColor: Theme.c.assetsPanel.background
+                activeTab: root.activeTab
+                tabCount: tabsModel.count
+                tabLabels: root.tabLabels
+                tabIcons: root.tabIcons
+                tabs: tabsModel
+                onTabSelected: (index) => root.activeTab = index
+            }
+
+            Rectangle {
+                visible: root.topTabs
+                width: parent.width
+                height: visible ? Theme.c.assetsPanel.borderWidth : 0
+                color: Theme.c.assetsPanel.railBorder
+            }
 
             AssetsPanelHeader {
                 id: assetsHeader
@@ -972,8 +998,8 @@ PanelFrame {
                 id: emojiPicker
                 // Hangs off the stickers search bar's + at the panel's right edge, and slides back
                 // rather than running off-window when the panel is dragged narrow.
-                x: Math.max(root.railHidden ? 0 : -tabRail.width, assetsContent.width - width - Theme.pagePadding)
-                y: assetsHeader.height + Theme.pagePadding + Theme.controlHeight + 4
+                x: Math.max(root.railHidden || root.topTabs ? 0 : -tabRail.width, assetsContent.width - width - Theme.pagePadding)
+                y: topTabs.height + assetsHeader.height + Theme.pagePadding + Theme.controlHeight + 4
                 onExtrasRequested: ShellBridge.main.openAddonManager("stickers")
                 onAdded: root.addCompleted()
             }
@@ -984,7 +1010,7 @@ PanelFrame {
                 active: root.currentTabId === "text"
                 visible: active
                 width: parent.width
-                height: parent.height - assetsHeader.height
+                height: parent.height - assetsHeader.height - topTabs.height - (root.topTabs ? Theme.c.assetsPanel.borderWidth : 0)
                 clip: true
                 opacity: root.tabOpacity
                 sourceComponent: Component {
@@ -1004,7 +1030,7 @@ PanelFrame {
                 active: root.currentTabId === "subtitles"
                 visible: active
                 width: parent.width
-                height: parent.height - assetsHeader.height
+                height: parent.height - assetsHeader.height - topTabs.height - (root.topTabs ? Theme.c.assetsPanel.borderWidth : 0)
                 clip: true
                 opacity: root.tabOpacity
                 sourceComponent: Component {
@@ -1018,7 +1044,7 @@ PanelFrame {
                 active: root.currentTabId === "speech"
                 visible: active
                 width: parent.width
-                height: parent.height - assetsHeader.height
+                height: parent.height - assetsHeader.height - topTabs.height - (root.topTabs ? Theme.c.assetsPanel.borderWidth : 0)
                 clip: true
                 opacity: root.tabOpacity
                 sourceComponent: Component {
@@ -1030,7 +1056,7 @@ PanelFrame {
                 active: root.currentTabId === "sounds"
                 visible: active
                 width: parent.width
-                height: parent.height - assetsHeader.height
+                height: parent.height - assetsHeader.height - topTabs.height - (root.topTabs ? Theme.c.assetsPanel.borderWidth : 0)
                 clip: true
                 opacity: root.tabOpacity
                 sourceComponent: Component {
@@ -1046,7 +1072,7 @@ PanelFrame {
                 active: root.currentTabId === "stickers"
                 visible: active
                 width: parent.width
-                height: parent.height - assetsHeader.height
+                height: parent.height - assetsHeader.height - topTabs.height - (root.topTabs ? Theme.c.assetsPanel.borderWidth : 0)
                 clip: true
                 opacity: root.tabOpacity
                 sourceComponent: Component {
@@ -1065,7 +1091,7 @@ PanelFrame {
                 active: root.currentTabId === "shapes"
                 visible: active
                 width: parent.width
-                height: parent.height - assetsHeader.height
+                height: parent.height - assetsHeader.height - topTabs.height - (root.topTabs ? Theme.c.assetsPanel.borderWidth : 0)
                 clip: true
                 opacity: root.tabOpacity
                 sourceComponent: Component {
@@ -1082,7 +1108,7 @@ PanelFrame {
                 active: root.currentTabId === "scenes"
                 visible: active
                 width: parent.width
-                height: parent.height - assetsHeader.height
+                height: parent.height - assetsHeader.height - topTabs.height - (root.topTabs ? Theme.c.assetsPanel.borderWidth : 0)
                 clip: true
                 opacity: root.tabOpacity
                 sourceComponent: Component {
@@ -1104,7 +1130,7 @@ PanelFrame {
                 active: root.currentTabId === "masks"
                 visible: active
                 width: parent.width
-                height: parent.height - assetsHeader.height
+                height: parent.height - assetsHeader.height - topTabs.height - (root.topTabs ? Theme.c.assetsPanel.borderWidth : 0)
                 clip: true
                 opacity: root.tabOpacity
                 sourceComponent: Component {
@@ -1118,7 +1144,7 @@ PanelFrame {
                 active: root.currentTabId === "effects"
                 visible: active
                 width: parent.width
-                height: parent.height - assetsHeader.height
+                height: parent.height - assetsHeader.height - topTabs.height - (root.topTabs ? Theme.c.assetsPanel.borderWidth : 0)
                 clip: true
                 opacity: root.tabOpacity
                 sourceComponent: Component {
@@ -1134,7 +1160,7 @@ PanelFrame {
                 active: root.currentTabId === "templates"
                 visible: active
                 width: parent.width
-                height: parent.height - assetsHeader.height
+                height: parent.height - assetsHeader.height - topTabs.height - (root.topTabs ? Theme.c.assetsPanel.borderWidth : 0)
                 clip: true
                 opacity: root.tabOpacity
                 sourceComponent: Component {
@@ -1150,7 +1176,7 @@ PanelFrame {
                 active: root.currentTabId === "transitions"
                 visible: active
                 width: parent.width
-                height: parent.height - assetsHeader.height
+                height: parent.height - assetsHeader.height - topTabs.height - (root.topTabs ? Theme.c.assetsPanel.borderWidth : 0)
                 clip: true
                 opacity: root.tabOpacity
                 sourceComponent: Component {
@@ -1168,7 +1194,7 @@ PanelFrame {
                 active: root.kindsForTab(root.currentTabId).length > 0
                 visible: active
                 width: parent.width
-                height: parent.height - assetsHeader.height
+                height: parent.height - assetsHeader.height - topTabs.height - (root.topTabs ? Theme.c.assetsPanel.borderWidth : 0)
                 clip: true
                 opacity: root.tabOpacity
                 sourceComponent: Component {

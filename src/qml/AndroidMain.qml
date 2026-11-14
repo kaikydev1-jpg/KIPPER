@@ -13,7 +13,7 @@ ApplicationWindow {
         const multiplier = (opacity === undefined || opacity === null) ? 1 : opacity
         return WindowBackdrop.windowBackground(Theme.c.androidMain.background, multiplier)
     }
-    title: "CutWire Drift"
+    title: "Kipper"
 
     // On Android the platform sizes the window. Chosen on a desktop, this shell opens phone-shaped
     // instead of filling a desktop-sized default; it stays resizable, and nothing is persisted.
@@ -66,7 +66,7 @@ ApplicationWindow {
     palette.toolTipBase: Theme.c.androidMain.paletteToolTipBase
     palette.toolTipText: Theme.c.androidMain.paletteToolTipText
 
-    readonly property var projectFilter: [qsTr("Drift project (*.drift)")]
+    readonly property var projectFilter: [qsTr("Kipper project (*.drift)")]
     property bool inEditor: false
     property bool forceClose: false
     property var _pendingAfterUnsaved: null

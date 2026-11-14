@@ -121,7 +121,7 @@ SettingsPage {
         title: qsTr("Interface size")
         searchId: "appearance-interface-size"
         description: EditorState.preferences.uiScaleNeedsRestart
-                     ? qsTr("Restart Drift to apply this size.")
+                     ? qsTr("Restart Kipper to apply this size.")
                      : Qt.platform.os === "windows"
                        ? EditorState.preferences.uiScale <= 0
                          ? qsTr("Follows your Windows display scale.")
@@ -160,11 +160,42 @@ SettingsPage {
         }
     }
 
+    // Kipper: estilo dos botões da janela (barra de título integrada).
+    SettingsRow {
+        title: qsTr("Window buttons")
+        searchId: "appearance-window-buttons"
+        description: qsTr("How minimize, maximize and close look. Automatic follows your system.")
+        keywords: "title bar window buttons close minimize maximize mac windows gnome kde"
+        available: WindowChrome.integrated
+        query: page.query
+
+        ThemedComboBox {
+            width: Theme.c.settingsRow.controlWidth
+            textRole: "label"
+            valueRole: "id"
+            model: [
+                { id: "auto",    label: qsTr("Automatic") },
+                { id: "windows", label: "Windows" },
+                { id: "gnome",   label: "GNOME" },
+                { id: "kde",     label: "KDE" },
+                { id: "mac",     label: "Mac" }
+            ]
+            currentIndex: {
+                for (var i = 0; i < model.length; ++i) {
+                    if (model[i].id === WindowChrome.styleSetting)
+                        return i
+                }
+                return 0
+            }
+            onActivated: WindowChrome.styleSetting = model[currentIndex].id
+        }
+    }
+
     SettingsRow {
         title: qsTr("Layout")
         searchId: "appearance-layout"
         description: EditorState.preferences.interfaceShellNeedsRestart
-                     ? qsTr("Restart Drift to switch layouts.")
+                     ? qsTr("Restart Kipper to switch layouts.")
                      : qsTr("Desktop suits a mouse and keyboard. Mobile is the touch layout made for phones.")
         keywords: "desktop mobile shell phone tablet"
         query: page.query

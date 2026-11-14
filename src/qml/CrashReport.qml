@@ -19,7 +19,7 @@ ApplicationWindow {
     x: Screen.width / 2 - width / 2
     y: Screen.height / 2 - height / 2
     visible: true
-    title: crashed ? qsTr("Drift closed unexpectedly") : qsTr("Drift did not close properly")
+    title: crashed ? qsTr("Kipper closed unexpectedly") : qsTr("Kipper did not close properly")
     color: Theme.c.quickSetup.background
 
     ColumnLayout {
@@ -46,7 +46,7 @@ ApplicationWindow {
             wrapMode: Text.WordWrap
             text: window.crashed
                   ? CrashReports.reasonText
-                  : qsTr("Drift did not close properly last time. If it keeps happening, you can start in safe mode, which uses the default graphics backend and loads no add-ons for this session.")
+                  : qsTr("Kipper did not close properly last time. If it keeps happening, you can start in safe mode, which uses the default graphics backend and loads no add-ons for this session.")
             color: Theme.c.quickSetup.foreground
             font.family: Theme.fontFamily
             font.pixelSize: Theme.fontSizeBase

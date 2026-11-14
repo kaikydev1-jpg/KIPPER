@@ -136,7 +136,7 @@ Item {
             exportDialog.openDialog()
     }
 
-    readonly property var projectFilter: [qsTr("Drift project (*.drift)")]
+    readonly property var projectFilter: [qsTr("Kipper project (*.drift)")]
 
     function openAssetsTab(tabId) {
         composer.close()

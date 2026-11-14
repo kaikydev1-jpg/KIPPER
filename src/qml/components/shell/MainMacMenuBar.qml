@@ -148,7 +148,7 @@ Platform.MenuBar {
         }
         Platform.MenuSeparator {}
         Platform.MenuItem {
-            text: qsTr("About Drift")
+            text: qsTr("About Kipper")
             role: Platform.MenuItem.AboutRole
             onTriggered: menuBar.appWindow.openAboutDialog()
         }

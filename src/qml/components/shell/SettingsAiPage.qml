@@ -38,7 +38,7 @@ SettingsPage {
             if (!page.runtimeReady)
                 return qsTr("Install an AI Engine from Extras to unlock auto captions, subject cutout, funny face effects, and noise removal.")
             if (page.restartRequired)
-                return qsTr("Restart Drift for this to take effect.")
+                return qsTr("Restart Kipper for this to take effect.")
             if (page.accelerationProblem.length > 0)
                 return page.accelerationProblem
             return qsTr("Automatic picks the fastest option you have installed, and uses this computer if the graphics card can't help.")
@@ -70,7 +70,7 @@ SettingsPage {
     SettingsRow {
         title: qsTr("Scene detection sensitivity")
         searchId: "ai-scene-detection-sensitivity"
-        description: qsTr("Higher finds more cuts. When a clip is flat or heavily graded, Drift still falls back to an adaptive threshold.")
+        description: qsTr("Higher finds more cuts. When a clip is flat or heavily graded, Kipper still falls back to an adaptive threshold.")
         keywords: "shot cut detect"
         query: page.query
 
@@ -109,7 +109,7 @@ SettingsPage {
     SettingsRow {
         title: qsTr("Start agent access on launch")
         searchId: "ai-agent-access-on-launch"
-        description: qsTr("Turn agent access on automatically the next time you open Drift. Turning access off resets this.")
+        description: qsTr("Turn agent access on automatically the next time you open Kipper. Turning access off resets this.")
         keywords: "mcp startup autostart agent"
         query: page.query
 

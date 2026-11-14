@@ -170,7 +170,11 @@ double appliedUiScaleFromEnvironment()
 QLocale uiLocaleFromStored()
 {
     const QString code = storedUiLanguage();
-    return code.isEmpty() ? QLocale::system() : QLocale(code);
+    if (!code.isEmpty())
+        return QLocale(code);
+    // Kipper fala português do Brasil por padrão; só um sistema em inglês fica em inglês.
+    const QLocale system = QLocale::system();
+    return system.language() == QLocale::English ? system : QLocale(QStringLiteral("pt_BR"));
 }
 
 QString languageLabel(const QString &code)
@@ -553,7 +557,7 @@ void PreferencesController::setVaapiZeroCopy(bool enabled)
     settings.setValue(QStringLiteral("preview/vaapiZeroCopy"), m_vaapiZeroCopy);
 #endif
     emit vaapiZeroCopyChanged();
-    emit restartNoticeRequested(tr("Faster preview takes effect after you restart Drift."));
+    emit restartNoticeRequested(tr("Faster preview takes effect after you restart Kipper."));
 }
 
 void PreferencesController::setMediaCodecZeroCopy(bool enabled)
@@ -566,7 +570,7 @@ void PreferencesController::setMediaCodecZeroCopy(bool enabled)
     emit mediaCodecZeroCopyChanged();
     // ClipReader reads the setting once and latches it, so a restart is not just conservative
     // advice here — the running process really will not change behaviour.
-    emit restartNoticeRequested(tr("Faster preview takes effect after you restart Drift."));
+    emit restartNoticeRequested(tr("Faster preview takes effect after you restart Kipper."));
 }
 
 bool PreferencesController::mediaCodecZeroCopySupported() const
@@ -599,7 +603,7 @@ void PreferencesController::setPreferredGpu(const QString &id)
     drift::gpu::storePreference(preference);
     emit preferredGpuChanged();
     // Not conservative advice: the driver chose this process's GPU when it loaded.
-    emit restartNoticeRequested(tr("The graphics card choice takes effect after you restart Drift."));
+    emit restartNoticeRequested(tr("The graphics card choice takes effect after you restart Kipper."));
 }
 
 void PreferencesController::setUiGraphicsApi(const QString &id)
@@ -609,7 +613,7 @@ void PreferencesController::setUiGraphicsApi(const QString &id)
     m_uiGraphicsApi = id;
     drift::graphics::storeApi(id);
     emit uiGraphicsApiChanged();
-    emit restartNoticeRequested(tr("The interface graphics API takes effect after you restart Drift."));
+    emit restartNoticeRequested(tr("The interface graphics API takes effect after you restart Kipper."));
 }
 
 QStringList PreferencesController::uiGraphicsApis() const
@@ -1272,7 +1276,7 @@ QString PreferencesController::importSettings(const QUrl &url)
     const QJsonObject root = QJsonDocument::fromJson(file->readAll(), &error).object();
     if (error.error != QJsonParseError::NoError
         || root.value(QStringLiteral("drift_settings")).toInt() != 1)
-        return tr("That file is not a Drift settings export.");
+        return tr("That file is not a Kipper settings export.");
 
     const QJsonObject values = root.value(QStringLiteral("values")).toObject();
     QSettings settings;
@@ -1281,7 +1285,7 @@ QString PreferencesController::importSettings(const QUrl &url)
             settings.setValue(it.key(), it.value().toVariant());
     }
     settings.sync();
-    emit restartNoticeRequested(tr("Settings imported. Restart Drift to apply them all."));
+    emit restartNoticeRequested(tr("Settings imported. Restart Kipper to apply them all."));
     return {};
 }
 

@@ -41,7 +41,7 @@ ApplicationWindow {
     palette.toolTipBase: Theme.c.appWindow.paletteToolTipBase
     palette.toolTipText: Theme.c.appWindow.paletteToolTipText
 
-    title: root.entry.title || Workspaces.workspace(root.workspaceId).name || qsTr("Drift")
+    title: root.entry.title || Workspaces.workspace(root.workspaceId).name || qsTr("Kipper")
     width: 960
     height: 600
     minimumWidth: 320

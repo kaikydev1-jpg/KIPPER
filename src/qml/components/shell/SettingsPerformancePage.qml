@@ -80,7 +80,7 @@ SettingsPage {
         title: qsTr("Interface graphics API")
         searchId: "performance-graphics-api"
         description: {
-            const text = qsTr("What draws panels, the timeline and menus. OpenGL hands the preview over without a copy. The others can make the interface smoother but copy every preview frame through the CPU, so playback may get slower. If Drift does not start with your choice, it goes back to OpenGL. Takes effect after restart.")
+            const text = qsTr("What draws panels, the timeline and menus. OpenGL hands the preview over without a copy. The others can make the interface smoother but copy every preview frame through the CPU, so playback may get slower. If Kipper does not start with your choice, it goes back to OpenGL. Takes effect after restart.")
             return EditorState.preferences.uiGraphicsApiRevertedFrom.length > 0
                 ? text + " " + qsTr("The last choice did not start, so OpenGL is in use.")
                 : text

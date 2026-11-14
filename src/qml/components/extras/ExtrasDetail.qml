@@ -177,7 +177,7 @@ Rectangle {
                         variant: root.busy ? "secondary" : "primary"
                         text: {
                             if (root.installState === "needs-newer-app")
-                                return qsTr("Needs a newer Drift")
+                                return qsTr("Needs a newer Kipper")
                             if (root.busy)
                                 return qsTr("Cancel")
                             if (root.installState === "update-available")
@@ -242,7 +242,7 @@ Rectangle {
                         if (root.installState === "failed")
                             return root.row.error || ""
                         if (root.installState === "needs-newer-app")
-                            return qsTr("Requires Drift %1 or newer").arg(root.row.minAppVersion)
+                            return qsTr("Requires Kipper %1 or newer").arg(root.row.minAppVersion)
                         if (root.installable && root.alsoInstalls.length > 0)
                             return qsTr("Also installs: %1").arg(root.alsoInstalls.map(a => {
                                 const size = DownloadFormat.formatBytes(a.downloadSize)
@@ -425,7 +425,7 @@ Rectangle {
                     size: "sm"
                     visible: accelerationPanel.restartRequired
                     color: Theme.c.extrasStore.stateFailed
-                    text: qsTr("Restart Drift for this to take effect.")
+                    text: qsTr("Restart Kipper for this to take effect.")
                 }
             }
 

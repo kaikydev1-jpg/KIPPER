@@ -105,7 +105,7 @@ AndroidBottomSheet {
         {
             id: "update",
             label: qsTr("Update available"),
-            detail: qsTr("A newer version of Drift is ready"),
+            detail: qsTr("A newer version of Kipper is ready"),
             icon: Theme.icons.download,
             shown: Updates.updateAvailable
         },
@@ -117,7 +117,7 @@ AndroidBottomSheet {
         },
         {
             id: "about",
-            label: qsTr("About Drift"),
+            label: qsTr("About Kipper"),
             detail: qsTr("Version, licence and credits"),
             icon: Theme.icons.info
         }

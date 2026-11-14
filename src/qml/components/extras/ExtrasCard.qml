@@ -173,7 +173,7 @@ Rectangle {
                                ? qsTr("%1 %2%").arg(root.transfer.phase).arg(Math.round(root.transfer.fraction * 100))
                                : (root.installState === "installing" ? qsTr("Installing…") : qsTr("Downloading…"))
                     case "failed": return qsTr("Failed · open to retry")
-                    case "needs-newer-app": return qsTr("Needs Drift %1").arg(root.row.minAppVersion)
+                    case "needs-newer-app": return qsTr("Needs Kipper %1").arg(root.row.minAppVersion)
                     case "installed": return root.row.custom ? qsTr("Installed from file") : qsTr("Installed")
                     case "update-available": return qsTr("Update · %1").arg(DownloadFormat.formatBytes(root.row.downloadSize))
                     }

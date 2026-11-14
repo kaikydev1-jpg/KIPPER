@@ -42,7 +42,7 @@ InstallJob parseInstallJob(const Response &response)
         if (problem.code == QLatin1String("app_too_old")) {
             job.retryable = false;
             if (!job.minAppVersion.isEmpty())
-                job.errorMessage = tr("This needs Drift %1 or newer. Update Drift to install it.")
+                job.errorMessage = tr("This needs Kipper %1 or newer. Update Kipper to install it.")
                                        .arg(job.minAppVersion);
         } else if (problem.code.endsWith(QLatin1String("quota_exceeded"))) {
             job.retryable = false;

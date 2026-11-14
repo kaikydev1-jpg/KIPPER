@@ -14,7 +14,7 @@ SourceLabSection {
         text: qsTr("Smooth camera shake")
         checked: root.lab.recipe.stabilize ?? false
         enabled: root.lab.stabilizeAvailable
-        tooltip: root.lab.stabilizeAvailable ? "" : qsTr("This build of Drift has no video stabilization support")
+        tooltip: root.lab.stabilizeAvailable ? "" : qsTr("This build of Kipper has no video stabilization support")
         onToggled: root.lab.setRecipeValue("stabilize", checked)
     }
 }

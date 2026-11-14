@@ -31,7 +31,7 @@ ThemedDialog {
         if (EditorState.preferences.canRestart)
             ShellBridge.main.restartToApplyShell()
         else
-            Toasts.info(qsTr("Restart Drift to switch layouts."))
+            Toasts.info(qsTr("Restart Kipper to switch layouts."))
     }
     onRejected: {
         if (!offered)
@@ -44,10 +44,10 @@ ThemedDialog {
         wrapMode: Text.WordWrap
         text: {
             if (root.offered)
-                return qsTr("A mouse is connected. The desktop layout has full menus, panels and precise timeline editing. Drift restarts to switch, and your project is kept.")
+                return qsTr("A mouse is connected. The desktop layout has full menus, panels and precise timeline editing. Kipper restarts to switch, and your project is kept.")
             if (root.target === "mobile")
-                return qsTr("The mobile layout is the touch interface made for phones. Drift restarts to switch.")
-            return qsTr("The desktop layout suits a mouse and keyboard. Drift restarts to switch.")
+                return qsTr("The mobile layout is the touch interface made for phones. Kipper restarts to switch.")
+            return qsTr("The desktop layout suits a mouse and keyboard. Kipper restarts to switch.")
         }
     }
 }

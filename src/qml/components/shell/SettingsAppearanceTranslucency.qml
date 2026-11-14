@@ -21,7 +21,7 @@ Column {
         visible: WindowBackdrop.restartRequired
         wrapMode: Text.WordWrap
         color: Theme.c.settingsAppearanceTranslucency.foreground
-        text: qsTr("Restart Drift to apply window transparency.")
+        text: qsTr("Restart Kipper to apply window transparency.")
     }
 
     ThemedLabel {

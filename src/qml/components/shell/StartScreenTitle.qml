@@ -6,7 +6,7 @@ Column {
     spacing: Theme.spacingXs
 
     Text {
-        text: "Drift"
+        text: "Kipper"
         color: Theme.c.startScreenTitle.foreground
         font.family: Theme.fontFamily
         font.pixelSize: 26

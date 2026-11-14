@@ -97,7 +97,7 @@ Item {
         if (searching)
             return { title: qsTr("Results for “%1”").arg(searchText.trim()), subtitle: "" }
         switch (section) {
-        case "discover": return { title: qsTr("Discover"), subtitle: qsTr("Add-ons that make Drift do more.") }
+        case "discover": return { title: qsTr("Discover"), subtitle: qsTr("Add-ons that make Kipper do more.") }
         case "installed": return { title: qsTr("Installed"), subtitle: qsTr("Everything you have downloaded.") }
         case "updates": return { title: qsTr("Updates"), subtitle: qsTr("Newer versions of what you have installed.") }
         case "custom": return { title: qsTr("Custom"), subtitle: qsTr("Packs you installed from a file.") }

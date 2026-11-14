@@ -15,7 +15,7 @@ Item {
     function importFile(url) {
         if (!url || String(url) === "")
             url = FileDialogs.openFile(qsTr("Install Addon"),
-                                       [qsTr("Drift addons and effects (*.driftpkg *.driftfx *.zip)")])
+                                       [qsTr("Kipper addons and effects (*.driftpkg *.driftfx *.zip)")])
         if (!url || String(url) === "")
             return
         const info = Addons.inspectAddonFile(url)

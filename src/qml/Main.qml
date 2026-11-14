@@ -57,7 +57,7 @@ ApplicationWindow {
     // Use visibility only — setting both this and `visible` makes Qt warn
     // "Conflicting properties 'visible' and 'visibility'" (Maximized + hidden).
     visibility: Window.Hidden
-    title: "CutWire Drift"
+    title: "Kipper"
     // Alpha stays 1 unless this process was started with a translucent surface.
     // backgroundOpacity is read here so the binding follows theme reloads.
     color: {
@@ -548,7 +548,7 @@ ApplicationWindow {
                         Toasts.info(Updates.status)
                     }
                 } else {
-                    Toasts.success(qsTr("Drift %1 is the latest version.").arg(Updates.currentVersion))
+                    Toasts.success(qsTr("Kipper %1 is the latest version.").arg(Updates.currentVersion))
                 }
             }
         }
@@ -1089,6 +1089,9 @@ ApplicationWindow {
     Component.onDestruction: if (ShellBridge.main === window) ShellBridge.main = null
 
     Component.onCompleted: {
+        // Barra de título integrada: antes de mostrar a janela.
+        if (WindowChrome.setup(window))
+            WindowChrome.setTitleBar(titleStrip)
         WindowBackdrop.attach(window)
         ShellBridge.main = window
         Theme.windowWidth = window.width
@@ -1582,6 +1585,43 @@ ApplicationWindow {
                 onDebugInfoRequested: window.openDebugInfo()
                 onAgentAccessRequested: editorHeader.openAgentAccess()
             }
+        }
+    }
+
+    // --- Kipper: barra de título integrada -----------------------------------------------
+    // A faixa de cima (altura do cabeçalho) arrasta a janela, duplo clique maximiza e as bordas
+    // redimensionam (WindowChrome + QWindowKit). Fica acima do editor e da tela inicial, mas
+    // não segura o mouse: só os botões da janela recebem clique aqui; o resto passa para o
+    // cabeçalho embaixo, que marca as próprias partes clicáveis.
+    readonly property real chromeLeftInset: leftWindowControls.visible ? leftWindowControls.implicitWidth : 0
+    readonly property real chromeRightInset: rightWindowControls.visible ? rightWindowControls.implicitWidth : 0
+
+    Item {
+        id: titleStrip
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        height: Theme.headerHeight
+        z: 1000
+        visible: WindowChrome.integrated && !window.mainPreviewFullscreen
+                 && window.visibility !== Window.FullScreen
+
+        WindowControls {
+            id: leftWindowControls
+            side: "left"
+            anchors.left: parent.left
+            anchors.top: parent.top
+            height: parent.height
+            width: implicitWidth
+        }
+
+        WindowControls {
+            id: rightWindowControls
+            side: "right"
+            anchors.right: parent.right
+            anchors.top: parent.top
+            height: parent.height
+            width: implicitWidth
         }
     }
 

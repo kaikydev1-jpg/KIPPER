@@ -24,7 +24,7 @@ SettingsPage {
     SettingsRow {
         title: qsTr("Proxy")
         searchId: "network-proxy"
-        description: qsTr("How Drift reaches the internet for downloads, updates, and online services. Applies immediately.")
+        description: qsTr("How Kipper reaches the internet for downloads, updates, and online services. Applies immediately.")
         keywords: "proxy http socks5 internet firewall network"
         query: page.query
 

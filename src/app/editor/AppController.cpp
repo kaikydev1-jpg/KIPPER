@@ -638,7 +638,7 @@ AppController::AppController(AssetLibrary *assetLibrary, QObject *parent)
                 setLastMessage(text, QStringLiteral("info"));
             });
     if (!m_preferences->uiGraphicsApiRevertedFrom().isEmpty()) {
-        setLastMessage(tr("The interface graphics API you chose did not start, so Drift went back to OpenGL."),
+        setLastMessage(tr("The interface graphics API you chose did not start, so Kipper went back to OpenGL."),
                        QStringLiteral("warning"));
     }
     m_projectFile->setAutosaveIntervalSeconds(m_preferences->autosaveIntervalSeconds());

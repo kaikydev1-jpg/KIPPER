@@ -161,7 +161,7 @@ ThemedDialog {
                     tone: "default"
                     textFormat: Text.RichText
                     linkColor: Theme.c.debugInfoDialog.link
-                    text: "<a href=\"https://docs.cutwire.org/drift\">%1</a>"
+                    text: "<a href=\"https://github.com/kaikydev1-jpg/KIPPER#readme\">%1</a>"
                           .arg(qsTr("Documentation"))
                     onLinkActivated: (link) => Qt.openUrlExternally(link)
                     HoverHandler {
@@ -175,8 +175,8 @@ ThemedDialog {
                     tone: "default"
                     textFormat: Text.RichText
                     linkColor: Theme.c.debugInfoDialog.link
-                    text: "<a href=\"https://cutwire.org/discord\">%1</a>"
-                          .arg(qsTr("Questions and support on Discord"))
+                    text: "<a href=\"https://github.com/kaikydev1-jpg/KIPPER/issues\">%1</a>"
+                          .arg(qsTr("Open an issue on GitHub"))
                     onLinkActivated: (link) => Qt.openUrlExternally(link)
                     HoverHandler {
                         cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor

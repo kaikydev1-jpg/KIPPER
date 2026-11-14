@@ -95,7 +95,7 @@ set(DRIFT_ADDON_CLIENT_TOKEN "79a388bba9301cacc81cc6eb0724c81e948e1b27c69aee1b"
 #                  -DDRIFT_MARKET_CLIENT_KEY=...
 #
 #   cmake -B build -DDRIFT_MARKET_API_URL=      # no marketplace
-set(DRIFT_MARKET_API_URL "https://cutwire.studio/api/v1"
+set(DRIFT_MARKET_API_URL ""
     CACHE STRING "Marketplace API base; empty disables the marketplace")
 set(DRIFT_MARKET_CLIENT_KEY "5409a0bebab4446f88e51d06024a5cf9a694ee141a6a1c6be7a49e45b6687438"
     CACHE STRING "HMAC key for marketplace client identity and request signing")
@@ -108,7 +108,7 @@ set(DRIFT_MARKET_CLIENT_KEY "5409a0bebab4446f88e51d06024a5cf9a694ee141a6a1c6be7a
 # Set it to an empty string for builds a package manager owns — the Flatpak manifests and the Arch
 # PKGBUILD all do. There, pacman or flatpak fetches the update on its own schedule and an in-app
 # nag is noise the user cannot act on (Flathub's quality guidelines say as much).
-set(DRIFT_UPDATE_FEED_URL "https://api.github.com/repos/CutWire-Studios/Drift/releases/latest"
+set(DRIFT_UPDATE_FEED_URL "https://api.github.com/repos/kaikydev1-jpg/KIPPER/releases/latest"
     CACHE STRING "Release feed polled for updates; empty disables the update check")
 
 # --- Release channel --------------------------------------------------------
@@ -127,12 +127,13 @@ if(NOT DRIFT_CHANNEL STREQUAL "stable" AND NOT DRIFT_CHANNEL STREQUAL "nightly")
     message(FATAL_ERROR "DRIFT_CHANNEL must be 'stable' or 'nightly', not '${DRIFT_CHANNEL}'")
 endif()
 
-set(DRIFT_APP_ID "org.cutwire.Drift")
-set(DRIFT_APP_NAME "Drift")
+# Kipper: nome e ID próprios (padrão io.github.<dono>.<App>, como o Ignis).
+set(DRIFT_APP_ID "io.github.kaikydev1jpg.Kipper")
+set(DRIFT_APP_NAME "Kipper")
 set(DRIFT_VERSION_STRING "${PROJECT_VERSION}")
 if(DRIFT_CHANNEL STREQUAL "nightly")
-    set(DRIFT_APP_ID "org.cutwire.Drift.Nightly")
-    set(DRIFT_APP_NAME "Drift Nightly")
+    set(DRIFT_APP_ID "io.github.kaikydev1jpg.Kipper.Nightly")
+    set(DRIFT_APP_NAME "Kipper Nightly")
     # A local nightly configure with no stamp is still legible rather than "0.7.0-nightly.".
     if(DRIFT_BUILD_ID STREQUAL "")
         set(DRIFT_BUILD_ID "dev")
@@ -1699,6 +1700,8 @@ qt_add_qml_module(drift
         src/ui/theme/ThemeManager.cpp
         src/ui/theme/backdrop/WindowBackdrop.h
         src/ui/theme/backdrop/WindowBackdrop.cpp
+        src/ui/window/WindowChrome.h
+        src/ui/window/WindowChrome.cpp
         src/app/online/marketplace/MarketSourceBrowser.h
         src/app/online/marketplace/MarketSourceBrowser.cpp
         src/app/online/marketplace/MarketItemLoader.h
@@ -1972,6 +1975,7 @@ qt_add_qml_module(drift
         src/qml/components/assets/DownloadsJobRow.qml
         src/qml/components/assets/AudioEffectPresetCard.qml
         src/qml/components/assets/AssetsPanelTabRail.qml
+        src/qml/components/assets/AssetsPanelTopTabs.qml
         src/qml/components/assets/AssetsPanelTabButton.qml
         src/qml/components/assets/AssetsPanelImportSplit.qml
         src/qml/components/assets/AssetsPanelImportOverlay.qml
@@ -2611,6 +2615,7 @@ qt_add_qml_module(drift
         src/qml/components/shell/EditorHeaderVideoButton.qml
         src/qml/components/shell/VideoMenu.qml
         src/qml/components/shell/EditorHeaderSeparator.qml
+        src/qml/components/shell/WindowControls.qml
         src/qml/components/shell/EditorHeaderSearchField.qml
         src/qml/components/shell/EditorHeaderProjectsButton.qml
         src/qml/components/shell/EditorHeaderNotificationsButton.qml
@@ -2666,7 +2671,35 @@ target_link_libraries(drift PRIVATE
 )
 target_include_directories(drift PRIVATE src)
 # qmltyperegistrar emits bare-basename includes (<ThemeManager.h>) for the qml module's headers.
-target_include_directories(drift PRIVATE src/ui/theme src/ui/theme/backdrop src/app/online/marketplace)
+target_include_directories(drift PRIVATE src/ui/theme src/ui/theme/backdrop src/ui/window src/app/online/marketplace)
+
+# --- Kipper: barra de título integrada (QWindowKit, Apache-2.0) ---------------------------
+# Windows e Linux desenham a própria barra; a QWindowKit mantém o comportamento de janela
+# normal (arrastar, duplo clique, redimensionar, Aero Snap, sombra e cantos do Windows 11).
+# macOS, Android e navegador continuam com a barra do sistema.
+option(KIPPER_WITH_QWK "Barra de título integrada com a QWindowKit (Windows e Linux)" ON)
+if(KIPPER_WITH_QWK AND (WIN32 OR (UNIX AND NOT APPLE AND NOT ANDROID AND NOT EMSCRIPTEN)))
+    include(FetchContent)
+    set(QWINDOWKIT_BUILD_STATIC ON CACHE BOOL "" FORCE)
+    set(QWINDOWKIT_BUILD_WIDGETS OFF CACHE BOOL "" FORCE)
+    set(QWINDOWKIT_BUILD_QUICK ON CACHE BOOL "" FORCE)
+    set(QWINDOWKIT_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+    set(QWINDOWKIT_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+    set(QWINDOWKIT_INSTALL OFF CACHE BOOL "" FORCE)
+    set(QWINDOWKIT_ENABLE_STYLE_AGENT OFF CACHE BOOL "" FORCE)
+    FetchContent_Declare(qwindowkit
+        GIT_REPOSITORY https://github.com/stdware/qwindowkit.git
+        GIT_TAG 2072958b04820e9e7629f6c40068dee0ce0e9915
+        GIT_SHALLOW FALSE)
+    FetchContent_MakeAvailable(qwindowkit)
+    target_link_libraries(drift PRIVATE QWKQuick)
+    target_compile_definitions(drift PRIVATE KIPPER_HAS_QWK)
+endif()
+if(UNIX AND NOT APPLE AND NOT ANDROID AND NOT EMSCRIPTEN)
+    # Portal de configurações (lado dos botões, tema) no Linux, dentro e fora do Flatpak.
+    find_package(Qt6 REQUIRED COMPONENTS DBus)
+    target_link_libraries(drift PRIVATE Qt6::DBus)
+endif()
 if(DRIFT_BACKDROP_PLATFORM_LIBS)
     target_link_libraries(drift PRIVATE ${DRIFT_BACKDROP_PLATFORM_LIBS})
 endif()
@@ -2804,7 +2837,8 @@ endif()
 if(Qt6LinguistTools_FOUND)
     # Catalogs, project/SRT errors and reverse-proxy messages live on driftengine/driftcore, which
     # qt_add_translations(drift) does not scan on its own.
-    file(GLOB DRIFT_TS_FILES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/i18n/drift_*.ts")
+    # Kipper: só português do Brasil e inglês (o inglês é o texto do próprio código).
+    set(DRIFT_TS_FILES "${CMAKE_SOURCE_DIR}/i18n/drift_pt_BR.ts")
     qt_add_translations(drift
         TS_FILES
             "${CMAKE_SOURCE_DIR}/i18n/drift.ts"
@@ -2921,6 +2955,8 @@ target_compile_definitions(drift PRIVATE
     DRIFT_UPDATE_FEED_URL="${DRIFT_UPDATE_FEED_URL}"
     DRIFT_VERSION="${DRIFT_VERSION_STRING}"
     DRIFT_DISTRIBUTION="${DRIFT_DISTRIBUTION}"
+    DRIFT_APP_ID="${DRIFT_APP_ID}"
+    DRIFT_APP_NAME="${DRIFT_APP_NAME}"
 )
 
 if(DRIFT_PCH)

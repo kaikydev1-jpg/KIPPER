@@ -49,14 +49,14 @@ Reason mapReason(const QString &code, const QString &module, const QString &modu
     // First: an allocation failure faults inside the CRT, which would otherwise read as a stale runtime.
     if (code.compare(QLatin1String("0xC0000017"), Qt::CaseInsensitive) == 0) {
         reason.key = QStringLiteral("out-of-memory");
-        reason.text = tr("Drift ran out of memory. Close other programs, or work with smaller or "
+        reason.text = tr("Kipper ran out of memory. Close other programs, or work with smaller or "
                          "lower-resolution media.");
         return reason;
     }
 
     if (isCrt(name)) {
         reason.key = QStringLiteral("crt-outdated");
-        reason.text = tr("A Windows component Drift depends on looks out of date. Update the "
+        reason.text = tr("A Windows component Kipper depends on looks out of date. Update the "
                          "Microsoft Visual C++ Redistributable.");
         reason.linkUrl = QStringLiteral("https://aka.ms/vs/17/release/vc_redist.x64.exe");
         reason.linkLabel = tr("Download the Visual C++ Redistributable");
@@ -90,7 +90,7 @@ Reason mapReason(const QString &code, const QString &module, const QString &modu
     }
 
     reason.key = QStringLiteral("unknown");
-    reason.text = tr("Drift closed unexpectedly.");
+    reason.text = tr("Kipper closed unexpectedly.");
     return reason;
 }
 

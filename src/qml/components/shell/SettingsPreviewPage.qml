@@ -215,7 +215,7 @@ SettingsPage {
     SettingsRow {
         title: qsTr("Graphics card")
         searchId: "preview-graphics-card"
-        description: qsTr("Which graphics card Drift runs on. High performance keeps video decoded on an NVIDIA card on that card; power saving uses less battery. Takes effect after restart.")
+        description: qsTr("Which graphics card Kipper runs on. High performance keeps video decoded on an NVIDIA card on that card; power saving uses less battery. Takes effect after restart.")
         keywords: "gpu integrated discrete nvidia power battery"
         available: EditorState.preferences.gpuPreferenceSupported
         query: page.query
@@ -243,7 +243,7 @@ SettingsPage {
     SettingsRow {
         title: qsTr("Graphics card")
         searchId: "preview-graphics-card-system-settings"
-        description: qsTr("Choose which graphics card Drift runs on in Windows Settings, under Display > Graphics. Takes effect after restart.")
+        description: qsTr("Choose which graphics card Kipper runs on in Windows Settings, under Display > Graphics. Takes effect after restart.")
         keywords: "gpu windows display nvidia"
         available: EditorState.preferences.gpuPreferenceInSystemSettings
         query: page.query
@@ -334,7 +334,7 @@ SettingsPage {
     SettingsRow {
         title: qsTr("Proxy name patterns")
         searchId: "preview-proxy-name-patterns"
-        description: qsTr("Linking a proxy teaches Drift its name pattern. Proxies next to your media that match a pattern below link automatically.")
+        description: qsTr("Linking a proxy teaches Kipper its name pattern. Proxies next to your media that match a pattern below link automatically.")
         keywords: "proxy naming file name regex"
         stacked: true
         query: page.query

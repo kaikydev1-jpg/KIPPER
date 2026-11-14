@@ -11,16 +11,13 @@ ThemedDialog {
     showReject: false
     acceptText: qsTr("Close")
 
+    // Kipper: ajuda e contato pelo GitHub do projeto.
     readonly property var links: [
         { glyph: Theme.icons.bug, title: qsTr("Open an issue on GitHub"),
-          url: "https://github.com/CutWire-Studios/Drift/issues",
-          label: "github.com/CutWire-Studios/Drift/issues" },
-        { glyph: Theme.icons.messageCircle, title: qsTr("Join our Discord server"),
-          url: "https://cutwire.org/discord", label: "cutwire.org/discord" },
+          url: "https://github.com/kaikydev1-jpg/KIPPER/issues",
+          label: "github.com/kaikydev1-jpg/KIPPER/issues" },
         { glyph: Theme.icons.bookOpen, title: qsTr("Read the docs"),
-          url: "https://docs.cutwire.org/drift", label: "docs.cutwire.org/drift" },
-        { glyph: Theme.icons.mail, title: qsTr("Contact us via email"),
-          url: "mailto:contact@cutwire.org", label: "contact@cutwire.org" }
+          url: "https://github.com/kaikydev1-jpg/KIPPER#readme", label: "github.com/kaikydev1-jpg/KIPPER" }
     ]
 
     contentItem: Column {

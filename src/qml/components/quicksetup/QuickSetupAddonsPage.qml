@@ -47,9 +47,11 @@ QuickSetupPage {
     }
 
     title: qsTr("Install the essentials")
-    subtitle: qsTr("Drift's basic effects, transitions, audio effects, fonts and color grading LUTs come as add-ons. Without them the editor will be missing most of what you expect, so they are installed now.")
+    subtitle: qsTr("Effects, transitions and audio effects already come with Kipper. Fonts and color grading LUTs are downloaded now.")
     glyph: Theme.icons.package
-    canAdvance: allDone
+    // Kipper: sem internet (ou com a loja fora do ar) o assistente não trava; o que faltar dá
+    // para instalar depois em Extras.
+    canAdvance: allDone || catalogFailed || anyFailed
     contentMaxWidth: 760
 
     signal skipRequested()
@@ -79,7 +81,7 @@ QuickSetupPage {
 
     function rowError(e) {
         if (e.state === "needs-newer-app")
-            return qsTr("Needs a newer version of Drift.")
+            return qsTr("Needs a newer version of Kipper.")
         if (e.missing)
             return qsTr("Not available in the download store.")
         return e.error.length > 0 ? e.error : qsTr("The download failed.")
@@ -205,7 +207,7 @@ QuickSetupPage {
                 size: "sm"
                 tone: "default"
                 text: root.catalogFailed
-                      ? qsTr("Couldn't reach the download store. Until the essentials are installed the editor will be missing basic effects, transitions and fonts. You can install them later from Extras.")
+                      ? qsTr("Couldn't reach the download store. You can continue now and install fonts and color looks later from Extras.")
                       : qsTr("Some packs didn't install. Until they are, the editor will be missing basic effects, transitions and fonts. You can install them later from Extras.")
             }
         }

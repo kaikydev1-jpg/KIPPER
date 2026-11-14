@@ -105,7 +105,7 @@ PanelFrame {
     function searchErrorText() {
         const r = root.searchResult
         if (r.closest && r.closest.length > 0)
-            return qsTr("Not a sound Drift knows. Closest: %1").arg(r.closest.slice(0, 4).join(", "))
+            return qsTr("Not a sound Kipper knows. Closest: %1").arg(r.closest.slice(0, 4).join(", "))
         return r.detail ?? ""
     }
 
@@ -479,7 +479,7 @@ PanelFrame {
                           ? (root.searchBusy ? qsTr("Searching…")
                              : (root.searchStarted && root.searchResult.ok === false
                                 ? root.searchErrorText()
-                                : qsTr("Type one of the %1 sounds Drift knows, or pick a suggestion.").arg(root.vocabulary.length)))
+                                : qsTr("Type one of the %1 sounds Kipper knows, or pick a suggestion.").arg(root.vocabulary.length)))
                           : (root.busy ? qsTr("Analysing audio…")
                              : (root.resultOk ? qsTr("Nothing to show: turn on Sound tags and generate again.")
                                               : qsTr("Generate a sheet to name its sections and sounds.")))

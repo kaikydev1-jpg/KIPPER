@@ -55,7 +55,7 @@ Rectangle {
         if (installState !== "failed")
             return ""
         if (job.errorCode === "app_too_old")
-            return job.error || qsTr("This needs a newer version of Drift. Update the app to install it.")
+            return job.error || qsTr("This needs a newer version of Kipper. Update the app to install it.")
         return job.error || qsTr("The install didn’t finish.")
     }
 

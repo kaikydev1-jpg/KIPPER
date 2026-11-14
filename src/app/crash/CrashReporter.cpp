@@ -34,8 +34,10 @@ using namespace drift::crash;
 
 namespace {
 
-const QString kEndpoint = QStringLiteral("https://crash-reporting.cutwire.org/v1/report");
-const QString kSettingKey = QStringLiteral("privacy/sendCrashReports");
+// Kipper não envia nada para fora (sem telemetria): o envio fica desligado de vez e o
+// diagnóstico só é salvo no computador, para a pessoa anexar a um chamado se quiser.
+const QString kEndpoint;
+[[maybe_unused]] const QString kSettingKey = QStringLiteral("privacy/sendCrashReports");
 
 constexpr qint64 kMaxUploadDump = 512 * 1024;
 constexpr qsizetype kMaxUploadLog = 256 * 1024;
@@ -95,15 +97,13 @@ bool CrashReporter::supported() const
 
 bool CrashReporter::automaticReports() const
 {
-    return QSettings().value(kSettingKey, true).toBool();
+    return false;
 }
 
 void CrashReporter::setAutomaticReports(bool enabled)
 {
-    if (automaticReports() == enabled)
-        return;
-    QSettings().setValue(kSettingKey, enabled);
-    emit automaticReportsChanged();
+    Q_UNUSED(enabled);
+    // Sem telemetria no Kipper: a opção não existe.
 }
 
 bool CrashReporter::safeMode() const

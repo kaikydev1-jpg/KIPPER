@@ -52,7 +52,7 @@ ApplicationWindow {
     x: Screen.width / 2 - width / 2
     y: Screen.height / 2 - height / 2
     visible: true
-    title: qsTr("Drift setup")
+    title: qsTr("Kipper setup")
     color: Theme.c.quickSetup.background
 
     Connections {

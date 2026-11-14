@@ -37,8 +37,8 @@ Rectangle {
         anchors.rightMargin: Theme.spacingMd
         anchors.verticalCenter: parent.verticalCenter
         text: Updates.readyToInstall
-              ? qsTr("Drift %1 is ready to install").arg(Updates.latestVersion)
-              : qsTr("Drift %1 is available").arg(Updates.latestVersion)
+              ? qsTr("Kipper %1 is ready to install").arg(Updates.latestVersion)
+              : qsTr("Kipper %1 is available").arg(Updates.latestVersion)
         color: Theme.c.notificationUpdateRow.foreground
         font.family: Theme.fontFamily
         font.pixelSize: Theme.fontSizeSm

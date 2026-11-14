@@ -256,7 +256,7 @@ QVariantMap UpdateChecker::downloadJob() const
         {QStringLiteral("itemId"), QStringLiteral("drift-update")},
         {QStringLiteral("kind"), QStringLiteral("update")},
         {QStringLiteral("mediaKind"), QStringLiteral("update")},
-        {QStringLiteral("title"), tr("Drift %1 update").arg(m_latestVersion)},
+        {QStringLiteral("title"), tr("Kipper %1 update").arg(m_latestVersion)},
         {QStringLiteral("status"), status},
         {QStringLiteral("running"), running},
         {QStringLiteral("finished"), !running},
@@ -267,7 +267,7 @@ QVariantMap UpdateChecker::downloadJob() const
         {QStringLiteral("speed"), m_downloading && seconds > 0.5 ? m_bytesReceived / seconds : 0.0},
         {QStringLiteral("errorMessage"), m_error},
         {QStringLiteral("phase"), tr("Preparing the update…")},
-        {QStringLiteral("doneDetail"), m_installOnQuit ? tr("Installs when you close Drift")
+        {QStringLiteral("doneDetail"), m_installOnQuit ? tr("Installs when you close Kipper")
                                                        : tr("Ready to install")},
         {QStringLiteral("destinationDir"), QString()},
     };
@@ -422,7 +422,7 @@ void UpdateChecker::scheduleInstallOnQuit()
     m_installOnQuit = true;
     emit activityChanged();
     if (m_readyToInstall)
-        setStatus(tr("Drift %1 will install when you close Drift.").arg(m_latestVersion));
+        setStatus(tr("Kipper %1 will install when you close Kipper.").arg(m_latestVersion));
 }
 
 void UpdateChecker::markAnnounced()
@@ -482,7 +482,7 @@ void UpdateChecker::check(bool manual)
         if (drift::compareVersions(kCurrentVersion, version) >= 0) {
             clearRelease();
             if (manual)
-                setStatus(tr("Drift %1 is the latest version.").arg(kCurrentVersion));
+                setStatus(tr("Kipper %1 is the latest version.").arg(kCurrentVersion));
             setChecking(false);
             return;
         }
@@ -538,7 +538,7 @@ void UpdateChecker::finishCheck(const QString &version, bool manual)
 {
     auto done = [this, version, manual] {
         if (manual)
-            setStatus(tr("Drift %1 is available.").arg(version));
+            setStatus(tr("Kipper %1 is available.").arg(version));
         announceIfNeeded();
         setChecking(false);
     };
@@ -980,9 +980,9 @@ void UpdateChecker::finishStage()
     setReadyToInstall(true);
     setProgress(1);
     if (m_installOnQuit) {
-        setStatus(tr("Drift %1 will install when you close Drift.").arg(m_latestVersion));
+        setStatus(tr("Kipper %1 will install when you close Kipper.").arg(m_latestVersion));
     } else {
-        setStatus(tr("Drift %1 is ready to install.").arg(m_latestVersion));
+        setStatus(tr("Kipper %1 is ready to install.").arg(m_latestVersion));
         emit installReady();
     }
 }

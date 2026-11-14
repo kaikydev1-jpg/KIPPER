@@ -214,7 +214,7 @@ SettingsPage {
 
     SettingsGroupHeader {
         text: qsTr("Privacy")
-        available: CrashReports.supported
+        available: false
         query: page.query
     }
 
@@ -223,7 +223,7 @@ SettingsPage {
         searchId: "general-send-crash-reports"
         description: qsTr("After a crash, send the error details, a short scrubbed log and your system and graphics information to help fix it. No project files or media.")
         keywords: "crash report privacy telemetry diagnostics error upload"
-        available: CrashReports.supported
+        available: false
         query: page.query
 
         ThemedSwitch {

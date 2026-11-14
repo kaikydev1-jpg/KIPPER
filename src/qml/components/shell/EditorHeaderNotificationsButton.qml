@@ -21,7 +21,7 @@ Item {
         variant: "ghost"
         active: notificationsPopup.opened
         tooltip: bellButton.updatePending
-                 ? qsTr("Notifications — Drift %1 is available").arg(Updates.latestVersion)
+                 ? qsTr("Notifications — Kipper %1 is available").arg(Updates.latestVersion)
                  : qsTr("Notifications")
         onClicked: notificationsPopup.opened ? notificationsPopup.close()
                                              : notificationsPopup.open()

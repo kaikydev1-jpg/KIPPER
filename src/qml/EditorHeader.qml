@@ -30,7 +30,7 @@ Item {
     // .mogrt, EDL, OTIO) need more fixing before shipping. Uncomment these entries, the open*()
     // functions below and the RecentProjectsPopup connections when the readers are stable.
     readonly property var projectFilter: [
-        qsTr("Drift project (*.drift)"),
+        qsTr("Kipper project (*.drift)"),
         qsTr("JSON document (*.json)"),
         qsTr("All Files (*)")
     ]
@@ -373,15 +373,28 @@ Item {
 
     // The three groups used to be independently anchored, so at narrow widths
     // they overlapped instead of compressing. A RowLayout arbitrates the space.
+    // Kipper: a faixa do cabeçalho também é a barra de título. As partes clicáveis são
+    // marcadas para não arrastar a janela; o vão entre elas arrasta. Enquanto a tela inicial
+    // cobre o editor, quem marca é ela.
+    readonly property bool _chromeActive: !(ShellBridge.main?.showStartScreen ?? false)
+    on_ChromeActiveChanged: _registerChrome()
+    Component.onCompleted: _registerChrome()
+    function _registerChrome() {
+        for (const item of [leftGroup, searchField, rightGroup])
+            WindowChrome.setHitTestVisible(item, root._chromeActive)
+    }
+
     RowLayout {
         anchors.fill: parent
-        anchors.leftMargin: Theme.pagePadding
-        anchors.rightMargin: Theme.pagePadding
+        // Espaço para os botões da janela (bolinhas à esquerda, Windows/GNOME/KDE à direita).
+        anchors.leftMargin: Theme.pagePadding + (ShellBridge.main?.chromeLeftInset ?? 0)
+        anchors.rightMargin: Theme.pagePadding + (ShellBridge.main?.chromeRightInset ?? 0)
         anchors.verticalCenterOffset: 1
         spacing: Theme.spacingLg
 
         // --- Left: project switcher + save ------------------------------------
         Row {
+            id: leftGroup
             Layout.alignment: Qt.AlignVCenter
             spacing: Theme.spacingLg
 
@@ -446,6 +459,7 @@ Item {
 
         // --- Right: appearance | extras | agent | infrequent | export ------
         Row {
+            id: rightGroup
             Layout.alignment: Qt.AlignVCenter
             spacing: Theme.spacingSm
 

@@ -9,7 +9,7 @@ SettingsPage {
     title: qsTr("About")
 
     SettingsRow {
-        title: qsTr("Drift")
+        title: qsTr("Kipper")
         searchId: "about-version"
         description: qsTr("Version %1").arg(Updates.currentVersion)
         query: page.query
@@ -24,7 +24,7 @@ SettingsPage {
     SettingsRow {
         title: qsTr("Check for updates on startup")
         searchId: "about-check-updates-on-startup"
-        description: qsTr("Once a day, check whether a newer Drift has been released.")
+        description: qsTr("Once a day, check whether a newer Kipper has been released.")
         keywords: "update version release newer"
         available: Updates.supported
         query: page.query
@@ -93,7 +93,7 @@ SettingsPage {
     }
 
     SettingsRow {
-        title: qsTr("About Drift")
+        title: qsTr("About Kipper")
         searchId: "about-drift"
         description: qsTr("Open-source video editor by CutWire Studios.")
         keywords: "license credits version"
