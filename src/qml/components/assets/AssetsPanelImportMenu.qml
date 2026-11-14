@@ -28,7 +28,8 @@ ThemedContextMenu {
     }
 
     ThemedMenuItem {
-        visible: !!ShellBridge.main && !!ShellBridge.main.openMarketplace
+        // Kipper: sem o mercado da CutWire não há o que explorar na loja.
+        visible: Marketplace.available && !!ShellBridge.main && !!ShellBridge.main.openMarketplace
         height: visible ? implicitHeight : 0
         text: qsTr("Browse Marketplace…")
         icon.name: Theme.icons.store

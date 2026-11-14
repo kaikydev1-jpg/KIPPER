@@ -54,7 +54,9 @@ ThemedDialog {
                     width: parent.width
                     tone: "default"
                     size: "base"
-                    text: (root.info && root.info.projectName && root.info.projectName.length > 0)
+                    // Kipper: "Untitled Project" é o nome guardado no arquivo; na tela, traduzido.
+                    text: (root.info && root.info.projectName && root.info.projectName.length > 0
+                           && root.info.projectName !== "Untitled Project")
                           ? root.info.projectName
                           : qsTr("Untitled project")
                 }
@@ -64,7 +66,14 @@ ThemedDialog {
                     size: "sm"
                     tone: "muted"
                     visible: !!(root.info && root.info.savedAt && root.info.savedAt.length > 0)
-                    text: qsTr("Auto-saved: %1").arg(root.info ? root.info.savedAt : "")
+                    // Kipper: data no jeito da língua da pessoa (era o texto ISO cru, 2026-11-14T14:21:34).
+                    text: {
+                        const raw = root.info ? root.info.savedAt : ""
+                        const when = new Date(raw)
+                        return qsTr("Auto-saved: %1").arg(isNaN(when.getTime())
+                                                          ? raw
+                                                          : when.toLocaleString(Qt.locale(), Locale.ShortFormat))
+                    }
                 }
 
                 ThemedLabel {

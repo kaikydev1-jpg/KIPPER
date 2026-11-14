@@ -69,7 +69,7 @@ Item {
         IconButton {
             glyph: Theme.icons.bug
             variant: "ghost"
-            text: qsTr("Debug info")
+            // Kipper: só o ícone (com a dica); é para relatar problema, não para o dia a dia.
             tooltip: qsTr("System, playback and codec details for bug reports")
             onClicked: root.debugInfoRequested()
         }

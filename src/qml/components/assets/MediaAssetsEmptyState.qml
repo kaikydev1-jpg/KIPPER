@@ -17,7 +17,8 @@ Item {
 
     clip: true
 
-    readonly property bool hasMarketplace: !!ShellBridge.main && !!ShellBridge.main.openMarketplace
+    // Kipper: sem o mercado da CutWire não há o que explorar na loja.
+    readonly property bool hasMarketplace: Marketplace.available && !!ShellBridge.main && !!ShellBridge.main.openMarketplace
     readonly property real sectionGap: Theme.spacingXl
     readonly property real buttonsHeight: importRow.height
         + (hasMarketplace ? marketplaceButton.height + sectionGap : 0) + sectionGap
