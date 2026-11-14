@@ -872,13 +872,14 @@ QString UpdateChecker::updatesDir() const
             + QStringLiteral("/updates");
     QDir().mkpath(dir);
     return dir;
-#endif
+#else
     QString base = drift::cacheRoot();
     if (base.isEmpty())
         base = QDir::tempPath();
     const QString dir = base + QStringLiteral("/updates");
     QDir().mkpath(dir);
     return dir;
+#endif
 }
 
 QString UpdateChecker::appImagePath() const
