@@ -1593,8 +1593,8 @@ ApplicationWindow {
     // redimensionam (WindowChrome + QWindowKit). Fica acima do editor e da tela inicial, mas
     // não segura o mouse: só os botões da janela recebem clique aqui; o resto passa para o
     // cabeçalho embaixo, que marca as próprias partes clicáveis.
-    readonly property real chromeLeftInset: leftWindowControls.visible ? leftWindowControls.implicitWidth : 0
-    readonly property real chromeRightInset: rightWindowControls.visible ? rightWindowControls.implicitWidth : 0
+    readonly property real chromeLeftInset: leftWindowControls.shown ? leftWindowControls.implicitWidth : 0
+    readonly property real chromeRightInset: rightWindowControls.shown ? rightWindowControls.implicitWidth : 0
 
     Item {
         id: titleStrip

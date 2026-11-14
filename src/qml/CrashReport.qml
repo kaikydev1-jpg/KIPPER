@@ -11,24 +11,39 @@ ApplicationWindow {
     readonly property bool crashed: CrashReports.startupKind === "crash"
 
     width: 560
-    height: content.implicitHeight + Theme.spacing3xl * 2
+    height: content.implicitHeight + Theme.spacing3xl * 2 + titleBar.height
     minimumWidth: width
     maximumWidth: width
     minimumHeight: height
     maximumHeight: height
     x: Screen.width / 2 - width / 2
     y: Screen.height / 2 - height / 2
-    visible: true
+    visible: false
     title: crashed ? qsTr("Kipper closed unexpectedly") : qsTr("Kipper did not close properly")
     color: Theme.c.quickSetup.background
+
+    Component.onCompleted: {
+        WindowChrome.setup(window)
+        window.visible = true
+    }
+
+    WindowTitleBar {
+        id: titleBar
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        showTitle: false
+        allowed: ["close", "minimize"]
+    }
 
     ColumnLayout {
         id: content
 
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.top: parent.top
+        anchors.top: titleBar.bottom
         anchors.margins: Theme.spacing3xl
+        anchors.topMargin: titleBar.height > 0 ? Theme.spacingLg : Theme.spacing3xl
         spacing: Theme.spacingLg
 
         Text {

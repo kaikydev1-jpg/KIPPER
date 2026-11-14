@@ -58,7 +58,9 @@ Rectangle {
                                                  - 8 - Theme.iconSizeSm
                                                  - Theme.spacingMd * 2
             width: Math.min(implicitWidth, maxTextWidth)
-            text: projectsButton.projectName
+            // "Untitled Project" é o nome guardado no arquivo; na tela aparece traduzido.
+            text: projectsButton.projectName === "Untitled Project" ? qsTr("Untitled Project")
+                                                                    : projectsButton.projectName
             color: Theme.c.editorHeaderProjectsButton.foreground
             font.family: Theme.fontFamily
             font.pixelSize: Theme.fontSizeSm

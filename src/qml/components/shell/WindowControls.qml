@@ -18,8 +18,11 @@ Item {
     id: root
 
     property string side: "right"
+    // Janelas de tamanho fixo (avisos, por exemplo) mostram só o que faz sentido nelas.
+    property var allowed: ["close", "minimize", "maximize"]
 
-    readonly property var buttons: side === "left" ? WindowChrome.leftButtons : WindowChrome.rightButtons
+    readonly property var buttons: (side === "left" ? WindowChrome.leftButtons : WindowChrome.rightButtons)
+                                   .filter(b => allowed.indexOf(b) >= 0)
     readonly property string chromeStyle: WindowChrome.style
     readonly property bool dots: chromeStyle === "mac" || chromeStyle === "matsu"
     readonly property var win: Window.window
@@ -38,8 +41,10 @@ Item {
                                    : dots ? 8
                                    : chromeStyle === "kde" ? 6 : 12
 
-    visible: WindowChrome.integrated && buttons.length > 0
-    implicitWidth: visible ? row.implicitWidth + edgeMargin + (chromeStyle === "windows" ? 0 : edgeMargin * 0.5) : 0
+    // Não ler `visible` para o tamanho: ele fica falso enquanto a janela ainda está escondida.
+    readonly property bool shown: WindowChrome.integrated && buttons.length > 0
+    visible: shown
+    implicitWidth: shown ? row.implicitWidth + edgeMargin + (chromeStyle === "windows" ? 0 : edgeMargin * 0.5) : 0
     implicitHeight: Theme.headerHeight
 
     function trigger(role) {

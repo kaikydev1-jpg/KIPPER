@@ -88,6 +88,7 @@
 #include <QOffscreenSurface>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
+#include <QPointer>
 #include <QProcess>
 #include <QNetworkAccessManager>
 #include <QNetworkDiskCache>
@@ -832,7 +833,10 @@ int main(int argc, char *argv[])
     }
 #endif
 
-    StartupSplash *splash = nullptr;
+    // QPointer: a tela de abertura se apaga sozinha quando a primeira janela aparece (finishOn).
+    // Depois do aviso de travamento o editor ainda chama step(), e um ponteiro comum apontava
+    // para memória já liberada (travava ao clicar em Continuar).
+    QPointer<StartupSplash> splash;
 #if !defined(Q_OS_ANDROID) && !defined(Q_OS_WASM)
     if (previewNames.isEmpty()) {
         splash = new StartupSplash;
@@ -1086,7 +1090,7 @@ int main(int argc, char *argv[])
 #if !defined(Q_OS_ANDROID) && !defined(Q_OS_WASM)
         if (window)
             new FirstFrameWatchdog(window);
-        if (first)
+        if (first && splash)
             splash->finishOn(window);
 #ifdef Q_OS_WIN
         // Tells "no window" apart from "a window nobody can see" when the screen stays empty.

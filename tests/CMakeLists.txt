@@ -426,6 +426,20 @@ qt_add_resources(tst_windowbackdrop "drift_themes"
 add_test(NAME WindowBackdrop COMMAND tst_windowbackdrop)
 set_tests_properties(WindowBackdrop PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 
+# Kipper: estilo e lado dos botões da janela + reconhecimento do Matsu OS.
+qt_add_executable(tst_windowchrome
+    tst_windowchrome.cpp
+    ../src/ui/window/WindowChrome.h
+    ../src/ui/window/WindowChrome.cpp
+)
+target_include_directories(tst_windowchrome PRIVATE ../src)
+target_link_libraries(tst_windowchrome PRIVATE Qt6::Test Qt6::Qml Qt6::Quick)
+if(UNIX AND NOT APPLE AND NOT ANDROID)
+    find_package(Qt6 REQUIRED COMPONENTS DBus)
+    target_link_libraries(tst_windowchrome PRIVATE Qt6::DBus)
+endif()
+add_test(NAME WindowChrome COMMAND tst_windowchrome)
+
 qt_add_executable(tst_workspacestore tst_workspacestore.cpp ../src/app/editor/WorkspaceStore.cpp)
 target_include_directories(tst_workspacestore PRIVATE ../src)
 target_link_libraries(tst_workspacestore PRIVATE Qt6::Test Qt6::Core)

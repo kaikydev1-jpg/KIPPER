@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QHash>
 #include <QList>
 #include <QObject>
 #include <QPointer>
@@ -109,10 +110,15 @@ private:
     QString m_styleSetting;
     System m_system;
     Buttons m_buttons;
-    QPointer<QQuickWindow> m_window;
-    QWK::QuickWindowAgent *m_agent = nullptr;
-    // Pedidos feitos antes de setup() (os itens da tela terminam de carregar antes da janela).
-    QPointer<QQuickItem> m_pendingTitleBar;
+#ifdef KIPPER_HAS_QWK
+    QWK::QuickWindowAgent *agentFor(QQuickItem *item) const;
+    void applyPending(QQuickWindow *window);
+    static void applySystemButton(QWK::QuickWindowAgent *agent, const QString &role, QQuickItem *item);
+#endif
+    // Uma ligação com a QWindowKit por janela (principal, assistente, painéis soltos...).
+    QHash<QQuickWindow *, QWK::QuickWindowAgent *> m_agents;
+    // Pedidos feitos antes de setup() da janela (os itens terminam de carregar antes dela).
+    QList<QPointer<QQuickItem>> m_pendingTitleBars;
     QList<std::pair<QString, QPointer<QQuickItem>>> m_pendingButtons;
     QList<std::pair<QPointer<QQuickItem>, bool>> m_pendingHitTest;
 };

@@ -20,11 +20,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open-source video editor by CutWire Studios.</source>
+        <source>Free, open-source video editor, from your first cut to a whole film.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Licensed under GPLv3. Copyright © CutWire Studios.</source>
+        <source>Based on %1 by CutWire Studios, with design ideas from %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Licensed under GPLv3. Copyright © CutWire Studios and the Kipper contributors. %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source code</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7317,6 +7325,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Open an issue on GitHub</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Supported</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7338,10 +7350,6 @@
     </message>
     <message>
         <source>Documentation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Questions and support on Discord</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8312,6 +8320,10 @@
     </message>
     <message>
         <source>Unsaved changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Untitled Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -10648,15 +10660,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Join our Discord server</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Read the docs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Contact us via email</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -16935,10 +16939,6 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Kipper&apos;s basic effects, transitions, audio effects, fonts and color grading LUTs come as add-ons. Without them the editor will be missing most of what you expect, so they are installed now.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Needs a newer version of Kipper.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16955,7 +16955,11 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Couldn&apos;t reach the download store. Until the essentials are installed the editor will be missing basic effects, transitions and fonts. You can install them later from Extras.</source>
+        <source>Effects, transitions and audio effects already come with Kipper. Fonts and color grading LUTs are downloaded now.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t reach the download store. You can continue now and install fonts and color looks later from Extras.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17006,15 +17010,15 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Join our Discord</source>
+        <source>Open Kipper on GitHub</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copied</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy email address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18559,6 +18563,14 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Windows display scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Window buttons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>How minimize, maximize and close look. Automatic follows your system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -27736,6 +27748,25 @@ If playback stutters, try another.</source>
     </message>
 </context>
 <context>
+    <name>WindowControls</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximize</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>WorkspaceDesigner</name>
     <message>
         <source>Panels</source>
@@ -28109,6 +28140,38 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>The &quot;%1&quot; panel is used more than once.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3D</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit (Portrait)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Masking &amp; Tracking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Procedural</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source Lab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

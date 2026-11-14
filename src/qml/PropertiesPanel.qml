@@ -13,7 +13,10 @@ PanelFrame {
     // timeline-facing state (subtitle lane, keyframe lane) to the full panel.
     property string lockedTab: ""
     readonly property bool locked: lockedTab !== ""
-    readonly property bool railHidden: sheetMode || locked
+    // Kipper: no computador as abas do painel de ajustes também ficam no alto, com ícone e nome,
+    // como no CapCut (a coluna de ícones do Drift continua no código, escondida).
+    readonly property bool topTabs: !locked
+    readonly property bool railHidden: sheetMode || locked || topTabs
     readonly property bool tabApplies: !locked || tabVisible(lockedTab)
     border.color: Theme.c.propertiesPanel.border
     border.width: sheetMode ? 0 : Theme.c.propertiesPanel.borderWidth
@@ -258,11 +261,11 @@ PanelFrame {
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            visible: root.sheetMode
+            visible: root.sheetMode || root.topTabs
             // Icon over label: the label alone identifies a tab, but the icon is
             // what the eye finds again after the first time.
-            readonly property real tabChipHeight: 58
-            height: visible ? tabChipHeight + Theme.spacingLg * 2 : 0
+            readonly property real tabChipHeight: root.sheetMode ? 58 : 50
+            height: visible ? tabChipHeight + (root.sheetMode ? Theme.spacingLg * 2 : Theme.spacingSm * 2) : 0
 
             // Keeps the selected tab on screen when it is picked from off the end,
             // and when the visible set changes with the clip kind.

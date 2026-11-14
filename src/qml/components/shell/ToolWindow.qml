@@ -54,6 +54,8 @@ Item {
     Item {
         id: holder
         anchors.fill: parent
+        // Kipper: espaço da faixa de título integrada da janela solta.
+        anchors.topMargin: !root._android && root._host ? (root._host.titleBarHeight ?? 0) : 0
     }
 
     Component {
@@ -66,9 +68,23 @@ Item {
             minimumWidth: root.minimumWidth
             minimumHeight: root.minimumHeight
 
+            readonly property real titleBarHeight: toolTitle.height
+
             onClosing: (close) => root.closing(close)
             onVisibleChanged: if (root.visible !== visible) root.visible = visible
-            Component.onCompleted: WindowBackdrop.attach(toolHost)
+            Component.onCompleted: {
+                WindowChrome.setup(toolHost) // Kipper: barra de título integrada
+                WindowBackdrop.attach(toolHost)
+            }
+
+            WindowTitleBar {
+                id: toolTitle
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                z: 10
+                allowed: ["close", "minimize"]
+            }
         }
     }
 

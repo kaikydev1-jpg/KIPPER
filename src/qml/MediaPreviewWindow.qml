@@ -32,13 +32,26 @@ Window {
         return WindowBackdrop.windowBackground(Theme.c.mediaPreviewWindow.background, multiplier)
     }
 
-    Component.onCompleted: WindowBackdrop.attach(root)
+    Component.onCompleted: {
+        WindowChrome.setup(root) // Kipper: barra de título integrada
+        WindowBackdrop.attach(root)
+    }
 
     onClosing: view.release()
 
+    WindowTitleBar {
+        id: titleBar
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+    }
+
     MediaPreviewView {
         id: view
-        anchors.fill: parent
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: titleBar.bottom
+        anchors.bottom: parent.bottom
         onCloseRequested: root.close()
     }
 }

@@ -121,14 +121,26 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
+        WindowChrome.setup(root) // Kipper: barra de título integrada
         WindowBackdrop.attach(root)
         root.place()
+    }
+
+    WindowTitleBar {
+        id: titleBar
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        shown: WindowChrome.integrated && root.visibility !== Window.FullScreen
     }
 
     // Arrow-key actions are matched on the focused item rather than as shortcuts (see Main.qml),
     // so this window needs the same hook the main editor scope has.
     FocusScope {
-        anchors.fill: parent
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: titleBar.bottom
+        anchors.bottom: parent.bottom
         focus: true
         enabled: !(ShellBridge.main?.showStartScreen ?? false)
         Keys.onPressed: function(event) {

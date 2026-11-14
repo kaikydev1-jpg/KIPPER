@@ -984,7 +984,9 @@ PanelFrame {
                 height: (searchBarTab && !root.locked) || (root.sheetMode && !hasActions) ? 0 : Theme.panelHeaderHeight
                 visible: height > 0
                 title: tabLabels[tabId]
-                showTitle: !root.sheetMode
+                // Kipper: com as abas no alto o nome da aba já aparece; o título repetido sumia
+                // atrás dos botões em painéis estreitos.
+                showTitle: !root.sheetMode && !root.topTabs
                 showActions: hasActions
                 importing: root.importing
                 onNewFolderRequested: newFolderDialog.open()

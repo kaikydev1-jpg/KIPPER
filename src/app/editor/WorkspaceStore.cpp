@@ -1,5 +1,6 @@
 #include "app/editor/WorkspaceStore.h"
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QFile>
 #include <QJsonArray>
@@ -306,6 +307,22 @@ WorkspaceStore::WorkspaceStore(QObject *parent)
     fixActive();
 }
 
+// Nomes dos espaços de trabalho prontos (resources/workspaces/*.json), para o lupdate achar.
+[[maybe_unused]] static const char *const kBuiltinWorkspaceNames[] = {
+    QT_TRANSLATE_NOOP("WorkspaceStore", "3D"),
+    QT_TRANSLATE_NOOP("WorkspaceStore", "AI"),
+    QT_TRANSLATE_NOOP("WorkspaceStore", "Audio"),
+    QT_TRANSLATE_NOOP("WorkspaceStore", "Color"),
+    QT_TRANSLATE_NOOP("WorkspaceStore", "Edit (Portrait)"),
+    QT_TRANSLATE_NOOP("WorkspaceStore", "Edit"),
+    QT_TRANSLATE_NOOP("WorkspaceStore", "Keyframes"),
+    QT_TRANSLATE_NOOP("WorkspaceStore", "Masking & Tracking"),
+    QT_TRANSLATE_NOOP("WorkspaceStore", "Procedural"),
+    QT_TRANSLATE_NOOP("WorkspaceStore", "Record"),
+    QT_TRANSLATE_NOOP("WorkspaceStore", "Source Lab"),
+    QT_TRANSLATE_NOOP("WorkspaceStore", "Subtitles"),
+};
+
 void WorkspaceStore::loadPresets()
 {
     QVector<QVariantMap> loaded;
@@ -318,6 +335,9 @@ void WorkspaceStore::loadPresets()
         if (ws.value(QStringLiteral("id")).toString().isEmpty() || !validate(ws).isEmpty())
             continue;
         ws[QStringLiteral("builtin")] = true;
+        // Kipper: o nome dos espaços de trabalho prontos aparece no idioma da interface.
+        ws[QStringLiteral("name")] = QCoreApplication::translate(
+            "WorkspaceStore", ws.value(QStringLiteral("name")).toString().toUtf8().constData());
         loaded.append(ws);
     }
     std::sort(loaded.begin(), loaded.end(), [](const QVariantMap &a, const QVariantMap &b) {

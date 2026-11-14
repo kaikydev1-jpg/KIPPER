@@ -43,6 +43,10 @@ Rectangle {
         font.pixelSize: Theme.fontSizeSm
     }
 
+    // Kipper: em painel estreito os botões secundários ficam só com o ícone (a dica mantém o
+    // nome) e o Importar continua inteiro, em vez de a fileira sair cortada pela esquerda.
+    readonly property bool compactActions: root.width < 440
+
     Row {
         anchors.right: parent.right
         anchors.rightMargin: 8
@@ -51,7 +55,7 @@ Rectangle {
         visible: root.showActions
 
         ThemedButton {
-            text: qsTr("New Folder")
+            text: root.compactActions ? "" : qsTr("New Folder")
             variant: "ghost"
             glyph: Theme.icons.folder
             tooltip: qsTr("Create a new folder here")
@@ -60,7 +64,7 @@ Rectangle {
         }
 
         ThemedButton {
-            text: qsTr("New timeline")
+            text: root.compactActions ? "" : qsTr("New timeline")
             variant: "ghost"
             glyph: Theme.icons.layers
             tooltip: qsTr("Create an empty timeline and open it")

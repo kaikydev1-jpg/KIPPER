@@ -37,7 +37,7 @@ def rebrand(text: str) -> str:
 STR = r'"(?:[^"\\\n]|\\.)*"'
 # Abertura de uma chamada de tradução, logo antes do primeiro texto.
 OPENERS = re.compile(
-    r"(?:\bqsTr|\btr|\bQT_TR_NOOP|\bQT_TR_N_NOOP|\bqsTrNoOp)\s*\(\s*$"
+    r"(?:\bqsTr|\btr|\btrReport|\bQT_TR_NOOP|\bQT_TR_N_NOOP|\bqsTrNoOp)\s*\(\s*$"
     r"|(?:\btranslate|\bqsTranslate|\bQT_TRANSLATE_NOOP|\bQT_TRANSLATE_N_NOOP|\bqsTranslateNoOp)\s*\(\s*" + STR + r"\s*,\s*$"
 )
 STR_RE = re.compile(STR)
@@ -48,6 +48,9 @@ def in_translation_call(src: str, start: int) -> bool:
     i = start
     while True:
         head = src[:i].rstrip()
+        # QML emenda textos com "+"; o C++ só os encosta.
+        if head.endswith("+"):
+            head = head[:-1].rstrip()
         m = re.search(STR + r"$", head)
         if m and not OPENERS.search(head):
             i = m.start()

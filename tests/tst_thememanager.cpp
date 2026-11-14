@@ -140,14 +140,14 @@ void ThemeManagerTest::builtinsLoadDarkAndLight()
     QCOMPARE(manager.currentTheme(), QStringLiteral("dark"));
     QVERIFY(manager.availableThemes().contains(QStringLiteral("dark")));
     QVERIFY(manager.availableThemes().contains(QStringLiteral("light")));
-    QCOMPARE(tokenColor(manager, "semantic.surface.app"), QColor(QStringLiteral("#0d0d0d")));
-    QCOMPARE(tokenColor(manager, "semantic.primary"), QColor(QStringLiteral("#F8B81C")));
+    QCOMPARE(tokenColor(manager, "semantic.surface.app"), QColor(QStringLiteral("#0b0b0c")));
+    QCOMPARE(tokenColor(manager, "semantic.primary"), QColor(QStringLiteral("#1ECBE1")));
     QCOMPARE(tokenColor(manager, "semantic.scrim"), QColor(QStringLiteral("#66000000")));
-    QCOMPARE(tokenColor(manager, "semantic.clip.audio"), QColor(QStringLiteral("#8F5DBA")));
+    QCOMPARE(tokenColor(manager, "semantic.clip.audio"), QColor(QStringLiteral("#1E8277")));
     QCOMPARE(tokenColor(manager, "semantic.gizmo.x"), QColor(QStringLiteral("#f0475a")));
-    QCOMPARE(tokenColor(manager, "semantic.clip.waveform"), QColor(QStringLiteral("#ffffffb3")));
-    QCOMPARE(tokenColor(manager, "semantic.panel.sliderTrack"), QColor(QStringLiteral("#505050")));
-    QCOMPARE(manager.token(QStringLiteral("metrics.radius.sm")).toDouble(), 5.6);
+    QCOMPARE(tokenColor(manager, "semantic.clip.waveform"), QColor(QStringLiteral("#bff5ecd9")));
+    QCOMPARE(tokenColor(manager, "semantic.panel.sliderTrack"), QColor(QStringLiteral("#46464d")));
+    QCOMPARE(manager.token(QStringLiteral("metrics.radius.sm")).toDouble(), 6.0);
     QCOMPARE(manager.token(QStringLiteral("metrics.controlHeight.pointer")).toDouble(), 30.0);
     QCOMPARE(manager.token(QStringLiteral("metrics.controlHeight.touch")).toDouble(), 44.0);
     QCOMPARE(manager.token(QStringLiteral("motion.easing")).toString(), QStringLiteral("OutQuint"));
@@ -160,8 +160,8 @@ void ThemeManagerTest::builtinsLoadDarkAndLight()
     // Built-in documents carry one group per visual component. A missing key
     // stays undefined in QML and never starts updating, so the map must not be empty.
     QVERIFY(!manager.components()->isEmpty());
-    QCOMPARE(tokenColor(manager, "components.themedButton.background"), QColor(QStringLiteral("#262626")));
-    QCOMPARE(tokenColor(manager, "components.appWindow.background"), QColor(QStringLiteral("#0d0d0d")));
+    QCOMPARE(tokenColor(manager, "components.themedButton.background"), QColor(QStringLiteral("#28282d")));
+    QCOMPARE(tokenColor(manager, "components.appWindow.background"), QColor(QStringLiteral("#0b0b0c")));
     QVERIFY(manager.overrideUrl(QStringLiteral("button")).isEmpty());
     QVERIFY(manager.overrideSlots(QStringLiteral("dark")).isEmpty());
     QVERIFY(!manager.isThemeTrusted(QStringLiteral("dark")));
@@ -178,14 +178,14 @@ void ThemeManagerTest::builtinsLoadDarkAndLight()
     QCOMPARE(tokenColor(manager, "semantic.surface.app"), QColor(QStringLiteral("#ffffff")));
     QCOMPARE(tokenColor(manager, "semantic.panel.sliderTrack"), tokenColor(manager, "semantic.panel.muted"));
     QCOMPARE(tokenColor(manager, "semantic.panel.muted"), QColor(QStringLiteral("#d4d4d4")));
-    QCOMPARE(tokenColor(manager, "semantic.accentOnPanel"), QColor(QStringLiteral("#8a6300")));
+    QCOMPARE(tokenColor(manager, "semantic.accentOnPanel"), QColor(QStringLiteral("#0b7c8c")));
     QCOMPARE(tokenColor(manager, "semantic.panel.scrollbar.handlePressed"), tokenColor(manager, "semantic.foreground"));
     QCOMPARE(tokenColor(manager, "semantic.skeleton"), QColor(QStringLiteral("#e8e8e8")));
     QCOMPARE(tokenColor(manager, "semantic.clip.beat.bar"), QColor(QStringLiteral("#1f6fb24d")));
     QCOMPARE(tokenColor(manager, "semantic.preview.textStyleBorder"), QColor(QStringLiteral("#2a2a2a")));
     // Built-in documents stay readable after the live theme swaps.
     QCOMPARE(manager.builtinToken(QStringLiteral("dark"), QStringLiteral("semantic.surface.app")).value<QColor>(),
-             QColor(QStringLiteral("#0d0d0d")));
+             QColor(QStringLiteral("#0b0b0c")));
 
     manager.setVariant(QStringLiteral("light"));
     QCOMPARE(spy.count(), 1);
@@ -243,7 +243,7 @@ void ThemeManagerTest::resolvesReferences()
     ThemeManager manager;
     QCOMPARE(tokenColor(manager, "semantic.focusRing"), tokenColor(manager, "semantic.primary"));
     QCOMPARE(tokenColor(manager, "semantic.clip.adjustment.video"), tokenColor(manager, "semantic.clip.effect"));
-    QCOMPARE(tokenColor(manager, "semantic.clip.effect"), QColor(QStringLiteral("#5d93ba")));
+    QCOMPARE(tokenColor(manager, "semantic.clip.effect"), QColor(QStringLiteral("#7A5FD8")));
     QCOMPARE(tokenColor(manager, "semantic.keyframe.curves.x"), QColor(QStringLiteral("#16a9f3")));
     QCOMPARE(tokenColor(manager, "semantic.keyframe.curves.volume"), QColor(QStringLiteral("#2dd4bf")));
     QCOMPARE(tokenColor(manager, "semantic.accentOnPanel"), tokenColor(manager, "semantic.primary"));
@@ -337,13 +337,13 @@ void ThemeManagerTest::extendsCycleDoesNotHang()
     })"));
 
     ThemeManager manager;
-    QCOMPARE(tokenColor(manager, "semantic.primary"), QColor(QStringLiteral("#F8B81C")));
+    QCOMPARE(tokenColor(manager, "semantic.primary"), QColor(QStringLiteral("#1ECBE1")));
     QElapsedTimer timer;
     timer.start();
     QVERIFY(!manager.loadTheme(QStringLiteral("cycleA")));
     QVERIFY(timer.elapsed() < 1000);
     QCOMPARE(manager.currentTheme(), QStringLiteral("dark"));
-    QCOMPARE(tokenColor(manager, "semantic.primary"), QColor(QStringLiteral("#F8B81C")));
+    QCOMPARE(tokenColor(manager, "semantic.primary"), QColor(QStringLiteral("#1ECBE1")));
 }
 
 void ThemeManagerTest::invalidThemeFallsBack()
@@ -358,7 +358,7 @@ void ThemeManagerTest::invalidThemeFallsBack()
     QVERIFY(writeJson("broken.json", "{"));
     QVERIFY(!manager.loadTheme(QStringLiteral("broken")));
     QCOMPARE(manager.currentTheme(), QStringLiteral("dark"));
-    QCOMPARE(tokenColor(manager, "semantic.surface.app"), QColor(QStringLiteral("#0d0d0d")));
+    QCOMPARE(tokenColor(manager, "semantic.surface.app"), QColor(QStringLiteral("#0b0b0c")));
 
     QVERIFY(writeJson("wrong-type.json", R"({
         "name": "wrong-type",
@@ -366,7 +366,7 @@ void ThemeManagerTest::invalidThemeFallsBack()
     })"));
     QVERIFY(!manager.loadTheme(QStringLiteral("wrong-type")));
     QCOMPARE(manager.currentTheme(), QStringLiteral("dark"));
-    QCOMPARE(tokenColor(manager, "semantic.primary"), QColor(QStringLiteral("#F8B81C")));
+    QCOMPARE(tokenColor(manager, "semantic.primary"), QColor(QStringLiteral("#1ECBE1")));
 
     QVERIFY(writeJson("bad-color.json", R"({
         "name": "bad-color",
@@ -399,7 +399,7 @@ QtObject {
     QVERIFY2(!component.isError(), qPrintable(component.errorString()));
     QObject *object = component.create();
     QVERIFY(object);
-    QCOMPARE(object->property("app").value<QColor>(), QColor(QStringLiteral("#0d0d0d")));
+    QCOMPARE(object->property("app").value<QColor>(), QColor(QStringLiteral("#0b0b0c")));
     delete object;
 }
 
@@ -438,13 +438,13 @@ QtObject {
     QVERIFY2(!component.isError(), qPrintable(component.errorString()));
     QObject *object = component.create();
     QVERIFY(object);
-    QCOMPARE(object->property("app").value<QColor>(), QColor(QStringLiteral("#0d0d0d")));
-    QCOMPARE(object->property("border").value<QColor>(), QColor(QStringLiteral("#2e2e2e")));
+    QCOMPARE(object->property("app").value<QColor>(), QColor(QStringLiteral("#0b0b0c")));
+    QCOMPARE(object->property("border").value<QColor>(), QColor(QStringLiteral("#232327")));
 
     manager->setVariant(QStringLiteral("light"));
     QCOMPARE(object->property("app").value<QColor>(), QColor(QStringLiteral("#ffffff")));
     QCOMPARE(object->property("border").value<QColor>(), QColor(QStringLiteral("#dedede")));
-    QCOMPARE(object->property("radius").toDouble(), 5.6);
+    QCOMPARE(object->property("radius").toDouble(), 6.0);
 
     QVERIFY(writeJson("button-red.json", R"({
         "name": "button-red",
@@ -472,7 +472,7 @@ QtObject {
     QVERIFY(manager->loadTheme(QStringLiteral("button-green")));
     QCOMPARE(button->property("background").value<QColor>(), QColor(QStringLiteral("#00ff00")));
     // The shell binding is still attached to the same nested map.
-    QCOMPARE(object->property("app").value<QColor>(), QColor(QStringLiteral("#0d0d0d")));
+    QCOMPARE(object->property("app").value<QColor>(), QColor(QStringLiteral("#0b0b0c")));
 
     delete button;
     delete object;
@@ -495,8 +495,8 @@ QtObject {
     QVERIFY2(!component.isError(), qPrintable(component.errorString()));
     QObject *object = component.create();
     QVERIFY(object);
-    QCOMPARE(object->property("background").value<QColor>(), QColor(QStringLiteral("#262626")));
-    QCOMPARE(object->property("windowBackground").value<QColor>(), QColor(QStringLiteral("#0d0d0d")));
+    QCOMPARE(object->property("background").value<QColor>(), QColor(QStringLiteral("#28282d")));
+    QCOMPARE(object->property("windowBackground").value<QColor>(), QColor(QStringLiteral("#0b0b0c")));
 
     QVERIFY(writeJson("translucent.json", R"({
         "name": "translucent",
@@ -511,7 +511,7 @@ QtObject {
     QCOMPARE(object->property("windowBackground").value<QColor>(), QColor(QStringLiteral("#00000000")));
     QCOMPARE(object->property("windowBackground").value<QColor>().alpha(), 0);
     // Untouched tokens stay on the dark base.
-    QCOMPARE(tokenColor(*manager, "semantic.surface.app"), QColor(QStringLiteral("#0d0d0d")));
+    QCOMPARE(tokenColor(*manager, "semantic.surface.app"), QColor(QStringLiteral("#0b0b0c")));
     QCOMPARE(tokenColor(*manager, "components.themedButton.foreground"),
              tokenColor(*manager, "semantic.panel.foreground"));
 
@@ -1006,7 +1006,7 @@ void ThemeManagerTest::removeAndExportRoundTrip()
     QCOMPARE(tokenColor(manager, "semantic.focusRing"), focus);
     QCOMPARE(manager.token(QStringLiteral("metrics.radius.sm")).toDouble(), radius);
     QCOMPARE(manager.token(QStringLiteral("motion.easing")).toString(), easing);
-    QCOMPARE(tokenColor(manager, "components.themedButton.background"), QColor(QStringLiteral("#262626")));
+    QCOMPARE(tokenColor(manager, "components.themedButton.background"), QColor(QStringLiteral("#28282d")));
 }
 
 void ThemeManagerTest::exampleThemesLoad()

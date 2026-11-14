@@ -59,7 +59,7 @@ ThemedDialog {
             width: parent.width
             visible: EditorState.preferences.gpuPreferenceInSystemSettings
             text: qsTr("Set Kipper to High performance in Windows Settings > Display > Graphics, "
-                       + "then restart Drift.")
+                       + "then restart Kipper.")
         }
 
         ThemedButton {

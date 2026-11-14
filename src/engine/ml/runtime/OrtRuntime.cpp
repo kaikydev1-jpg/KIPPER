@@ -486,7 +486,7 @@ bool ensureLoaded(QString *error)
             g_apiVersion = version;
     }
     if (!api) {
-        return fail(QStringLiteral("%1 is ONNX Runtime %2, which is older than this build of Drift "
+        return fail(QStringLiteral("%1 is ONNX Runtime %2, which is older than this build of Kipper "
                                    "can drive. Update it from the Addon Manager.")
                         .arg(chosen->libPath, QString::fromUtf8(base->GetVersionString())));
     }
@@ -735,7 +735,7 @@ QString providerSetupProblem(const QString &variant)
                        "(https://rocm.docs.amd.com/projects/install-on-linux/), which puts them "
                        "under /opt, then let Drift read them and reach the GPU with "
                        "\"flatpak override --user --filesystem=/opt:ro --device=all %2\" and "
-                       "restart Drift. ROCm installed under /usr by distribution packages cannot "
+                       "restart Kipper. ROCm installed under /usr by distribution packages cannot "
                        "be reached from the sandbox.")
                 .arg(missing.join(QStringLiteral(" and ")), flatpakId());
         }
@@ -743,7 +743,7 @@ QString providerSetupProblem(const QString &variant)
                    "AMD graphics needs ROCm 7 with MIGraphX installed on this computer, and %1 "
                    "could not be found. Install ROCm and MIGraphX from AMD "
                    "(https://rocm.docs.amd.com/projects/install-on-linux/) or your "
-                   "distribution's rocm and migraphx packages, then restart Drift.")
+                   "distribution's rocm and migraphx packages, then restart Kipper.")
             .arg(missing.join(QStringLiteral(" and ")));
     }
 

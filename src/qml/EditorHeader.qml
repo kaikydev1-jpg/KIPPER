@@ -398,6 +398,17 @@ Item {
             Layout.alignment: Qt.AlignVCenter
             spacing: Theme.spacingLg
 
+            // Kipper: a logo no canto, como no CapCut.
+            Image {
+                source: "qrc:/app/drift.png"
+                width: 24
+                height: 24
+                anchors.verticalCenter: parent.verticalCenter
+                fillMode: Image.PreserveAspectFit
+                mipmap: true
+                smooth: true
+            }
+
             EditorHeaderProjectsButton {
                 projectName: root.projectName
                 onOpenFileRequested: root.openProject()

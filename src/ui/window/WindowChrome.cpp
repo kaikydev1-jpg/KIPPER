@@ -375,44 +375,92 @@ bool WindowChrome::setup(QQuickWindow *window)
     if (!m_integrated || !window)
         return false;
 #ifdef KIPPER_HAS_QWK
-    if (m_agent)
+    if (m_agents.contains(window))
         return true;
-    m_window = window;
-    m_agent = new QWK::QuickWindowAgent(window);
-    if (!m_agent->setup(window)) {
-        delete m_agent;
-        m_agent = nullptr;
-        m_integrated = false;
+    auto *agent = new QWK::QuickWindowAgent(window);
+    if (!agent->setup(window)) {
+        delete agent;
         return false;
     }
-    if (m_pendingTitleBar)
-        m_agent->setTitleBar(m_pendingTitleBar);
-    for (const auto &[role, item] : std::as_const(m_pendingButtons)) {
-        if (item)
-            setSystemButton(role, item);
-    }
-    for (const auto &[item, visible] : std::as_const(m_pendingHitTest)) {
-        if (item)
-            m_agent->setHitTestVisible(item, visible);
-    }
-    m_pendingTitleBar = nullptr;
-    m_pendingButtons.clear();
-    m_pendingHitTest.clear();
+    m_agents.insert(window, agent);
+    QObject::connect(window, &QObject::destroyed, this, [this, window] { m_agents.remove(window); });
+    // Sem moldura, a janela perde os avisos de "tem minimizar/maximizar/fechar", e sem eles
+    // a QWindowKit não maximiza no duplo clique. Devolve os avisos (a moldura continua fora).
+    window->setFlags(window->flags() | Qt::WindowTitleHint | Qt::WindowSystemMenuHint
+                     | Qt::WindowMinMaxButtonsHint | Qt::WindowCloseButtonHint);
+    applyPending(window);
     return true;
 #else
     return false;
 #endif
 }
 
+#ifdef KIPPER_HAS_QWK
+QWK::QuickWindowAgent *WindowChrome::agentFor(QQuickItem *item) const
+{
+    if (!item)
+        return nullptr;
+    if (auto *w = item->window())
+        return m_agents.value(w, nullptr);
+    return nullptr;
+}
+
+void WindowChrome::applyPending(QQuickWindow *window)
+{
+    auto belongs = [window](QQuickItem *item) { return item && (item->window() == window || !item->window()); };
+    for (int i = m_pendingTitleBars.size() - 1; i >= 0; --i) {
+        QQuickItem *item = m_pendingTitleBars.at(i);
+        if (!item) {
+            m_pendingTitleBars.removeAt(i);
+        } else if (belongs(item)) {
+            m_agents.value(window)->setTitleBar(item);
+            m_pendingTitleBars.removeAt(i);
+        }
+    }
+    for (int i = m_pendingButtons.size() - 1; i >= 0; --i) {
+        const auto [role, item] = m_pendingButtons.at(i);
+        if (!item) {
+            m_pendingButtons.removeAt(i);
+        } else if (belongs(item)) {
+            m_pendingButtons.removeAt(i);
+            applySystemButton(m_agents.value(window), role, item);
+        }
+    }
+    for (int i = 0; i < m_pendingHitTest.size();) {
+        const auto [item, visible] = m_pendingHitTest.at(i);
+        if (!item) {
+            m_pendingHitTest.removeAt(i);
+        } else if (belongs(item)) {
+            m_agents.value(window)->setHitTestVisible(item, visible);
+            m_pendingHitTest.removeAt(i);
+        } else {
+            ++i;
+        }
+    }
+}
+
+void WindowChrome::applySystemButton(QWK::QuickWindowAgent *agent, const QString &role, QQuickItem *item)
+{
+    if (!agent)
+        return;
+    if (role == QLatin1String("minimize"))
+        agent->setSystemButton(QWK::WindowAgentBase::Minimize, item);
+    else if (role == QLatin1String("maximize"))
+        agent->setSystemButton(QWK::WindowAgentBase::Maximize, item);
+    else if (role == QLatin1String("close"))
+        agent->setSystemButton(QWK::WindowAgentBase::Close, item);
+}
+#endif
+
 void WindowChrome::setTitleBar(QQuickItem *item)
 {
 #ifdef KIPPER_HAS_QWK
-    if (!item)
+    if (!item || !m_integrated)
         return;
-    if (m_agent)
-        m_agent->setTitleBar(item);
-    else if (m_integrated)
-        m_pendingTitleBar = item;
+    if (auto *agent = agentFor(item))
+        agent->setTitleBar(item);
+    else
+        m_pendingTitleBars.append(item);
 #else
     Q_UNUSED(item);
 #endif
@@ -421,17 +469,12 @@ void WindowChrome::setTitleBar(QQuickItem *item)
 void WindowChrome::setSystemButton(const QString &role, QQuickItem *item)
 {
 #ifdef KIPPER_HAS_QWK
-    if (!m_agent) {
-        if (m_integrated && item)
-            m_pendingButtons.append({role, item});
+    if (!item || !m_integrated)
         return;
-    }
-    if (role == QLatin1String("minimize"))
-        m_agent->setSystemButton(QWK::WindowAgentBase::Minimize, item);
-    else if (role == QLatin1String("maximize"))
-        m_agent->setSystemButton(QWK::WindowAgentBase::Maximize, item);
-    else if (role == QLatin1String("close"))
-        m_agent->setSystemButton(QWK::WindowAgentBase::Close, item);
+    if (auto *agent = agentFor(item))
+        applySystemButton(agent, role, item);
+    else
+        m_pendingButtons.append({role, item});
 #else
     Q_UNUSED(role);
     Q_UNUSED(item);
@@ -441,11 +484,11 @@ void WindowChrome::setSystemButton(const QString &role, QQuickItem *item)
 void WindowChrome::setHitTestVisible(QQuickItem *item, bool visible)
 {
 #ifdef KIPPER_HAS_QWK
-    if (!item)
+    if (!item || !m_integrated)
         return;
-    if (m_agent)
-        m_agent->setHitTestVisible(item, visible);
-    else if (m_integrated)
+    if (auto *agent = agentFor(item))
+        agent->setHitTestVisible(item, visible);
+    else
         m_pendingHitTest.append({item, visible});
 #else
     Q_UNUSED(item);

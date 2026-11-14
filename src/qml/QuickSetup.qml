@@ -51,9 +51,15 @@ ApplicationWindow {
     minimumHeight: mobile ? 0 : 560
     x: Screen.width / 2 - width / 2
     y: Screen.height / 2 - height / 2
-    visible: true
+    // Kipper: mostra só depois de ligar a barra de título integrada (sem a barra do sistema).
+    visible: false
     title: qsTr("Kipper setup")
     color: Theme.c.quickSetup.background
+
+    Component.onCompleted: {
+        WindowChrome.setup(window)
+        window.visible = true
+    }
 
     Connections {
         target: window.currentPage
@@ -74,12 +80,21 @@ ApplicationWindow {
         anchors.rightMargin: SafeArea.margins.right
         anchors.topMargin: SafeArea.margins.top
 
+        WindowTitleBar {
+            id: titleBar
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            showTitle: false
+            z: 10
+        }
+
         Item {
             id: stage
 
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.top: parent.top
+            anchors.top: titleBar.bottom
             anchors.bottom: bottomBar.top
             clip: true
 
