@@ -5,7 +5,7 @@
   // Jeitos de apoiar o projeto. Vazio = a seção "Apoiar" e o link do menu não aparecem.
   // pix: a chave Pix (de preferência a chave aleatória). sponsors: https://github.com/sponsors/<usuário>,
   // só depois que o GitHub aprovar o perfil (antes disso a página não aceita apoio).
-  const APOIO = { pix: "", sponsors: "" };
+  const APOIO = { pix: "kaiky.olf23@gmail.com", sponsors: "" };
 
   const EN = {
     "skip": "Skip to content",
@@ -126,7 +126,7 @@
     "dl.android32": "Older phone (32-bit)",
     "sup.title": "Support Kipper",
     "sup.lede": "Kipper is free and will stay free, with no ads and no paid plan. If it helped you, any amount helps keep the project going.",
-    "sup.pix": "For people in Brazil: instant and free. Copy the key and paste it in your bank app.",
+    "sup.pix": "For people in Brazil: instant and free. Copy the key, paste it in your bank app and choose any amount.",
     "sup.sponsors": "From any country, with a credit or debit card, once or every month. Needs a GitHub account; the whole amount goes to the project.",
     "sup.give": "Support on GitHub",
     "footer.credits": "Free software under the GPLv3 licence. Based on <a href=\"https://github.com/CutWire-Studios/Drift\" rel=\"noopener\">Drift</a> by CutWire Studios, with design ideas from <a href=\"https://github.com/jub0t/Concat\" rel=\"noopener\">Concat</a>.",
