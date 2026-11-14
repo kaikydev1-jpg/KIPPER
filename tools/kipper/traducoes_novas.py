@@ -21,6 +21,22 @@ PT = {
         "A atualização não terminou de instalar. Dá para instalar pelo terminal:",
     "Copy command": "Copiar comando",
     "Command copied": "Comando copiado",
+    # Atualização do Drift de 14/11/2026 (linha do tempo e aviso de travamento).
+    "Enable": "Ativar",
+    "Disable": "Desativar",
+    "Enable or disable selected clips": "Ativar ou desativar os clipes selecionados",
+    "No space to place the clip there": "Não há espaço para colocar o clipe aí",
+    "Enable clips": "Ativar clipes",
+    "Disable clips": "Desativar clipes",
+    "Clips enabled": "Clipes ativados",
+    "Clips disabled": "Clipes desativados",
+    "Enable clip": "Ativar clipe",
+    "Disable clip": "Desativar clipe",
+    "Kipper crashed the last time it ran": "O Kipper travou da última vez que foi aberto",
+    "Kipper did not close properly last time": "O Kipper não fechou direito da última vez",
+    "If it keeps happening, you can start in safe mode, which uses the default graphics backend and loads no add-ons for this session.":
+        "Se continuar acontecendo, você pode abrir no modo de segurança, que usa o motor gráfico padrão e não carrega complementos nesta sessão.",
+    "Kipper closed unexpectedly during your last session.": "O Kipper fechou de repente da última vez que foi usado.",
 }
 
 ts = Path(__file__).resolve().parents[2] / "i18n" / "drift_pt_BR.ts"

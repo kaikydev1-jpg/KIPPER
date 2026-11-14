@@ -13,6 +13,10 @@ mínimo no código do Drift, para continuar dando para puxar as correções dele
   python3 tools/kipper/rebrand.py              # troca "Drift" por "Kipper" no texto novo
   python3 tools/kipper/make-flatpak-manifest.py # refaz o manifesto do Flatpak do Kipper
   ```
+- **Regra do criador:** quando o Drift lançar atualização, trazer para o Kipper, principalmente
+  correção de algo crítico (travamento, perda de projeto, segurança). Depois do merge: frases novas
+  traduzidas (`tools/kipper/traducoes_novas.py`, aproveitando a tradução do Drift quando existir),
+  testes passando e uma rodada dos instaladores.
 - Nomes internos continuam os do Drift (`import Drift`, binário `drift`, extensões `.drift`,
   variáveis `DRIFT_*`). Só o que a pessoa vê muda.
 - Concat (jub0t/Concat, AGPL) entrou só como referência de visual; nenhum código dele foi copiado.
@@ -66,10 +70,9 @@ mínimo no código do Drift, para continuar dando para puxar as correções dele
   mão o arquivo já baixado. Testado de ponta a ponta só o `.deb`, aqui (com um `pkexec` falso, sem
   polkit); os scripts do `.rpm` e do Flatpak rodam em `tests/tst_kipperupdate.cpp` com programas
   falsos. Fedora Atomic (rpm em camada) ainda abre a página da versão.
-- **Testes do Drift que falham no Windows:** `McpTest::proxyOpsCreateCheckAndRemove` (cancelar e
-  pedir o proxy de novo logo em seguida não termina). Falha igual no Drift original; ainda sem
-  causa achada. Nas versões de teste o instalador do Windows sai mesmo assim (o trabalho fica
-  vermelho); na oficial, bloqueia.
+- **Testes no Windows:** o Drift corrigiu em 14/11/2026 (f5fe6930) o `McpTest::proxyOpsCreateCheckAndRemove`
+  (o proxy era apagado com leitores ainda abertos). Nas versões de teste o instalador do Windows sai
+  mesmo com teste falhando (o trabalho fica vermelho); na oficial, bloqueia.
 - **Leve em repouso (bandeja, instância única):** para um editor de vídeo, ficar perto do relógio
   não faz muito sentido. Ainda não foi avaliado nem mexido.
 - **Windows:** compila no GitHub Actions; ainda não foi aberto numa máquina Windows de verdade.

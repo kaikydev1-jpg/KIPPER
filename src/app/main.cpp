@@ -833,9 +833,8 @@ int main(int argc, char *argv[])
     }
 #endif
 
-    // QPointer: a tela de abertura se apaga sozinha quando a primeira janela aparece (finishOn).
-    // Depois do aviso de travamento o editor ainda chama step(), e um ponteiro comum apontava
-    // para memória já liberada (travava ao clicar em Continuar).
+    // Guarded: the crash dialog can be the first window, and the splash deletes itself on its first
+    // frame, before the editor's startup steps run.
     QPointer<StartupSplash> splash;
 #if !defined(Q_OS_ANDROID) && !defined(Q_OS_WASM)
     if (previewNames.isEmpty()) {

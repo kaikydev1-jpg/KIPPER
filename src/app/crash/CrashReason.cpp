@@ -90,7 +90,7 @@ Reason mapReason(const QString &code, const QString &module, const QString &modu
     }
 
     reason.key = QStringLiteral("unknown");
-    reason.text = tr("Kipper closed unexpectedly.");
+    reason.text = tr("Kipper closed unexpectedly during your last session.");
     return reason;
 }
 
