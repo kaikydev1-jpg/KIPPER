@@ -177,6 +177,8 @@ private:
     void failPrepare(const QString &message);
     void finishStage();
     void launchStagedInstall();
+    void launchAndroidInstall();
+    void removeInstalledPackages();
     QString updatesDir() const;
     QString macBundleName() const;
     QString appImagePath() const;

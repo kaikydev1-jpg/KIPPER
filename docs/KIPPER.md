@@ -43,8 +43,8 @@ mínimo no código do Drift, para continuar dando para puxar as correções dele
 | `tools/kipper/pacotes-linux.sh` | `.deb` e `.rpm` a partir do AppImage (em `/opt/kipper`, comando `kipper`) |
 | `scripts/kipper/instalar.sh` | Instalador pelo terminal |
 | `scripts/kipper/gerar_atualizacoes.py` | `atualizacoes.json` e `SHA256SUMS.txt` |
-| `.github/workflows/kipper-instaladores.yml` | Gera todos os arquivos; tag `vX.Y.Z` ou disparo com `oficial` cria só um RASCUNHO de versão (só com os 9 arquivos) |
-| `.github/workflows/kipper-publicar.yml` | Só quando o criador pede: confere os 9 arquivos no rascunho, apaga rascunhos repetidos e publica |
+| `.github/workflows/kipper-instaladores.yml` | Gera todos os arquivos; tag `vX.Y.Z` ou disparo com `oficial` cria só um RASCUNHO de versão (só com todos os arquivos do padrão e os APKs); teste com Android deixa o APK num rascunho privado `android-teste` |
+| `.github/workflows/kipper-publicar.yml` | Só quando o criador pede: confere os arquivos do padrão e os APKs no rascunho, apaga rascunhos repetidos e publica |
 | `site/` | Site de apresentação (HTML/CSS/JS puro, para a Vercel) |
 | `tests/tst_windowchrome.cpp` | Testes da escolha dos botões e do Matsu OS |
 
@@ -63,9 +63,26 @@ mínimo no código do Drift, para continuar dando para puxar as correções dele
 
 1. Ajustar `project(Drift VERSION X.Y.Z)` no `CMakeLists.txt` e o resumo em `.github/release/resumo-kipper.txt`.
 2. Actions → Instaladores do Kipper → Run workflow, com `oficial` marcado. Os testes bloqueiam; sai
-   um RASCUNHO `vX.Y.Z` com os 9 arquivos.
+   um RASCUNHO `vX.Y.Z` com os arquivos do padrão e os APKs do Android (a versão oficial sempre
+   leva o Android, e para logo no começo se faltar a chave oficial).
 3. Só quando o criador pedir: Actions → Publicar versão do Kipper, com a versão. A etiqueta `vX.Y.Z`
    é criada no commit da geração. Versões publicadas: 0.9.2 (14/11/2026).
+
+## Android
+
+- ID oficial `io.github.kaikydev1jpg.kipper` ("Kipper"); o de teste é `.teste` ("Kipper Teste") e
+  instala ao lado.
+- **Chave oficial:** fica só no segredo `KIPPER_ANDROID_CHAVE` do repositório (Settings → Secrets
+  and variables → Actions), no formato `apelido:senha:base64`, gerado por
+  `tools/kipper/chave-android.sh`. Nunca no repositório. O criador guarda uma cópia: sem ela, quem
+  já instalou não recebe mais atualização (o Android só aceita a mesma assinatura).
+- **Chave de teste:** `android/kipper-teste.keystore` (pública, senha `kipper-teste`), só para o ID
+  `.teste`. A versão oficial nunca usa essa chave.
+- **Atualização pelo app:** `atualizacoes.json` tem `android` (64 bits) e `android32`. O app baixa,
+  confere o SHA-256 e abre o instalador do Android (`KipperUpdate.java`, pelo
+  `KipperUpdateProvider` só da pasta `cache/updates`).
+- Aqui não há emulador (sem KVM): o APK é conferido pelo passo "Conferir o APK" da geração (nome,
+  ID, versão, assinatura); abrir e editar no celular é teste do criador.
 
 ## Em aberto
 

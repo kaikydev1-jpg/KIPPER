@@ -1,3 +1,4 @@
+[hidden] { display: none !important; }
 /* Kipper — site de apresentação.
    Um sistema visual só: preto e branco como o pinguim, um estilo de botão, um de cartão,
    uma escala de cantos. Tempos de animação na escala do transitions.dev. */
@@ -291,6 +292,23 @@ h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
   background: var(--btn-bg); color: var(--btn-fg); font-size: 11.5px; font-weight: 500; vertical-align: 2px;
 }
 
+/* Android: um cartão largo em cima dos outros. */
+.system.wide { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: 24px; }
+.system.wide .wide-copy { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+.system.wide .wide-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.system.wide .wide-actions .file { flex-basis: 100%; text-align: right; }
+
+/* ---- Apoiar ----------------------------------------------------------------------- */
+.support { padding-top: 0; }
+.ways { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.way {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+  padding: 22px; border-radius: var(--radius-md); background: var(--bg-raised); border: 1px solid var(--line);
+}
+.way p { margin: 0 0 6px; color: var(--muted); font-size: 14.5px; flex: 1; }
+.way .terminal { width: 100%; margin-bottom: 0; }
+.way .terminal code { font-family: var(--font-mono); }
+
 /* ---- Rodapé ----------------------------------------------------------------------- */
 .footer {
   max-width: var(--max); margin: 0 auto; padding: 36px var(--gutter) 48px;
@@ -311,6 +329,10 @@ h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
 }
 @media (max-width: 640px) {
   .nav { display: none; }
+  .ways { grid-template-columns: 1fr; }
+  .system.wide { flex-direction: column; align-items: flex-start; }
+  .system.wide .wide-actions { justify-content: flex-start; }
+  .system.wide .wide-actions .file { text-align: left; }
   .grid, .systems, .levels, .facts { grid-template-columns: 1fr; }
   .cta .btn { flex: 1 1 100%; }
   .terminal { flex-direction: column; align-items: stretch; padding: 14px; }

@@ -22,6 +22,7 @@ TIPOS = {
     "flatpak": "Kipper-Flatpak.flatpak",
     "matsu": "Kipper-Matsu-OS.flatpak",
     "android": "Kipper-Android.apk",
+    "android32": "Kipper-Android-32bits.apk",
 }
 
 

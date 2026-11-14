@@ -2,7 +2,7 @@ name: Publicar versão do Kipper
 
 # "Gerar não é publicar": a tag vX.Y.Z gera os arquivos e um RASCUNHO de versão (Instaladores do
 # Kipper). Este fluxo só roda quando o criador pede, e torna o rascunho a versão oficial
-# (releases/latest), depois de conferir que os 9 arquivos do padrão estão lá.
+# (releases/latest), depois de conferir que os arquivos do padrão (e os APKs do Android) estão lá.
 on:
   workflow_dispatch:
     inputs:
@@ -28,7 +28,8 @@ jobs:
           set -euo pipefail
           tag="v${VERSAO#v}"
           padrao="Kipper-Windows.exe Kipper-Fedora.rpm Kipper-Ubuntu-Debian.deb Kipper-Linux.AppImage
-                  Kipper-Flatpak.flatpak Kipper-Matsu-OS.flatpak instalar.sh SHA256SUMS.txt atualizacoes.json"
+                  Kipper-Flatpak.flatpak Kipper-Matsu-OS.flatpak Kipper-Android.apk Kipper-Android-32bits.apk
+                  instalar.sh SHA256SUMS.txt atualizacoes.json"
           # Rascunhos desta versão, do mais novo para o mais antigo (uma tentativa que falhou pode ter
           # deixado um rascunho incompleto com a mesma etiqueta).
           ids=$(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" \
@@ -42,7 +43,7 @@ jobs:
             echo "rascunho $id: $([ $completo = 1 ] && echo completo || echo incompleto)"
             if [ $completo = 1 ] && [ -z "$escolhido" ]; then escolhido=$id; fi
           done
-          [ -n "$escolhido" ] || { echo "Não publiquei: nenhum rascunho de $tag tem os 9 arquivos do padrão."; exit 1; }
+          [ -n "$escolhido" ] || { echo "Não publiquei: nenhum rascunho de $tag tem todos os arquivos do padrão."; exit 1; }
           # Os outros rascunhos da mesma versão nunca foram públicos; sem eles, a etiqueta fica de um só.
           for id in $ids; do
             [ "$id" = "$escolhido" ] || { echo "apagando rascunho repetido $id"; gh api -X DELETE "repos/$GITHUB_REPOSITORY/releases/$id"; }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kipper: a única pasta que o KipperUpdateProvider entrega ao instalador do Android
+     (cache/updates, onde o UpdateChecker guarda o APK da versão nova). -->
+<paths>
+    <cache-path name="updates" path="updates/" />
+</paths>

@@ -40,6 +40,12 @@ flatpak install --user ./Kipper-Matsu-OS.flatpak
 sudo apt install ./Kipper-Ubuntu-Debian.deb
 ```
 
+### Celular Android
+**[Kipper-Android.apk](https://github.com/kaikydev1-jpg/KIPPER/releases/download/v{{VERSAO}}/Kipper-Android.apk)**
+- Baixe pelo navegador do celular e abra o arquivo. Na primeira vez, o Android pede para permitir instalar apps baixados pelo navegador.
+- Celular antigo (32 bits)? Use o **[Kipper-Android-32bits.apk](https://github.com/kaikydev1-jpg/KIPPER/releases/download/v{{VERSAO}}/Kipper-Android-32bits.apk)**.
+- Depois de instalado, o Kipper avisa quando sair versão nova e se atualiza pelo próprio app.
+
 ### Arch, openSUSE e outras distros
 **[Kipper-Linux.AppImage](https://github.com/kaikydev1-jpg/KIPPER/releases/download/v{{VERSAO}}/Kipper-Linux.AppImage)**
 ```bash

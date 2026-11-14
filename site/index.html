@@ -30,6 +30,7 @@
       <a href="#recursos" data-i18n="nav.features">Recursos</a>
       <a href="#para-quem" data-i18n="nav.who">Para quem</a>
       <a href="#baixar" data-i18n="nav.download">Baixar</a>
+      <a href="#apoiar" data-i18n="nav.support" class="nav-support" hidden>Apoiar</a>
     </nav>
     <div class="topbar-actions">
       <button class="lang" type="button" id="lang-toggle" aria-label="Mudar idioma para inglês">EN</button>
@@ -43,7 +44,7 @@
   <main id="conteudo">
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow" data-i18n="hero.eyebrow">Grátis · Código aberto · Windows e Linux</p>
+        <p class="eyebrow" data-i18n="hero.eyebrow">Grátis · Código aberto · Windows, Linux e Android</p>
         <h1 data-i18n-html="hero.title">Edite vídeos do primeiro corte <em>ao filme inteiro.</em></h1>
         <p class="lede" data-i18n="hero.lede">Kipper é um editor de vídeo completo, sem marca d'água, sem conta e sem assinatura. Fácil para quem está começando, com tudo o que quem já edita precisa.</p>
         <div class="cta">
@@ -53,7 +54,7 @@
           </a>
           <a class="btn btn-ghost" href="https://github.com/kaikydev1-jpg/KIPPER" rel="noopener" data-i18n="hero.source">Ver o código no GitHub</a>
         </div>
-        <p class="fineprint" id="cta-hint" data-i18n="hero.hint">Windows 10 e 11 · Fedora · Ubuntu · Matsu OS · qualquer Linux</p>
+        <p class="fineprint" id="cta-hint" data-i18n="hero.hint">Windows 10 e 11 · Fedora · Ubuntu · Matsu OS · qualquer Linux · celular Android</p>
       </div>
       <figure class="hero-shot">
         <img src="/assets/editor.webp" width="1600" height="1000" alt="O editor do Kipper: mídia à esquerda, prévia no meio, ajustes à direita e a linha do tempo embaixo." loading="eager" fetchpriority="high">
@@ -176,6 +177,18 @@
       </div>
 
       <ul class="systems">
+        <!-- Aparece quando a versão publicada no GitHub tem o APK (main.js confere). -->
+        <li class="system wide" data-os="android" id="card-android" hidden>
+          <div class="wide-copy">
+            <h3>Android</h3>
+            <p data-i18n="dl.android">Para celular. Baixe direto pelo navegador do celular e abra o arquivo; na primeira vez, o Android pede para permitir instalar apps baixados por ele. Depois, o Kipper avisa e se atualiza sozinho.</p>
+          </div>
+          <div class="wide-actions">
+            <a class="btn btn-primary btn-sm" href="https://github.com/kaikydev1-jpg/KIPPER/releases/latest/download/Kipper-Android.apk" data-i18n="dl.get">Baixar</a>
+            <a class="btn btn-ghost btn-sm" href="https://github.com/kaikydev1-jpg/KIPPER/releases/latest/download/Kipper-Android-32bits.apk" data-i18n="dl.android32">Celular antigo (32 bits)</a>
+            <span class="file">Kipper-Android.apk</span>
+          </div>
+        </li>
         <li class="system" data-os="windows">
           <h3>Windows</h3>
           <p data-i18n="dl.win">Windows 10 e 11. Instala só para o seu usuário, sem pedir administrador.</p>
@@ -217,6 +230,33 @@
         </li>
       </ul>
       <p class="fineprint center" data-i18n-html="dl.sums">Todos os arquivos e as somas SHA-256 ficam na <a href="https://github.com/kaikydev1-jpg/KIPPER/releases">página de versões do GitHub</a>.</p>
+    </section>
+
+    <!-- Apoiar: aparece quando há um jeito de apoiar configurado no main.js (APOIO). -->
+    <section class="section support" id="apoiar" hidden>
+      <div class="section-head">
+        <h2 data-i18n="sup.title">Apoie o Kipper</h2>
+        <p data-i18n="sup.lede">O Kipper é grátis e vai continuar grátis, sem anúncio e sem plano pago. Se ele te ajudou, qualquer valor ajuda a manter o projeto andando.</p>
+      </div>
+      <ul class="ways">
+        <li class="way" id="way-pix" hidden>
+          <h3>Pix</h3>
+          <p data-i18n="sup.pix">Para quem está no Brasil: na hora e sem taxa. Copie a chave e cole no app do seu banco.</p>
+          <div class="terminal pix" role="group" aria-label="Chave Pix">
+            <code id="pix-key"></code>
+            <button class="copy" type="button" id="copy-pix" aria-label="Copiar chave Pix">
+              <svg class="i-copy" viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M4 13V5a1 1 0 0 1 1-1h8"/></svg>
+              <svg class="i-check" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5 8 14l7.5-8"/></svg>
+              <span data-i18n="dl.copy">Copiar</span>
+            </button>
+          </div>
+        </li>
+        <li class="way" id="way-paypal" hidden>
+          <h3>PayPal</h3>
+          <p data-i18n="sup.paypal">De qualquer país, com cartão ou saldo do PayPal.</p>
+          <a class="btn btn-primary btn-sm" id="paypal-link" href="#" rel="noopener" data-i18n="sup.give">Apoiar pelo PayPal</a>
+        </li>
+      </ul>
     </section>
   </main>
 

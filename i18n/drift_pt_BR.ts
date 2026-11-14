@@ -26915,6 +26915,10 @@ Se a reprodução travar, experimente outro.</translation>
         <source>Kipper %1 is ready to install.</source>
         <translation>O Kipper %1 está pronto para instalar.</translation>
     </message>
+    <message>
+        <source>Couldn’t open the Android installer. You can download the update from the release page.</source>
+        <translation>Não deu para abrir o instalador do Android. Dá para baixar a atualização na página da versão.</translation>
+    </message>
 </context>
 <context>
     <name>UpdateDialog</name>
@@ -26979,8 +26983,16 @@ Se a reprodução travar, experimente outro.</translation>
         <translation>Instalar quando eu fechar o Kipper</translation>
     </message>
     <message>
+        <source>Install</source>
+        <translation type="unfinished">Instalar</translation>
+    </message>
+    <message>
         <source>Update</source>
         <translation>Atualizar</translation>
+    </message>
+    <message>
+        <source>Opens the Android installer to update Kipper</source>
+        <translation>Abre o instalador do Android para atualizar o Kipper</translation>
     </message>
     <message>
         <source>Closes Kipper, installs the update and opens Kipper again</source>

@@ -26907,6 +26907,10 @@ If playback stutters, try another.</source>
         <source>Kipper %1 is ready to install.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Couldn’t open the Android installer. You can download the update from the release page.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UpdateDialog</name>
@@ -26971,7 +26975,15 @@ If playback stutters, try another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Install</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opens the Android installer to update Kipper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

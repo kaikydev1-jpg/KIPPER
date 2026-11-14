@@ -72,3 +72,8 @@ third_party/prebuilt/
 .env.*
 
 !resources/diagnostics/bench1080p60.mp4
+
+# Kipper: chave oficial do Android (nunca no repositório)
+*.p12
+KIPPER_ANDROID_CHAVE.txt
+kipper-oficial*

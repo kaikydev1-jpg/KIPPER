@@ -2,17 +2,22 @@
 (() => {
   "use strict";
 
+  // Jeitos de apoiar o projeto. Vazio = a seção "Apoiar" e o link do menu não aparecem.
+  // pix: a chave Pix (de preferência a chave aleatória). paypal: o link https://www.paypal.com/... ou https://paypal.me/...
+  const APOIO = { pix: "", paypal: "" };
+
   const EN = {
     "skip": "Skip to content",
     "nav.features": "Features",
     "nav.who": "Who it's for",
     "nav.download": "Download",
-    "hero.eyebrow": "Free · Open source · Windows and Linux",
+    "nav.support": "Support",
+    "hero.eyebrow": "Free · Open source · Windows, Linux and Android",
     "hero.title": "Edit video from the first cut <em>to a whole film.</em>",
     "hero.lede": "Kipper is a complete video editor with no watermark, no account and no subscription. Easy when you are starting out, with everything people who already edit need.",
     "hero.cta": "Download Kipper",
     "hero.source": "View the code on GitHub",
-    "hero.hint": "Windows 10 and 11 · Fedora · Ubuntu · Matsu OS · any Linux",
+    "hero.hint": "Windows 10 and 11 · Fedora · Ubuntu · Matsu OS · any Linux · Android phones",
     "facts.free.t": "Actually free",
     "facts.free.d": "No watermark and no hidden paid plan.",
     "facts.local.t": "All on your computer",
@@ -70,6 +75,13 @@
     "dl.other": "The AppImage runs on any Linux without installing. Flatpak works on any distro that has it.",
     "dl.sums": "Every file and its SHA-256 checksum is on the <a href=\"https://github.com/kaikydev1-jpg/KIPPER/releases\">GitHub releases page</a>.",
     "dl.suggested": "For you",
+    "dl.android": "For phones. Download it straight from your phone's browser and open the file; the first time, Android asks you to allow installing apps downloaded by it. After that, Kipper tells you about new versions and updates itself.",
+    "dl.android32": "Older phone (32-bit)",
+    "sup.title": "Support Kipper",
+    "sup.lede": "Kipper is free and will stay free, with no ads and no paid plan. If it helped you, any amount helps keep the project going.",
+    "sup.pix": "For people in Brazil: instant and free. Copy the key and paste it in your bank app.",
+    "sup.paypal": "From any country, with a card or PayPal balance.",
+    "sup.give": "Support with PayPal",
     "footer.credits": "Free software under the GPLv3 licence. Based on <a href=\"https://github.com/CutWire-Studios/Drift\" rel=\"noopener\">Drift</a> by CutWire Studios, with design ideas from <a href=\"https://github.com/jub0t/Concat\" rel=\"noopener\">Concat</a>.",
     "footer.media": "Sample footage in the screenshots: <a href=\"https://images.nasa.gov/\" rel=\"noopener\">NASA</a> (public domain).",
     "footer.source": "Source code",
@@ -111,17 +123,20 @@
   const ua = navigator.userAgent || "";
   const platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "";
   let os = null;
-  if (/Windows/i.test(ua) || /Win/i.test(platform)) os = "windows";
+  if (/Android/i.test(ua)) os = "android";
+  else if (/Windows/i.test(ua) || /Win/i.test(platform)) os = "windows";
   else if (/Fedora/i.test(ua)) os = "fedora";
   else if (/Ubuntu|Debian|Mint/i.test(ua)) os = "debian";
   else if (/Linux/i.test(ua) && !/Android/i.test(ua)) os = "linux";
-  if (os) {
+  function suggest() {
+    if (!os) return;
     const card = document.querySelector(`.system[data-os="${os}"]`);
-    if (card) {
+    if (card && !card.hidden) {
       card.classList.add("suggested");
       card.querySelector("h3").setAttribute("data-suggested", t("dl.suggested"));
     }
   }
+  suggest();
 
   // Versão atual: lida da lista pública de versões do GitHub, então o site acompanha cada versão
   // publicada sem precisar ser mexido. Sem resposta (sem internet, limite do GitHub), a linha some.
@@ -139,34 +154,68 @@
   }
   fetch("https://api.github.com/repos/kaikydev1-jpg/KIPPER/releases/latest", { headers: { Accept: "application/vnd.github+json" } })
     .then((r) => (r.ok ? r.json() : null))
-    .then((data) => { if (data && data.tag_name) { latest = data; renderVersion(); } })
+    .then((data) => {
+      if (!data || !data.tag_name) return;
+      latest = data;
+      renderVersion();
+      // O cartão do Android só aparece quando a versão publicada tem o APK.
+      const names = (data.assets || []).map((a) => a.name);
+      if (names.includes("Kipper-Android.apk")) {
+        document.getElementById("card-android").hidden = false;
+        if (!names.includes("Kipper-Android-32bits.apk"))
+          document.querySelector('#card-android .btn-ghost').hidden = true;
+        suggest();
+        // No celular, o botão principal do topo já baixa o APK.
+        if (os === "android") {
+          document.getElementById("cta-download").href =
+            "https://github.com/kaikydev1-jpg/KIPPER/releases/latest/download/Kipper-Android.apk";
+        }
+      }
+    })
     .catch(() => { /* sem a versão, o resto do site funciona igual */ });
 
-  // Copiar o comando do terminal, com o visto se desenhando.
-  const copyBtn = document.getElementById("copy-cmd");
-  const cmd = document.getElementById("install-cmd");
-  copyBtn.addEventListener("click", async () => {
-    const text = cmd.textContent.trim();
-    let ok = false;
-    try {
-      await navigator.clipboard.writeText(text);
-      ok = true;
-    } catch (_) {
-      const range = document.createRange();
-      range.selectNodeContents(cmd);
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-      try { ok = document.execCommand("copy"); } catch (__) { ok = false; }
-      sel.removeAllRanges();
+  // Apoiar: só o que estiver configurado em APOIO aparece.
+  if (APOIO.pix || APOIO.paypal) {
+    document.getElementById("apoiar").hidden = false;
+    document.querySelector(".nav-support").hidden = false;
+    if (APOIO.pix) {
+      document.getElementById("pix-key").textContent = APOIO.pix;
+      document.getElementById("way-pix").hidden = false;
     }
-    if (!ok) return;
-    const label = copyBtn.querySelector("span");
-    copyBtn.classList.add("done");
-    label.textContent = t("dl.copied");
-    setTimeout(() => {
-      copyBtn.classList.remove("done");
-      label.textContent = t("dl.copy");
-    }, 1800);
-  });
+    if (APOIO.paypal && /^https:\/\/(www\.)?(paypal\.com|paypal\.me)\//.test(APOIO.paypal)) {
+      document.getElementById("paypal-link").href = APOIO.paypal;
+      document.getElementById("way-paypal").hidden = false;
+    }
+  }
+
+  // Copiar o comando do terminal (e a chave Pix), com o visto se desenhando.
+  setupCopy(document.getElementById("copy-cmd"), document.getElementById("install-cmd"));
+  setupCopy(document.getElementById("copy-pix"), document.getElementById("pix-key"));
+
+  function setupCopy(copyBtn, cmd) {
+    copyBtn.addEventListener("click", async () => {
+      const text = cmd.textContent.trim();
+      let ok = false;
+      try {
+        await navigator.clipboard.writeText(text);
+        ok = true;
+      } catch (_) {
+        const range = document.createRange();
+        range.selectNodeContents(cmd);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        try { ok = document.execCommand("copy"); } catch (__) { ok = false; }
+        sel.removeAllRanges();
+      }
+      if (!ok) return;
+      const label = copyBtn.querySelector("span");
+      copyBtn.classList.add("done");
+      label.textContent = t("dl.copied");
+      setTimeout(() => {
+        copyBtn.classList.remove("done");
+        label.textContent = t("dl.copy");
+      }, 1800);
+    });
+  }
 })();

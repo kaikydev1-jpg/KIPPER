@@ -22,12 +22,17 @@ ThemedDialog {
         onActivated: if (actionButton.enabled) actionButton.clicked()
     }
 
+    // Kipper: no celular não existe "instalar ao fechar": baixa com a janela aberta e o botão vira
+    // "Instalar", que abre o instalador do Android.
+    readonly property bool phone: Qt.platform.os === "android"
+
     function download() {
         if (Updates.canInstall) {
-            Updates.downloadAndInstall(installOnCloseBox.checked)
+            const onClose = !root.phone && installOnCloseBox.checked
+            Updates.downloadAndInstall(onClose)
             // Kipper: sem "instalar ao fechar", a janela fica aberta mostrando o download e vira
             // "Reiniciar e instalar" quando ele termina. Com a opção marcada, baixa em segundo plano.
-            if (installOnCloseBox.checked)
+            if (onClose)
                 close()
         } else {
             Updates.openDownloadPage()
@@ -106,7 +111,7 @@ ThemedDialog {
         ThemedCheckBox {
             id: installOnCloseBox
             width: parent.width
-            visible: Updates.canInstall && !root.busy && !Updates.readyToInstall
+            visible: Updates.canInstall && !root.busy && !Updates.readyToInstall && !root.phone
             checked: true
             text: qsTr("Install automatically when I close Kipper")
             tooltip: qsTr("Downloads in the background and installs the next time you close Kipper. "
@@ -187,7 +192,7 @@ ThemedDialog {
 
                 ThemedButton {
                     variant: "secondary"
-                    visible: Updates.readyToInstall && !Updates.installScheduled
+                    visible: Updates.readyToInstall && !Updates.installScheduled && !root.phone
                     text: qsTr("Install when I close Kipper")
                     onClicked: {
                         Updates.scheduleInstallOnQuit()
@@ -200,11 +205,12 @@ ThemedDialog {
                     variant: "primary"
                     glyph: Updates.readyToInstall ? Theme.icons.refresh : Theme.icons.download
                     enabled: !root.busy
-                    text: Updates.readyToInstall ? qsTr("Restart and install")
+                    text: Updates.readyToInstall ? (root.phone ? qsTr("Install") : qsTr("Restart and install"))
                           : root.busy ? qsTr("Downloading…")
                           : qsTr("Update")
                     tooltip: Updates.readyToInstall
-                             ? qsTr("Closes Kipper, installs the update and opens Kipper again")
+                             ? (root.phone ? qsTr("Opens the Android installer to update Kipper")
+                                           : qsTr("Closes Kipper, installs the update and opens Kipper again"))
                              : Updates.canInstall
                                ? qsTr("Downloads the update in the background")
                                : qsTr("Opens the release page in your browser")

@@ -50,6 +50,11 @@ PT = {
     "Timeline is empty": "A linha do tempo está vazia",
     "Export cancelled": "Exportação cancelada",
     "Export failed": "A exportação falhou",
+    # Atualização pelo app no celular.
+    "Install": "Instalar",
+    "Opens the Android installer to update Kipper": "Abre o instalador do Android para atualizar o Kipper",
+    "Couldn’t open the Android installer. You can download the update from the release page.":
+        "Não deu para abrir o instalador do Android. Dá para baixar a atualização na página da versão.",
 }
 
 ts = Path(__file__).resolve().parents[2] / "i18n" / "drift_pt_BR.ts"

@@ -30,6 +30,12 @@
 #include <QTimer>
 #include <QUrl>
 
+#if defined(Q_OS_ANDROID)
+#include <QJniEnvironment>
+#include <QJniObject>
+#include <QtCore/qcoreapplication_platform.h>
+#endif
+
 #include <functional>
 #include <memory>
 
@@ -122,7 +128,7 @@ QString kipperManifestUrl()
 
 // Kipper: como este Kipper foi instalado (padrão dos apps, seção 7). Diz qual arquivo do
 // atualizacoes.json baixar e como instalar a versão nova.
-enum class KipperInstall { Manual, Windows, AppImage, Flatpak, Matsu, Debian, Fedora };
+enum class KipperInstall { Manual, Windows, AppImage, Flatpak, Matsu, Debian, Fedora, Android };
 
 KipperInstall kipperInstallKind()
 {
@@ -147,6 +153,10 @@ KipperInstall kipperInstallKind()
                 return KipperInstall::Fedora;
         }
         return KipperInstall::Manual;
+#elif defined(Q_OS_ANDROID)
+        // O APK do GitHub (e do site) se atualiza pelo app; uma loja atualizaria sozinha.
+        return kDistribution == QLatin1String("android-github") ? KipperInstall::Android
+                                                                 : KipperInstall::Manual;
 #else
         return KipperInstall::Manual;
 #endif
@@ -165,6 +175,16 @@ QString kipperAssetType()
     case KipperInstall::Matsu: return QStringLiteral("matsu");
     case KipperInstall::Debian: return QStringLiteral("debian");
     case KipperInstall::Fedora: return QStringLiteral("fedora");
+    case KipperInstall::Android: {
+        // Celular de 64 bits (quase todos) ou de 32 bits (antigos). O x86_64 é só de emulador e
+        // não sai na versão: sem arquivo, o botão abre a página da versão.
+        const QString arch = QSysInfo::buildCpuArchitecture();
+        if (arch == QLatin1String("arm64"))
+            return QStringLiteral("android");
+        if (arch == QLatin1String("arm"))
+            return QStringLiteral("android32");
+        break;
+    }
     case KipperInstall::Manual: break;
     }
     return {};
@@ -272,6 +292,9 @@ bool UpdateChecker::installSupported() const
     default:
         return false;
     }
+#elif defined(Q_OS_ANDROID)
+    // Kipper: baixa o APK novo e abre o instalador do Android (KipperUpdate.java).
+    return supported() && kipperInstallKind() == KipperInstall::Android && !kipperAssetType().isEmpty();
 #else
     return false;
 #endif
@@ -460,6 +483,7 @@ void UpdateChecker::scheduleStartup()
 {
     if (!supported())
         return;
+    removeInstalledPackages();
 
     // Kipper: a última instalação com um clique não terminou (senha recusada, sem espaço...).
     // A versão nova continua baixada; mostra o comando para instalar à mão.
@@ -552,6 +576,12 @@ void UpdateChecker::requestQuit()
 {
     if (!m_readyToInstall || m_stagedPath.isEmpty())
         return;
+#if defined(Q_OS_ANDROID)
+    // Kipper: no celular não precisa fechar antes. O instalador do Android troca o app e o fecha
+    // sozinho; se a pessoa cancelar, o APK continua baixado para tentar de novo.
+    launchAndroidInstall();
+    return;
+#endif
     m_installOnQuit = true;
     m_relaunch = true;
     emit activityChanged();
@@ -835,6 +865,14 @@ void UpdateChecker::announceIfNeeded()
 
 QString UpdateChecker::updatesDir() const
 {
+#if defined(Q_OS_ANDROID)
+    // Kipper: sempre no cache do app (cache/updates), a pasta que o KipperUpdateProvider entrega
+    // ao instalador do Android, mesmo com outra pasta de cache escolhida nas configurações.
+    const QString dir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
+            + QStringLiteral("/updates");
+    QDir().mkpath(dir);
+    return dir;
+#endif
     QString base = drift::cacheRoot();
     if (base.isEmpty())
         base = QDir::tempPath();
@@ -1332,6 +1370,34 @@ void UpdateChecker::launchStagedInstall()
 #else
     Q_UNUSED(dir);
     Q_UNUSED(pid);
+#endif
+}
+
+void UpdateChecker::launchAndroidInstall()
+{
+#if defined(Q_OS_ANDROID)
+    if (m_stagedPath.isEmpty() || !QFileInfo::exists(m_stagedPath))
+        return;
+    const QJniObject path = QJniObject::fromString(m_stagedPath);
+    const jboolean ok = QJniObject::callStaticMethod<jboolean>(
+            "org/cutwire/drift/KipperUpdate", "installApk", "(Landroid/content/Context;Ljava/lang/String;)Z",
+            QNativeInterface::QAndroidApplication::context().object(), path.object<jstring>());
+    QJniEnvironment().checkAndClearExceptions();
+    if (!ok)
+        setError(tr("Couldn’t open the Android installer. You can download the update from the release page."));
+#endif
+}
+
+// Kipper: o APK de uma versão já instalada não serve mais; sai do cache na abertura seguinte.
+void UpdateChecker::removeInstalledPackages()
+{
+#if defined(Q_OS_ANDROID)
+    if (!m_latestVersion.isEmpty() && drift::compareVersions(kCurrentVersion, m_latestVersion) < 0)
+        return;
+    QDir dir(updatesDir());
+    const QStringList apks = dir.entryList({QStringLiteral("*.apk"), QStringLiteral("*.apk.part")}, QDir::Files);
+    for (const QString &name : apks)
+        dir.remove(name);
 #endif
 }
 

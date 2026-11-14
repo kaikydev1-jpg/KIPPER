@@ -35,6 +35,8 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROCESSING" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Kipper: atualizar pelo próprio app (abre o instalador do Android com o APK novo). -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <!-- Media import uses the Storage Access Framework (QFileDialog → ACTION_OPEN_DOCUMENT).
          Do not add READ_MEDIA_* / READ_EXTERNAL_STORAGE for import — access is granted per
          content:// URI when the user picks a file. -->
@@ -183,6 +185,17 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/qtprovider_paths"/>
+        </provider>
+
+        <!-- Kipper: entrega o APK da atualização ao instalador do Android (só a pasta updates). -->
+        <provider
+            android:name="org.cutwire.drift.KipperUpdateProvider"
+            android:authorities="${applicationId}.kipperupdate"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/kipper_update_paths"/>
         </provider>
     </application>
 </manifest>

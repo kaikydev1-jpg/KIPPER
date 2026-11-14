@@ -1735,6 +1735,8 @@ jobs:
           KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          # Kipper: a chave oficial num segredo só, "apelido:senha:base64" (tools/kipper/chave-android.sh).
+          KIPPER_CHAVE: ${{ secrets.KIPPER_ANDROID_CHAVE }}
           IDENTITY: ${{ inputs.android_identity }}
           ABI: ${{ matrix.abi }}
           VERSION: ${{ env.ASSET_LABEL }}
@@ -1750,21 +1752,29 @@ jobs:
           BT="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/* | sort -V | tail -1)"
           KS="$RUNNER_TEMP/release.jks"
 
-          if [ -z "${KEYSTORE_B64:-}" ]; then
-            # Kipper: APK sem assinatura não instala. Sem a chave oficial (segredo do repositório),
-            # assina com a chave de TESTE pública (android/kipper-teste.keystore): serve para testar
-            # e instala por cima da versão de teste anterior. A versão oficial exige a chave secreta.
-            if [ "${IDENTITY}" = "release" ]; then
-              echo "::error::Versão oficial do Android sem ANDROID_KEYSTORE_BASE64: não assino com a chave de teste."
+          # Kipper: a versão oficial (ID io.github.kaikydev1jpg.kipper) só sai com a chave oficial,
+          # que é secreta: quem tem o app só aceita atualização assinada com a mesma chave. As de
+          # teste (ID .teste) usam sempre a chave de teste pública (android/kipper-teste.keystore),
+          # que serve só para testar: assim uma nunca se passa pela outra.
+          if [ "${IDENTITY}" = "release" ]; then
+            if [ -z "${KEYSTORE_B64:-}" ] && [ -n "${KIPPER_CHAVE:-}" ]; then
+              chave="$(printf '%s' "$KIPPER_CHAVE" | tr -d ' \r\n')"
+              KEY_ALIAS="${chave%%:*}"; resto="${chave#*:}"
+              KEYSTORE_PASSWORD="${resto%%:*}"; KEYSTORE_B64="${resto#*:}"
+              echo "::add-mask::$KEYSTORE_PASSWORD"
+              export KEY_ALIAS KEYSTORE_PASSWORD
+            fi
+            if [ -z "${KEYSTORE_B64:-}" ]; then
+              echo "::error::Versão oficial do Android sem a chave oficial (segredo KIPPER_ANDROID_CHAVE): não assino com a chave de teste."
               exit 1
             fi
-            echo "::warning::Sem a chave oficial: APK assinado com a chave de teste do Kipper"
+            printf '%s' "$KEYSTORE_B64" | base64 -d > "$KS"
+          else
+            echo "::notice::APK de teste: assinado com a chave de teste do Kipper"
             cp android/kipper-teste.keystore "$KS"
             KEYSTORE_PASSWORD=kipper-teste
             KEY_ALIAS=kipper-teste
             export KEYSTORE_PASSWORD KEY_ALIAS
-          else
-            printf '%s' "$KEYSTORE_B64" | base64 -d > "$KS"
           fi
           "$BT/zipalign" -p -f 4 "$APK" "$RUNNER_TEMP/aligned.apk"
           "$BT/apksigner" sign \

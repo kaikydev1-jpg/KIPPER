@@ -50,7 +50,15 @@ jobs:
       - uses: actions/checkout@v4
       - id: v
         shell: bash
+        env:
+          CHAVE_ANDROID: ${{ secrets.KIPPER_ANDROID_CHAVE }}
         run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* || "${{ inputs.oficial }}" == "true" ]] && [ -z "$CHAVE_ANDROID" ]; then
+            # Kipper: a versão oficial leva o APK, que só sai com a chave oficial. Avisa já, em vez
+            # de depois de uma hora compilando.
+            echo "::error::Falta o segredo KIPPER_ANDROID_CHAVE (chave oficial do Android) em Settings → Secrets and variables → Actions."
+            exit 1
+          fi
           if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
             echo "versao=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
             echo "oficial=true" >> "$GITHUB_OUTPUT"
@@ -73,9 +81,12 @@ jobs:
       contents: read
       actions: write
     uses: ./.github/workflows/package.yml
+    # A chave oficial do Android (KIPPER_ANDROID_CHAVE) só chega ao package.yml assim.
+    secrets: inherit
     with:
       version: ${{ needs.meta.outputs.versao }}
-      platforms: ${{ inputs.plataformas || 'flatpak,linux,windows' }}
+      # A versão oficial sempre leva tudo, Android incluído.
+      platforms: ${{ needs.meta.outputs.oficial == 'true' && 'flatpak,linux,windows,android' || inputs.plataformas || 'flatpak,linux,windows' }}
       channel: stable
       # Android: oficial com a chave secreta; teste com o ID .teste e a chave de teste pública.
       android_identity: ${{ needs.meta.outputs.oficial == 'true' && 'release' || 'ci' }}
@@ -203,9 +214,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          # Só com os 9 arquivos do padrão: uma tentativa que falhou não deixa rascunho incompleto.
+          # Só com todos os arquivos do padrão (e os APKs): uma tentativa que falhou não deixa
+          # rascunho incompleto.
           for f in Kipper-Windows.exe Kipper-Fedora.rpm Kipper-Ubuntu-Debian.deb Kipper-Linux.AppImage \
-                   Kipper-Flatpak.flatpak Kipper-Matsu-OS.flatpak instalar.sh SHA256SUMS.txt atualizacoes.json; do
+                   Kipper-Flatpak.flatpak Kipper-Matsu-OS.flatpak Kipper-Android.apk Kipper-Android-32bits.apk \
+                   instalar.sh SHA256SUMS.txt atualizacoes.json; do
             [ -f "saida/$f" ] || { echo "Sem $f: rascunho não criado."; exit 1; }
           done
           sed "s/{{VERSAO}}/$VERSAO/g" .github/release/notas-kipper.md > notas.md
