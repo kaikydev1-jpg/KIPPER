@@ -17,6 +17,11 @@ on:
         required: false
         default: ""
         type: string
+      gpu:
+        description: "Placa de vídeo do Android virtual: swiftshader_indirect, angle_indirect ou guest"
+        required: false
+        default: "swiftshader_indirect"
+        type: string
 
 permissions:
   contents: write
@@ -34,6 +39,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       ROTEIRO: ${{ inputs.roteiro }}
+      GPU: ${{ inputs.gpu || 'swiftshader_indirect' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -76,7 +82,7 @@ jobs:
           profile: pixel_7
           ram-size: 4096M
           disk-size: 6000M
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
+          emulator-options: -no-window -gpu ${{ inputs.gpu || 'swiftshader_indirect' }} -no-snapshot -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: bash tools/kipper/celular/preparar-e-rodar.sh
 
@@ -91,7 +97,7 @@ jobs:
           {
             echo "# Kipper no celular (Android virtual)"
             echo
-            echo "Geração: ${GERACAO:-?} · roteiro: \`${ROTEIRO}\`"
+            echo "Geração: ${GERACAO:-?} · placa: ${GPU} · roteiro: \`${ROTEIRO}\`"
             echo
             for f in *.png; do [ -e "$f" ] && echo "![$f]($f)"; done
           } > README.md
