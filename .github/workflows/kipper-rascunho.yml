@@ -1,0 +1,55 @@
+name: Rascunho a partir de uma geração
+
+# Cria o RASCUNHO vX.Y.Z com os arquivos já montados por uma geração oficial do "Instaladores do
+# Kipper" (o artefato Kipper-X.Y.Z), sem compilar de novo. Para quando a geração terminou mas o
+# rascunho não foi criado. Publicar continua sendo o "Publicar versão do Kipper".
+on:
+  workflow_dispatch:
+    inputs:
+      geracao:
+        description: "ID da geração oficial (Instaladores do Kipper)"
+        required: true
+        type: string
+      versao:
+        description: "Versão (ex.: 0.9.3)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  rascunho:
+    name: Rascunho
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Baixar os arquivos da geração
+        uses: actions/download-artifact@v4
+        with:
+          name: Kipper-${{ inputs.versao }}
+          path: saida
+          run-id: ${{ inputs.geracao }}
+          github-token: ${{ github.token }}
+
+      - name: Criar o rascunho
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSAO: ${{ inputs.versao }}
+        run: |
+          set -euo pipefail
+          for f in Kipper-Windows.exe Kipper-Fedora.rpm Kipper-Ubuntu-Debian.deb Kipper-Linux.AppImage \
+                   Kipper-Flatpak.flatpak Kipper-Matsu-OS.flatpak Kipper-Android.apk Kipper-Android-32bits.apk \
+                   instalar.sh SHA256SUMS.txt atualizacoes.json; do
+            [ -f "saida/$f" ] || { echo "Sem $f: rascunho não criado."; exit 1; }
+          done
+          ls -la saida
+          sed "s/{{VERSAO}}/$VERSAO/g" .github/release/notas-kipper.md > notas.md
+          cat .github/release/resumo-kipper.txt >> notas.md
+          # A etiqueta vai no commit atual do ramo principal (o GitHub recusa uma etiqueta num commit
+          # com arquivos de workflow diferentes do ramo).
+          gh release create "v$VERSAO" saida/* --draft --target "$GITHUB_SHA" --title "Kipper $VERSAO" --notes-file notas.md
+          echo "### Rascunho v$VERSAO criado" >> "$GITHUB_STEP_SUMMARY"

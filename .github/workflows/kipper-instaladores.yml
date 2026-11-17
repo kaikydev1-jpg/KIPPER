@@ -223,4 +223,7 @@ jobs:
           done
           sed "s/{{VERSAO}}/$VERSAO/g" .github/release/notas-kipper.md > notas.md
           cat .github/release/resumo-kipper.txt >> notas.md
-          gh release create "v$VERSAO" saida/* --draft --target "$GITHUB_SHA" --title "Kipper $VERSAO" --notes-file notas.md
+          # Se algo mudou em .github/workflows depois do disparo, o GitHub recusa a etiqueta no commit
+          # da geração (403); aí ela vai no commit atual do ramo, que só difere nesses arquivos.
+          gh release create "v$VERSAO" saida/* --draft --target "$GITHUB_SHA" --title "Kipper $VERSAO" --notes-file notas.md \
+            || gh release create "v$VERSAO" saida/* --draft --title "Kipper $VERSAO" --notes-file notas.md
