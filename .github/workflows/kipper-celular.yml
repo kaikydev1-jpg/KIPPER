@@ -17,6 +17,11 @@ on:
         required: false
         default: ""
         type: string
+      pacote:
+        description: "ID do app: io.github.kaikydev1jpg.kipper.teste (teste) ou io.github.kaikydev1jpg.kipper (oficial)"
+        required: false
+        default: "io.github.kaikydev1jpg.kipper.teste"
+        type: string
       gpu:
         description: "Placa de vídeo do Android virtual: swiftshader_indirect, angle_indirect ou guest"
         required: false
@@ -40,6 +45,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       ROTEIRO: ${{ inputs.roteiro }}
       GPU: ${{ inputs.gpu || 'swiftshader_indirect' }}
+      PKG: ${{ inputs.pacote || 'io.github.kaikydev1jpg.kipper.teste' }}
     steps:
       - uses: actions/checkout@v4
 
