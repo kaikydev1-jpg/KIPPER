@@ -1,0 +1,104 @@
+name: Kipper no celular (prints)
+
+# Abre um Android virtual (Pixel 7, Android 14), instala o APK de teste x86_64 de uma geração do
+# "Instaladores do Kipper", segue um roteiro de toques e tira prints. Os prints e o registro do
+# Android vão para o ramo prints-celular, que é sobrescrito a cada vez; o código e as versões não
+# mudam. O roteiro está explicado em tools/kipper/celular/roteiro.sh.
+on:
+  workflow_dispatch:
+    inputs:
+      roteiro:
+        description: "Passos separados por ; (start, print NOME, wait S, tap X Y, swipe, key back, text)"
+        required: false
+        default: "start; wait 40; print inicio"
+        type: string
+      geracao:
+        description: "ID da geração com o APK x86_64 (vazio = a mais nova)"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: kipper-celular
+  cancel-in-progress: true
+
+jobs:
+  celular:
+    name: Android virtual
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ROTEIRO: ${{ inputs.roteiro }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ligar a aceleração (KVM)
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Baixar o APK x86_64
+        shell: bash
+        env:
+          GERACAO: ${{ inputs.geracao }}
+        run: |
+          set -euo pipefail
+          if [ -z "$GERACAO" ]; then
+            GERACAO=$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?name=android-apk-x86_64&per_page=1" \
+                        --jq '.artifacts[0].workflow_run.id')
+          fi
+          echo "geração $GERACAO"
+          gh run download "$GERACAO" -R "$GITHUB_REPOSITORY" -n android-apk-x86_64 -D apk
+          ls -la apk
+          echo "GERACAO=$GERACAO" >> "$GITHUB_ENV"
+
+      - name: Vídeos de exemplo (em pé e deitado)
+        run: |
+          command -v ffmpeg >/dev/null || { sudo apt-get update -o Acquire::Retries=3; sudo apt-get install -y ffmpeg; }
+          ffmpeg -v error -f lavfi -i testsrc2=size=1080x1920:rate=30 -f lavfi -i sine=frequency=440:sample_rate=48000 \
+            -t 8 -c:v libx264 -pix_fmt yuv420p -c:a aac -shortest exemplo-empe.mp4
+          ffmpeg -v error -f lavfi -i testsrc2=size=1920x1080:rate=30 -f lavfi -i sine=frequency=660:sample_rate=48000 \
+            -t 8 -c:v libx264 -pix_fmt yuv420p -c:a aac -shortest exemplo-deitado.mp4
+
+      - name: Abrir o Kipper no Android virtual e seguir o roteiro
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          profile: pixel_7
+          ram-size: 4096M
+          disk-size: 6000M
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: bash tools/kipper/celular/preparar-e-rodar.sh
+
+      - name: Guardar os prints no ramo prints-celular
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ -d prints ] || { echo "Sem prints."; exit 0; }
+          cd prints
+          [ -f logcat-completo.txt ] && tail -n 4000 logcat-completo.txt > logcat-fim.txt && rm logcat-completo.txt
+          {
+            echo "# Kipper no celular (Android virtual)"
+            echo
+            echo "Geração: ${GERACAO:-?} · roteiro: \`${ROTEIRO}\`"
+            echo
+            for f in *.png; do [ -e "$f" ] && echo "![$f]($f)"; done
+          } > README.md
+          git init -q
+          git checkout -q -b prints-celular
+          git add .
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -q -m "Prints do celular (geração ${GERACAO:-?})"
+          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" prints-celular
+          ls -1 >> "$GITHUB_STEP_SUMMARY"
