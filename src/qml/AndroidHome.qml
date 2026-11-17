@@ -46,15 +46,31 @@ Item {
             anchors.rightMargin: SafeArea.margins.right
             height: Theme.androidTopBarHeight
 
-            Text {
+            // Kipper: o pinguim ao lado do nome, como a marca do CapCut no topo.
+            Row {
                 anchors.left: parent.left
                 anchors.leftMargin: Theme.androidPagePadding
                 anchors.verticalCenter: parent.verticalCenter
-                text: "Kipper"
-                color: Theme.c.androidHomeWordmark.foreground
-                font.family: Theme.fontFamily
-                font.pixelSize: 22
-                font.weight: Font.Bold
+                spacing: Theme.spacingSm
+
+                Image {
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 30
+                    height: 30
+                    source: "qrc:/app/drift.png"
+                    sourceSize: Qt.size(96, 96)
+                    smooth: true
+                    mipmap: true
+                }
+
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: "Kipper"
+                    color: Theme.c.androidHomeWordmark.foreground
+                    font.family: Theme.fontFamily
+                    font.pixelSize: 22
+                    font.weight: Font.Bold
+                }
             }
 
             Row {

@@ -11,6 +11,7 @@
 #   swipe X1 Y1 X2 Y2 [ms]                      arrastar
 #   key NOME|CÓDIGO      tecla (back, home, enter ou o número do keyevent)
 #   text PALAVRAS        digita
+#   share ARQUIVO        compartilha com o Kipper um vídeo da galeria (ex.: exemplo-empe.mp4)
 set -u
 PKG="$1"
 ROTEIRO="$2"
@@ -47,6 +48,13 @@ for passo in "${PASSOS[@]}"; do
       esac
       adb shell input keyevent "$k" ;;
     text) adb shell input text "$(printf '%s' "${p[*]:1}" | sed 's/ /%s/g')" ;;
+    share)
+      id=$(adb shell content query --uri content://media/external/video/media --projection _id:_display_name \
+             | grep "_display_name=${p[1]}" | sed -E 's/.*_id=([0-9]+).*/\1/' | head -n 1)
+      echo "vídeo ${p[1]}: id ${id:-?}"
+      adb shell am start -a android.intent.action.SEND -t video/mp4 \
+        --eu android.intent.extra.STREAM "content://media/external/video/media/$id" \
+        --grant-read-uri-permission -n "$PKG/org.cutwire.drift.DriftActivity" >/dev/null ;;
     *) echo "passo desconhecido: ${p[0]}" ;;
   esac
   sleep 0.6

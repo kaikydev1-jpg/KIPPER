@@ -105,7 +105,10 @@ Item {
                 // when a clip sits flush against a canvas edge — viewportOuter
                 // clips, so a zero margin would shear the outer handles away.
                 anchors.margins: Theme.spacing2xl
-                pixelRatio: 1
+                // Kipper: com 1, a prévia era desenhada em 1/3 da resolução da tela do celular
+                // (densidade 2,6 a 3) e esticada, e o vídeo parecia de qualidade ruim. Até 2× fica
+                // nítido sem pesar demais; a exportação nunca dependeu disso.
+                pixelRatio: Math.min(Screen.devicePixelRatio, 2)
                 compactStatus: true
 
                 toolHost.tools: ({

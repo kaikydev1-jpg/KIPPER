@@ -45,12 +45,16 @@ ApplicationWindow {
             go(1)
     }
 
-    width: mobile ? Screen.width : 960
-    height: mobile ? Screen.height : 680
+    // Kipper: no celular quem dá o tamanho é o Android (como no AndroidMain). Com a tela inteira e a
+    // posição calculadas aqui, a janela descia abaixo da barra de status e sobrava uma faixa preta
+    // em cima (o fundo do Android aparecendo).
+    readonly property bool _onPhone: Qt.platform.os === "android" || Qt.platform.os === "ios"
+    width: _onPhone ? 0 : (mobile ? Screen.width : 960)
+    height: _onPhone ? 0 : (mobile ? Screen.height : 680)
     minimumWidth: mobile ? 0 : 720
     minimumHeight: mobile ? 0 : 560
-    x: Screen.width / 2 - width / 2
-    y: Screen.height / 2 - height / 2
+    x: _onPhone ? 0 : Screen.width / 2 - width / 2
+    y: _onPhone ? 0 : Screen.height / 2 - height / 2
     // Kipper: mostra só depois de ligar a barra de título integrada (sem a barra do sistema).
     visible: false
     title: qsTr("Kipper setup")

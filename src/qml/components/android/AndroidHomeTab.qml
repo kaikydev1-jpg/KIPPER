@@ -90,71 +90,71 @@ Item {
                 }
             }
 
-            Grid {
-                id: actionGrid
-                x: Theme.androidPagePadding
-                width: pageColumn.contentWidth
-                columns: 4
-                rowSpacing: Theme.spacingLg
-                columnSpacing: Theme.spacingMd
+            // Kipper: uma fileira que rola para o lado, como as ferramentas do CapCut (a grade de 4
+            // colunas deixava "Imagem para vídeo" sozinha numa linha).
+            ListView {
+                id: actionRow
+                width: parent.width
+                height: 64 + Theme.spacingSm + Math.ceil(Theme.fontSizeXs * 2.8)
+                orientation: ListView.Horizontal
+                leftMargin: Theme.androidPagePadding
+                rightMargin: Theme.androidPagePadding
+                spacing: Theme.spacingMd
+                boundsBehavior: Flickable.StopAtBounds
+                flickableDirection: Flickable.HorizontalFlick
+                clip: true
+                model: root.quickActions
 
-                readonly property real cellWidth: (width - columnSpacing * (columns - 1)) / columns
+                delegate: AbstractButton {
+                    id: tile
+                    required property var modelData
 
-                Repeater {
-                    model: root.quickActions
+                    width: 68
+                    height: actionRow.height
+                    scale: tile.down ? Theme.pressScale : 1.0
+                    Behavior on scale {
+                        NumberAnimation { duration: Theme.durationPress; easing.type: Theme.easing }
+                    }
 
-                    delegate: AbstractButton {
-                        id: tile
-                        required property var modelData
+                    Accessible.role: Accessible.Button
+                    Accessible.name: tile.modelData.label
 
-                        width: actionGrid.cellWidth
-                        implicitHeight: tileColumn.implicitHeight
-                        scale: tile.down ? Theme.pressScale : 1.0
-                        Behavior on scale {
-                            NumberAnimation { duration: Theme.durationPress; easing.type: Theme.easing }
+                    onClicked: {
+                        Haptics.select()
+                        root.quickActionRequested(tile.modelData.id)
+                    }
+
+                    contentItem: Column {
+                        spacing: Theme.spacingSm
+
+                        Rectangle {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            width: 60
+                            height: 60
+                            radius: 18
+                            color: tile.down ? Theme.c.androidHomeStartTile.backgroundPressed
+                                             : Theme.c.androidHomeStartTile.background
+                            border.width: Theme.c.androidHomeStartTile.borderWidth
+                            border.color: Theme.c.androidHomeStartTile.border
+
+                            IconGlyph {
+                                anchors.centerIn: parent
+                                glyph: tile.modelData.icon
+                                iconSize: Theme.iconSizeLg
+                                iconColor: Theme.c.androidHomeStartTile.foreground
+                            }
                         }
 
-                        Accessible.role: Accessible.Button
-                        Accessible.name: tile.modelData.label
-
-                        onClicked: {
-                            Haptics.select()
-                            root.quickActionRequested(tile.modelData.id)
-                        }
-
-                        contentItem: Column {
-                            id: tileColumn
-                            spacing: Theme.spacingSm
-
-                            Rectangle {
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                width: Math.min(tile.width, 64)
-                                height: width
-                                radius: Theme.c.androidHomeStartTile.radius
-                                color: tile.down ? Theme.c.androidHomeStartTile.backgroundPressed
-                                                 : Theme.c.androidHomeStartTile.background
-                                border.width: Theme.c.androidHomeStartTile.borderWidth
-                                border.color: Theme.c.androidHomeStartTile.border
-
-                                IconGlyph {
-                                    anchors.centerIn: parent
-                                    glyph: tile.modelData.icon
-                                    iconSize: Theme.iconSizeLg
-                                    iconColor: Theme.c.androidHomeStartTile.foreground
-                                }
-                            }
-
-                            Text {
-                                width: parent.width
-                                text: tile.modelData.label
-                                horizontalAlignment: Text.AlignHCenter
-                                color: Theme.c.androidHomeStartTile.foreground
-                                font.family: Theme.fontFamily
-                                font.pixelSize: Theme.fontSizeXs
-                                wrapMode: Text.WordWrap
-                                maximumLineCount: 2
-                                elide: Text.ElideRight
-                            }
+                        Text {
+                            width: parent.width
+                            text: tile.modelData.label
+                            horizontalAlignment: Text.AlignHCenter
+                            color: Theme.c.androidHomeStartTile.foreground
+                            font.family: Theme.fontFamily
+                            font.pixelSize: Theme.fontSizeXs
+                            wrapMode: Text.WordWrap
+                            maximumLineCount: 2
+                            elide: Text.ElideRight
                         }
                     }
                 }
