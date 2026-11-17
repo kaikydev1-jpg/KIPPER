@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kipper — editor de vídeo gratuito</title>
-  <meta name="description" content="Kipper é um editor de vídeo gratuito e de código aberto para Windows e Linux. Do primeiro corte ao filme inteiro, sem marca d'água, sem conta e sem assinatura.">
+  <meta name="description" content="Kipper é um editor de vídeo gratuito e de código aberto para Windows, Linux e celular Android. Do primeiro corte ao filme inteiro, sem marca d'água, sem conta e sem assinatura.">
   <meta name="theme-color" content="#f6f5f2" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0e0e0f" media="(prefers-color-scheme: dark)">
   <meta property="og:title" content="Kipper — editor de vídeo gratuito">
@@ -45,7 +45,7 @@
   <main id="conteudo">
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow" id="hero-eyebrow" data-i18n="hero.eyebrow">Grátis · Código aberto · Windows e Linux</p>
+        <p class="eyebrow" id="hero-eyebrow" data-i18n="hero.eyebrow.android">Grátis · Código aberto · Windows, Linux e Android</p>
         <h1 data-i18n-html="hero.title">Edite vídeos do primeiro corte <em>ao filme inteiro.</em></h1>
         <p class="lede" data-i18n="hero.lede">Kipper é um editor de vídeo completo, sem marca d'água, sem conta e sem assinatura. Fácil para quem está começando, com tudo o que quem já edita precisa.</p>
         <div class="cta">
@@ -55,7 +55,7 @@
           </a>
           <a class="btn btn-ghost" href="https://github.com/kaikydev1-jpg/KIPPER" rel="noopener" data-i18n="hero.source">Ver o código no GitHub</a>
         </div>
-        <p class="fineprint" id="cta-hint" data-i18n="hero.hint">Windows 10 e 11 · Fedora · Ubuntu · Matsu OS · qualquer Linux</p>
+        <p class="fineprint" id="cta-hint" data-i18n="hero.hint.android">Windows 10 e 11 · Fedora · Ubuntu · Matsu OS · qualquer Linux · celular Android</p>
       </div>
       <figure class="hero-shot">
         <img src="/assets/editor.webp" width="1600" height="1000" alt="O editor do Kipper: mídia à esquerda, prévia no meio, ajustes à direita e a linha do tempo embaixo." loading="eager" fetchpriority="high">
@@ -179,7 +179,7 @@
             <li data-i18n="lv1.i7">Velocidade, câmera lenta, de trás para a frente e congelar quadro</li>
             <li data-i18n="lv1.i8">Recortar, reenquadrar e fundo de cor ou de imagem</li>
             <li data-i18n="lv1.i9">Exportar em MP4 até 4K, em GIF ou só o áudio</li>
-            <li data-i18n="lv1.i10" data-android hidden>No celular Android, o mesmo editor no estilo do CapCut</li>
+            <li data-i18n="lv1.i10">No celular Android, o mesmo editor no estilo do CapCut</li>
           </ul>
         </li>
         <li>
@@ -225,8 +225,8 @@
       <div class="section-head">
         <h2 data-i18n="dl.title">Baixar o Kipper</h2>
         <p data-i18n="dl.lede">No Linux, o jeito mais fácil é este comando: ele descobre o seu sistema, baixa o arquivo certo, confere e instala.</p>
-        <!-- Preenchido pelo main.js com a versão mais nova publicada no GitHub. -->
-        <p class="fineprint" id="versao-atual" hidden></p>
+        <!-- Escrito aqui a cada versão; o main.js troca pela mais nova do GitHub quando consegue. -->
+        <p class="fineprint" id="versao-atual">Versão atual: 0.9.3 · publicada em 17 de novembro de 2026</p>
       </div>
 
       <div class="terminal" role="group" aria-label="Instalar pelo terminal">
@@ -239,8 +239,7 @@
       </div>
 
       <ul class="systems">
-        <!-- Aparece quando a versão publicada no GitHub tem o APK (main.js confere). -->
-        <li class="system wide" data-os="android" id="card-android" hidden>
+        <li class="system wide" data-os="android" id="card-android">
           <div class="wide-copy">
             <h3>Android</h3>
             <p data-i18n="dl.android">Para celular. Baixe direto pelo navegador do celular e abra o arquivo; na primeira vez, o Android pede para permitir instalar apps baixados por ele. Depois, o Kipper avisa e se atualiza sozinho.</p>

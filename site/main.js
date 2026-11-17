@@ -148,7 +148,9 @@
   Object.assign(PT, PT_EXTRA);
 
   let lang = "pt";
-  // Versão mais nova publicada no GitHub (preenchida mais abaixo; null até chegar).
+  // Versão mais nova publicada no GitHub (preenchida mais abaixo; null até chegar). Atualizar
+  // STATIC_VERSION (e o texto de #versao-atual no HTML) a cada versão publicada.
+  const STATIC_VERSION = { tag_name: "v0.9.3", published_at: "2026-11-17T04:12:12Z" };
   let latest = null;
   const t = (key) => (lang === "en" ? EN : PT)[key] ?? PT[key] ?? key;
 
@@ -189,12 +191,19 @@
     }
   }
   suggest();
+  // No celular Android, o botão principal do topo já baixa o APK.
+  if (os === "android") {
+    document.getElementById("cta-download").href =
+      "https://github.com/kaikydev1-jpg/KIPPER/releases/latest/download/Kipper-Android.apk";
+  }
 
   // Versão atual: lida da lista pública de versões do GitHub, então o site acompanha cada versão
-  // publicada sem precisar ser mexido. Sem resposta (sem internet, limite do GitHub), a linha some.
+  // publicada sem precisar ser mexido. Sem resposta (limite de pedidos, sem internet), vale a
+  // versão escrita aqui (STATIC_VERSION, lá em cima) e no HTML.
   function renderVersion() {
     const el = document.getElementById("versao-atual");
-    if (!el || !latest) return;
+    if (!el) return;
+    if (!latest) latest = STATIC_VERSION;
     const when = new Date(latest.published_at);
     const date = isNaN(when) ? "" : when.toLocaleDateString(lang === "en" ? "en-US" : "pt-BR",
                                                              { day: "numeric", month: "long", year: "numeric" });
@@ -210,23 +219,10 @@
       if (!data || !data.tag_name) return;
       latest = data;
       renderVersion();
-      // O cartão do Android só aparece quando a versão publicada tem o APK.
+      // O botão de 32 bits some se a versão publicada não tiver esse arquivo.
       const names = (data.assets || []).map((a) => a.name);
-      if (names.includes("Kipper-Android.apk")) {
-        document.getElementById("card-android").hidden = false;
-        document.querySelectorAll("[data-android]").forEach((el) => { el.hidden = false; });
-        document.getElementById("hero-eyebrow").dataset.i18n = "hero.eyebrow.android";
-        document.getElementById("cta-hint").dataset.i18n = "hero.hint.android";
-        applyLanguage(lang);
-        if (!names.includes("Kipper-Android-32bits.apk"))
-          document.querySelector('#card-android .btn-ghost').hidden = true;
-        suggest();
-        // No celular, o botão principal do topo já baixa o APK.
-        if (os === "android") {
-          document.getElementById("cta-download").href =
-            "https://github.com/kaikydev1-jpg/KIPPER/releases/latest/download/Kipper-Android.apk";
-        }
-      }
+      if (names.length && !names.includes("Kipper-Android-32bits.apk"))
+        document.querySelector('#card-android .btn-ghost').hidden = true;
     })
     .catch(() => { /* sem a versão, o resto do site funciona igual */ });
 

@@ -66,7 +66,12 @@ mínimo no código do Drift, para continuar dando para puxar as correções dele
    um RASCUNHO `vX.Y.Z` com os arquivos do padrão e os APKs do Android (a versão oficial sempre
    leva o Android, e para logo no começo se faltar a chave oficial).
 3. Só quando o criador pedir: Actions → Publicar versão do Kipper, com a versão. A etiqueta `vX.Y.Z`
-   é criada no commit da geração. Versões publicadas: 0.9.2 (14/11/2026).
+   é criada no commit da geração. Versões publicadas: 0.9.2 (14/11/2026), 0.9.3 (17/11/2026).
+4. No site, atualizar `STATIC_VERSION` (site/main.js) e o texto de `#versao-atual` (site/index.html)
+   e publicar na Vercel: o site pergunta a versão ao GitHub, mas na internet do celular o limite de
+   pedidos do GitHub costuma estourar e aí vale o que está escrito.
+5. Se o rascunho não for criado (403 porque um workflow mudou depois do disparo), usar
+   "Rascunho a partir de uma geração" com o ID da geração: não precisa compilar de novo.
 
 ## Android
 
