@@ -9265,7 +9265,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Downscale</source>
+        <source>Resolution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -28392,10 +28392,6 @@ If playback stutters, try another.</source>
     </message>
     <message>
         <source>Same as project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Same as project · %1×%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

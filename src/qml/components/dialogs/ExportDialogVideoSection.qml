@@ -24,8 +24,9 @@ Column {
         text: qsTr("Saves what you see in the preview. Pick a size — the picture shape stays the same.")
     }
 
+    // Kipper: agora também tem 2K e 4K, maiores que o projeto.
     ThemedLabel {
-        text: qsTr("Downscale")
+        text: qsTr("Resolution")
     }
 
     Flow {

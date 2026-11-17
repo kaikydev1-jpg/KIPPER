@@ -1684,11 +1684,16 @@ void Exporter::BackgroundHold::setPercent(int percent)
 
 const QList<ExportScalePreset> &Exporter::scalePresets()
 {
+    // Kipper: como no CapCut, do menor ao maior, com 2K e 4K mesmo quando o projeto é menor (o
+    // exportador desenha o quadro no tamanho de saída, então textos e formas saem nítidos).
+    // targetHeight aqui é o lado MENOR; scaleOptions() converte para a altura de cada projeto.
     static const QList<ExportScalePreset> kPresets = {
         {QStringLiteral("source"), QStringLiteral("Same as project"), 0, 16000},
-        {QStringLiteral("1080p"), QStringLiteral("1080p"), 1080, 12000},
-        {QStringLiteral("720p"), QStringLiteral("720p"), 720, 8000},
         {QStringLiteral("480p"), QStringLiteral("480p"), 480, 4000},
+        {QStringLiteral("720p"), QStringLiteral("720p"), 720, 8000},
+        {QStringLiteral("1080p"), QStringLiteral("1080p"), 1080, 16000},
+        {QStringLiteral("1440p"), QStringLiteral("2K"), 1440, 24000},
+        {QStringLiteral("2160p"), QStringLiteral("4K"), 2160, 45000},
     };
     return kPresets;
 }
@@ -1842,43 +1847,55 @@ QVariantList Exporter::scaleOptions(int projectWidth, int projectHeight)
     if (projectWidth <= 0 || projectHeight <= 0)
         return out;
 
+    // Kipper: "Igual ao projeto" primeiro (o padrão), depois 480p, 720p, 1080p, 2K e 4K pelo lado
+    // menor, para vídeo deitado e em pé (1080p em pé é 1080×1920, não 608×1080). As maiores que o
+    // projeto também aparecem: o exportador desenha o quadro no tamanho de saída.
+    const bool portrait = projectHeight > projectWidth;
+    const int projectShort = std::min(projectWidth, projectHeight);
+    const auto bitrateFor = [](int shortSide) {
+        if (shortSide <= 480)
+            return 4000;
+        if (shortSide <= 720)
+            return 8000;
+        if (shortSide <= 1080)
+            return 16000;
+        if (shortSide <= 1440)
+            return 24000;
+        return 45000;
+    };
+    const auto add = [&out](const QString &id, const QString &name, int w, int h, int kbps) {
+        out.append(QVariantMap{
+            {QStringLiteral("id"), id},
+            {QStringLiteral("label"), QStringLiteral("%1 · %2×%3").arg(name).arg(w).arg(h)},
+            // A altura de saída: Exporter::scaleSize() tira a largura dela e da proporção do projeto.
+            {QStringLiteral("targetHeight"), id == QLatin1String("source") ? 0 : h},
+            {QStringLiteral("width"), w},
+            {QStringLiteral("height"), h},
+            {QStringLiteral("videoBitrateKbps"), kbps},
+        });
+    };
+
+    int srcW = projectWidth;
+    int srcH = projectHeight;
+    evenDims(srcW, srcH);
+    add(QStringLiteral("source"), QCoreApplication::translate("drift::Exporter", "Same as project"), srcW, srcH,
+        bitrateFor(projectShort));
+
     for (const ExportScalePreset &preset : scalePresets()) {
-        // Skip downscale targets that would upscale.
-        if (preset.targetHeight > 0 && projectHeight <= preset.targetHeight)
+        const int shortSide = preset.targetHeight;
+        if (shortSide <= 0 || shortSide == projectShort)
             continue;
-
         int outW = 0;
         int outH = 0;
-        scaleSize(projectWidth, projectHeight, preset.targetHeight, outW, outH);
-
-        // Kipper: "Same as project" traduzido (as outras são 1080p/720p/480p).
-        const QString name = preset.id == QLatin1String("source")
-                ? QCoreApplication::translate("drift::Exporter", "Same as project") : preset.label;
-        const QString label = QStringLiteral("%1 · %2×%3").arg(name).arg(outW).arg(outH);
-
-        out.append(QVariantMap{
-            {QStringLiteral("id"), preset.id},
-            {QStringLiteral("label"), label},
-            {QStringLiteral("targetHeight"), preset.targetHeight},
-            {QStringLiteral("width"), outW},
-            {QStringLiteral("height"), outH},
-            {QStringLiteral("videoBitrateKbps"), preset.videoBitrateKbps},
-        });
-    }
-
-    // Always include source if somehow filtered out (shouldn't happen).
-    if (out.isEmpty()) {
-        int outW = 0;
-        int outH = 0;
-        scaleSize(projectWidth, projectHeight, 0, outW, outH);
-        out.append(QVariantMap{
-            {QStringLiteral("id"), QStringLiteral("source")},
-            {QStringLiteral("label"), QCoreApplication::translate("drift::Exporter", "Same as project · %1×%2").arg(outW).arg(outH)},
-            {QStringLiteral("targetHeight"), 0},
-            {QStringLiteral("width"), outW},
-            {QStringLiteral("height"), outH},
-            {QStringLiteral("videoBitrateKbps"), 16000},
-        });
+        if (portrait) {
+            outW = shortSide;
+            outH = static_cast<int>(std::llround(static_cast<double>(projectHeight) * shortSide / projectWidth));
+        } else {
+            outH = shortSide;
+            outW = static_cast<int>(std::llround(static_cast<double>(projectWidth) * shortSide / projectHeight));
+        }
+        evenDims(outW, outH);
+        add(preset.id, preset.label, outW, outH, preset.videoBitrateKbps);
     }
     return out;
 }

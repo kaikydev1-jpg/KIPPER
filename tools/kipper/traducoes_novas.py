@@ -50,6 +50,7 @@ PT = {
     "Timeline is empty": "A linha do tempo está vazia",
     "Export cancelled": "Exportação cancelada",
     "Export failed": "A exportação falhou",
+    "Resolution": "Resolução",
     # Atualização pelo app no celular.
     "Install": "Instalar",
     "Opens the Android installer to update Kipper": "Abre o instalador do Android para atualizar o Kipper",

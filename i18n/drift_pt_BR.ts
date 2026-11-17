@@ -9265,8 +9265,8 @@
         <translation>Salva o que você vê na pré-visualização. Escolha um tamanho — o formato da imagem continua o mesmo.</translation>
     </message>
     <message>
-        <source>Downscale</source>
-        <translation>Reduzir resolução</translation>
+        <source>Resolution</source>
+        <translation>Resolução</translation>
     </message>
     <message>
         <source>Export at %1×%2</source>
@@ -28401,10 +28401,6 @@ Se a reprodução travar, experimente outro.</translation>
     <message>
         <source>Same as project</source>
         <translation>Igual ao projeto</translation>
-    </message>
-    <message>
-        <source>Same as project · %1×%2</source>
-        <translation>Igual ao projeto · %1×%2</translation>
     </message>
     <message>
         <source>23.976 fps (NTSC film)</source>

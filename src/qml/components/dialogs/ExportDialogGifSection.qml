@@ -29,7 +29,13 @@ Column {
         spacing: Theme.spacingMd
 
         Repeater {
-            model: dialog.scaleOptions
+            // Kipper: GIF só no tamanho do projeto ou menor (um GIF em 2K/4K fica enorme).
+            model: {
+                const all = dialog.scaleOptions
+                const src = all.length > 0 ? all[0] : null
+                return src ? all.filter(o => o.id === "source" || o.height * o.width <= src.height * src.width)
+                           : all
+            }
 
             delegate: ThemedChip {
                 required property var modelData
