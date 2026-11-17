@@ -1,1 +1,1 @@
-Agora também no celular Android: baixe o Kipper-Android.apk, e o app avisa e se atualiza sozinho. No computador, mais telas em português (exportar, datas e nomes). Se algo não funcionar, conte em https://github.com/kaikydev1-jpg/KIPPER/issues
+Agora também no celular Android: baixe o Kipper-Android.apk, e o app avisa e se atualiza sozinho. Exportar em 480p, 720p, 1080p, 2K e 4K (no computador e no celular), prévia mais nítida no celular e mais telas em português. Se algo não funcionar, conte em https://github.com/kaikydev1-jpg/KIPPER/issues

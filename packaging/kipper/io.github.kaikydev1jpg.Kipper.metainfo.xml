@@ -71,8 +71,8 @@
   <releases>
     <release version="0.9.3" date="2026-11-14">
       <description>
-        <p>Kipper for Android phones, with in-app updates; more of the app in Brazilian Portuguese.</p>
-        <p xml:lang="pt-BR">Kipper para celular Android, com atualização pelo próprio app; mais partes em português.</p>
+        <p>Kipper for Android phones, with in-app updates; export at 480p up to 4K; more of the app in Brazilian Portuguese.</p>
+        <p xml:lang="pt-BR">Kipper para celular Android, com atualização pelo próprio app; exportar de 480p até 4K; mais partes em português.</p>
       </description>
     </release>
     <release version="0.9.2" date="2026-11-14">
