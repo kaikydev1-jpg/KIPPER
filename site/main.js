@@ -124,6 +124,7 @@
     "dl.suggested": "For you",
     "dl.android": "For phones. Download it straight from your phone's browser and open the file; the first time, Android asks you to allow installing apps downloaded by it. After that, Kipper tells you about new versions and updates itself.",
     "dl.android32": "Older phone (32-bit)",
+    "dl.androidHelp": "Downloaded but stuck on \"Downloading\"? The file is already on your phone: open the Files app → Downloads → Kipper-Android.apk and tap Install.",
     "sup.title": "Support Kipper",
     "sup.lede": "Kipper is free and will stay free, with no ads and no paid plan. If it helped you, any amount helps keep the project going.",
     "sup.pix": "For people in Brazil: instant and free. Copy the key, paste it in your bank app and choose any amount.",

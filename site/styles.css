@@ -297,6 +297,7 @@ h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
 /* Android: um cartão largo em cima dos outros. */
 .system.wide { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: 24px; }
 .system.wide .wide-copy { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+.system.wide .hint { font-size: 13.5px; color: var(--muted); border-left: 2px solid var(--line); padding-left: 10px; }
 .system.wide .wide-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
 .system.wide .wide-actions .file { flex-basis: 100%; text-align: right; }
 
